@@ -13,3 +13,25 @@ services:
       - SECRET_KEY=django-insecure-x0dn4*2one*^bljx52vjnnhjfb)z$w&e=c4uv62s-v)ob(9b_d
       - DEBUG=True
       - ALLOWED_HOSTS=.localhost, .herokuapp.com
+    depends_on:
+      - ollama
+    networks:
+      - ai-net
+
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+    networks:
+      - ai-net
+
+volumes:
+  ollama_data:
+
+networks:
+  ai-net:
+    driver: bridge
