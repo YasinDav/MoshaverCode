@@ -7,16 +7,16 @@ User = get_user_model()
 
 # A General Class that creates for even users' request to consult
 # every information such as time, result of consult and questions or etc like them
-class Consult(models):
+class Consult(models.Model):
 
     # time
-    created_date = models.DateTimeField(auto_now=False, auto_now_add=True)
-    updated_date = models.DateTimeField(auto_now=True, auto_now_add=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
 
     # user
     user = models.ForeignKey(User, on_delete=models.SET_NULL)
 
-class Question(models):
+class Question(models.Model):
     # a text or command that ai module recive to generate question
     # NOTE: for fisrt of all consult is same. but even module's anwer brings its self prompt to generate next question
     prompt = models.TextField()
