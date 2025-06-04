@@ -162,3 +162,5 @@ cython_debug/
 .vscode/
 **migrations**
 **migrations**/
+.idea
+model-data
