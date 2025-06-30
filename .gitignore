@@ -164,3 +164,4 @@ cython_debug/
 **migrations**/
 .idea
 model-data
+test.py
