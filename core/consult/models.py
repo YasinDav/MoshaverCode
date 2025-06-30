@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+
 # from django.utils.translation import gettext_lazy as _
 
 # get default user model
@@ -26,6 +27,12 @@ class Consult(models.Model):
 
 
 class Question(models.Model):
+    # connect to a consult model
+    consult = models.ForeignKey(Consult, on_delete=models.CASCADE)
+
+    # time
+    created_date = models.DateTimeField(auto_now_add=True)
+
     # a text or command that AI module receive to generate question
     # NOTE: for first of all consult is same. but even module's answer brings its self prompt to generate next question
     prompt = models.TextField()
