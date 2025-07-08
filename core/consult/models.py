@@ -1,10 +1,10 @@
-from django.db import models
 from django.contrib.auth import get_user_model
+from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
 
-from .tests import simulate_ai_request
+from .simulator import simulate_ai_request
 
 # from django.utils.translation import gettext_lazy as _
 

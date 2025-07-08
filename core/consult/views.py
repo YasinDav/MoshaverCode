@@ -5,16 +5,16 @@
 # import requests
 # from django.contrib.auth.decorators import login_required
 # from django.utils.decorators import method_decorator
+from hashlib import sha256
+
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, reverse, redirect
-from django.db.models import Q
-from django.contrib.auth.decorators import login_required
-
-from hashlib import sha256
 
 from .forms import ConsultFormRange, ConsultFormInput
 from .models import Consult, Question
-from .tests import simulate_ai_request
+from .simulator import simulate_ai_request
 
 # OLLAMA_URL = "http://localhost:11500/api/chat"
 # OLLAMA_MODEL = "mistral"
