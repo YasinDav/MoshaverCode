@@ -20,5 +20,5 @@ from consult.urls import urlpatterns as consult
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('consult/', include(consult))
+    path('dashboard/', include(consult))
 ]

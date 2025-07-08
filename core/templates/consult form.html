@@ -8,10 +8,9 @@
 <body>
 
 <p>{{ question }}</p>
-<form action="{% url "Answers" %}" method="post" >
+<form action="{% url "question" consult_id question_id %}" method="post">
     {% csrf_token %}
     {{ form.answer }}
-    {{ form.type }}
     <button type="submit">next</button>
 
 </form>

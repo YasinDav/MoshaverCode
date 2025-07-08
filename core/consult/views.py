@@ -6,11 +6,15 @@
 # from django.contrib.auth.decorators import login_required
 # from django.utils.decorators import method_decorator
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, reverse, redirect
+from django.db.models import Q
+from django.contrib.auth.decorators import login_required
+
+from hashlib import sha256
 
 from .forms import ConsultFormRange, ConsultFormInput
 from .models import Consult, Question
-
+from .tests import simulate_ai_request
 
 # OLLAMA_URL = "http://localhost:11500/api/chat"
 # OLLAMA_MODEL = "mistral"
@@ -67,39 +71,149 @@ from .models import Consult, Question
 #             return JsonResponse({"error": "Internal server error.", "details": str(e)}, status=500)
 #     else:
 #         return HttpResponse("bad request")
+type_mood = {
+    "range": True,
+    "input": False
+}
+
+starting_prompt = "just a text for test"
 
 
-def answers(request, consult_id, question_id):
+@login_required(login_url='')
+def question(request, consult_id, question_model_id_hash):
+    consult = get_object_or_404(Consult, id=consult_id)
+
+    if not consult.status:  # if status be False, it means consult is disable and finished
+        return HttpResponse("consult is finished")
+
+    questions_of_consult_model = Question.objects.filter(consult_id=consult_id)
+
     if request.method == 'POST':
-        if type := request.POST.get("type") == "range":
+
+        questions = questions_of_consult_model.filter(Q(answer__isnull=True) | Q(answer=""))
+
+        question_model = None
+        for question in questions:
+            if sha256(str(question.id).encode()).hexdigest() == question_model_id_hash:
+                question_model = Question.objects.get(id=question.id)
+                break
+
+        if question_model is None:
+            return HttpResponse("question not found")
+
+        if question_model.answer:
+            return HttpResponse("question already answered")
+
+        if question_model.type:
             form = ConsultFormRange(request.POST)
-        elif type := request.POST.get("type") == "input":
-            form = ConsultFormInput(request.POST)
         else:
-            return HttpResponse("Bad request")
-
-        try:
-            consult = Consult.objects.get(id=consult_id)
-        except Consult.DoesNotExist:
-            return HttpResponse("consult not found")
-
-
-        if consult.status == False:
-            return HttpResponse("consult is finished")
+            form = ConsultFormInput(request.POST)
 
         if form.is_valid():
             answer = form.cleaned_data["answer"]
+            question_model.answer = answer
+            response = simulate_ai_request("a")
+            question_model.next_prompt = response
+            question_model.save()
 
+            # create new question model
+            if questions_of_consult_model.count() == 0:
+                prompt = starting_prompt
+            else:
+                prompt = questions_of_consult_model.order_by("created_date").last()
+                prompt = prompt.next_prompt
 
+            response = simulate_ai_request("q")
+            question_model = Question.objects.create(
+                type=type_mood[response["type"]],
+                question=response["question"],
+                consult=consult,
+                prompt=prompt
+            )
 
+            question_model.save()
 
+            if question_model.type:
+                form = ConsultFormRange()
+            else:
+                form = ConsultFormInput()
 
+            return render(request, "consult form.html",
+                          {"form": form, "consult_id": consult_id,
+                           "question_id": sha256(str(question_model.id).encode()).hexdigest(),
+                           "question": question_model.question})
 
-            return render(request, "consult form.html", {"form": form, "answer": answer})
+            # return render(request, "consult form.html", {"form": form})
         else:
-            return render(request, "consult form.html", {"form": form, "question": "Answers not"})
+            return HttpResponse("bad request")
     elif request.method == 'GET':
-        form = ConsultFormRange()
-        return render(request, "consult form.html", {"form": form})
+
+        question_model = None
+        for question in questions_of_consult_model:
+            if sha256(str(question.id).encode()).hexdigest() == question_model_id_hash:
+                question_model = Question.objects.get(id=question.id)
+                break
+
+        if question_model is None:
+            return HttpResponse("question not found")
+        elif question_model.answer:
+            return HttpResponse("question already answered")
+
+        elif question_model is not None:
+            if question_model.type:
+                form = ConsultFormRange()
+            else:
+                form = ConsultFormInput()
+
+            return render(request, "consult form.html",
+                          {"form": form, "consult_id": consult_id,
+                           "question_id": sha256(str(question_model.id).encode()).hexdigest(),
+                           "question": question_model.question})
+
     else:
         return HttpResponse("Bad request")
+
+
+def find_secreted_url(consult: Consult, complete_url: bool = False):
+    if consult is not None:
+
+        question = Question.objects.filter(consult=consult).order_by("created_date").last()
+
+        if question is not None:
+            question_model_id_hash = sha256(str(question.id).encode()).hexdigest()
+            if complete_url:
+                return reverse("question",
+                               kwargs={"consult_id": consult.id, "question_model_id_hash": question_model_id_hash})
+            else:
+                return question_model_id_hash
+        else:
+            return None
+    else:
+        return None
+
+
+def test_secreted_url(request, id: int):
+    c = Consult.objects.get(id=id)
+    f = find_secreted_url(c)
+
+    return render(request, "show question.html", {"a": f})
+
+
+@login_required(login_url='')
+def consult_panel(request):
+    consults = Consult.objects.filter(user=request.user)
+    consults_with_urls = {}
+
+    for consult in consults:
+        consults_with_urls[consult] = find_secreted_url(consult)
+    # consults_with_urls.
+    return render(request, "consults panel.html", {"consults": consults_with_urls})
+
+
+def new_consult(request):
+    consult = Consult.objects.create(
+        user=request.user,
+        status=True,
+    ).save()
+
+    return redirect(reverse("consult"))
