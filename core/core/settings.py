@@ -28,6 +28,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'consult.apps.ConsultConfig',
     'django.contrib.humanize',
+    "index.apps.IndexConfig",
+    "account.apps.AccountConfig"
 ]
 
 MIDDLEWARE = [
@@ -45,7 +47,7 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / 'core/t'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
