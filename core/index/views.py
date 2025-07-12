@@ -1,3 +1,7 @@
 from django.shortcuts import render
 
-# Create your views here.
+from .models import Developer
+
+def index(request):
+    developers = Developer.objects.all()
+    return render(request, 'index.html', {'developers': developers})
