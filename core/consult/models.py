@@ -76,21 +76,17 @@ type_mood_reverse = {
 def create_first_question(instance, created, **kwargs):
     if created:
         response = simulate_ai_request("q")
-        q = Question.objects.create(
+        Question.objects.create(
             consult=instance,
             type=type_mood_reverse[response["type"]],
             question=response["question"],
             prompt="just a text for test"
         )
-        q.save()
 
 
 @receiver(post_save, sender=Question)
 def update_consult(created, instance, **kwargs):
     if created:
         consult = instance.consult
-        print(instance.id, consult.updated_date)
         consult.updated_date = timezone.now()
         consult.save()
-        print(instance.id, consult.updated_date)
-        print(consult.id, timezone.now())

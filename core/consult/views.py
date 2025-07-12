@@ -7,6 +7,7 @@
 # from django.utils.decorators import method_decorator
 from hashlib import sha256
 
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import HttpResponse
@@ -79,7 +80,7 @@ type_mood = {
 starting_prompt = "just a text for test"
 
 
-@login_required(login_url='')
+@login_required(login_url=settings.LOGIN_REDIRECT_UR)
 def question(request, consult_id, question_model_id_hash):
     consult = get_object_or_404(Consult, id=consult_id)
 
@@ -95,7 +96,7 @@ def question(request, consult_id, question_model_id_hash):
         question_model = None
         for question in questions:
             if sha256(str(question.id).encode()).hexdigest() == question_model_id_hash:
-                question_model = Question.objects.get(id=question.id)
+                question_model = question
                 break
 
         if question_model is None:
@@ -130,8 +131,6 @@ def question(request, consult_id, question_model_id_hash):
                 consult=consult,
                 prompt=prompt
             )
-
-            question_model.save()
 
             if question_model.type:
                 form = ConsultFormRange()
@@ -199,7 +198,7 @@ def test_secreted_url(request, id: int):
     return render(request, "show question.html", {"a": f})
 
 
-@login_required(login_url='')
+@login_required(login_url=settings.LOGIN_REDIRECT_UR)
 def consult_panel(request):
     consults = Consult.objects.filter(user=request.user)
     consults_with_urls = {}
@@ -210,10 +209,21 @@ def consult_panel(request):
     return render(request, "consults panel.html", {"consults": consults_with_urls})
 
 
+@login_required(login_url=settings.LOGIN_REDIRECT_UR)
 def new_consult(request):
-    consult = Consult.objects.create(
-        user=request.user,
-        status=True,
-    ).save()
+    if request.method == "POST":
+        Consult.objects.create(
+            user=request.user,
+            status=True,
+        )
 
+    return redirect(reverse("consult"))
+
+
+@login_required(login_url=settings.LOGIN_REDIRECT_UR)
+def delete_consult(request, id):
+    if request.method == "POST":
+        consult = get_object_or_404(Consult, id=id)
+        if request.user == consult.user:
+            consult.delete()
     return redirect(reverse("consult"))
