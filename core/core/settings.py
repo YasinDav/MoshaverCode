@@ -1,5 +1,6 @@
 from pathlib import Path
 from decouple import config
+from django.urls import reverse
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,10 +27,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'consult.apps.ConsultConfig',
+    'consult',
     'django.contrib.humanize',
-    "index.apps.IndexConfig",
-    "account.apps.AccountConfig"
+    "index",
+    "account",
+    "captcha",
 ]
 
 MIDDLEWARE = [
@@ -47,7 +49,7 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'core/t'],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -100,7 +102,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Iran'
+TIME_ZONE = 'Asia/Tehran'
 
 USE_I18N = True
 
@@ -111,9 +113,23 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
-# STATICFILES_DIRS = BASE_DIR /
+STATICFILES_DIRS = [
+    BASE_DIR / 'statics' / 'css',
+    BASE_DIR / 'statics' / 'js'
+]
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# AUTHENTICATION URL
+# LOGIN_REDIRECT_URL = reverse("login")
+# LOGOUT_REDIRECT_URL = reverse("logout")
+# SIGNUP_REDIRECT_URL = reverse("signup")
+LOGIN_REDIRECT_URL = '/login/'
+LOGOUT_REDIRECT_URL = '/logout/'
+SIGNUP_REDIRECT_URL = '/signup/'
