@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load static %}
+{#<!DOCTYPE html>#}
+{##}
+{#<html lang="en">#}
+{#<head>#}
+{#<meta charset="utf-8"/>#}
+{#<meta content="width=device-width, initial-scale=1.0" name="viewport"/>#}
+{#<title>Login - v0 Counselor</title>#}
+{#<!-- Bootstrap 5 CSS -->#}
+{#<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>#}
+{#<!-- Lucide Icons -->#}
+{#<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>#}
+{#<!-- SweetAlert2 -->#}
+{#<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>#}
+{#<!-- AOS Animation Library -->#}
+{#<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"/>#}
+{#<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>#}
+{##}
+{#<link href="assets/css/style.css" rel="stylesheet"/></head>#}
+{#<body>#}
+<!-- Background Pattern -->
+{% block header_nav%}{% endblock %}
+{% block body %}
+    <div class="bg-pattern">
+        <div class="bg-circle bg-circle-1"></div>
+        <div class="bg-circle bg-circle-2"></div>
+        <div class="bg-circle bg-circle-3"></div>
+        <div class="bg-circle bg-circle-4"></div>
+        <div class="bg-circle bg-circle-5"></div>
+        <div class="bg-circle bg-circle-6"></div>
+    </div>
+    <!-- Login Container -->
+    <div class="login-container">
+        <div class="login-card" data-aos="fade-up" data-aos-duration="600" data-aos-easing="ease-out">
+            <!-- Header -->
+            <div class="login-header" data-aos="fade-down" data-aos-delay="200" data-aos-duration="500">
+                <h1>خوش آمدید</h1>
+                <p>به حساب کاربری خود در <strong>مشاور کد</strong> وارد شوید.</p>
+            </div>
+            <!-- Body -->
+            <div class="login-body" data-aos="fade-up" data-aos-delay="300" data-aos-duration="500">
+                <form id="loginForm">
+                    {% csrf_token %}
+                    <!-- Username Field -->
+                    <div class="form-group" data-aos="fade-right" data-aos-delay="400" data-aos-duration="500">
+                        <label class="form-label" for="id_username">نام کاربری</label>
+
+                        <div class="input-group">
+                            {#                            <i class="input-icon" data-lucide="mail"></i>#}
+                            <input class="form-control"
+                                   type="text"
+                                   name="username"
+                                   autofocus=""
+                                   autocapitalize="none"
+                                   autocomplete="username"
+                                   maxlength="150"
+                                   required=""
+                                   id="id_username"
+                                   placeholder="نام کاربری ">
+                            {#                            <input class="form-control" id="email" name="email" placeholder="Enter your email"#}
+                            {#                                   required="" type="email"/>#}
+                        </div>
+                        <div class="error-message" id="emailError"></div>
+                    </div>
+                    <!-- Password Field -->
+                    <div class="form-group" data-aos="fade-right" data-aos-delay="500" data-aos-duration="500">
+                        <label class="form-label" for="id_password">رمز عبور</label>
+
+                        <div class="input-group">
+                            {#                            <i class="input-icon" data-lucide="lock"></i>#}
+                            <input class="form-control"
+                                   type="password"
+                                   name="password"
+                                   autocomplete="current-password"
+                                   required=""
+                                   id="id_password"
+                                   placeholder="رمز عبور">
+                            {#                            <input class="form-control" id="password" name="password" placeholder="Enter your password"#}
+                            {#                                   required="" type="password"/>#}
+                            {#                            <button class="password-toggle" id="passwordToggle" type="submit">#}
+                            {#                                <i data-lucide="eye" id="passwordIcon"></i>#}
+                            {#                            </button>#}
+
+                        </div>
+
+                        <div class="error-message" id="passwordError"></div>
+                    </div>
+                    <br>
+                    {{ form.captcha }}
+                    <br>
+                    <!-- Forgot Password Link -->
+                    {#                    <div class="forgot-password" data-aos="fade-up" data-aos-delay="600" data-aos-duration="500">#}
+                    {#                        <a href="forgot-password.html">Forgot password?</a>#}
+                    {#                    </div>#}
+
+                    <!-- Login Button -->
+                    <br>
+                    <div class="form-group" data-aos="fade-up" data-aos-delay="700" data-aos-duration="500">
+                        <button class="btn btn-primary w-100" type="submit">
+                            <span id="loginBtnText">ورود</span>
+                            {#                            <div class="loading-spinner d-none" id="loginSpinner"></div>#}
+                        </button>
+                    </div>
+                </form>
+                <!-- Sign Up Link -->
+                <div class="signup-link" data-aos-delay="800" data-aos-duration="500">
+                    <p>هنوز حساب ندارید؟ <a href="signup.html">از اینجا ثبت نام کنید</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{#{% block footer %}{% endblock %}#}

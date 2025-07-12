@@ -1,4 +1,4 @@
-{% load humanize %}
+{% load humanize c %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,21 +11,14 @@
         <p>{{ consult_model.id }} <br> create : {{ consult_model.created_date|naturalday }} <br>
             update : {{ consult_model.updated_date|naturaltime }}
         </p>
+        <br><br>
+        <p>...</p>
+
+        <br>
     </a>
-
-    <form method="post" action="{% url "delete_consult" consult_model.id %}">
-        {% csrf_token %}
-        <button type="submit">حذف مشاوره</button>
-    </form>
-
     <hr>
 {% endfor %}
 
-{#<a href="{% url "new_consult" %}">new consult</a>#}
-<form method="post" action="{% url "new_consult" %}">
-    {% csrf_token %}
-    <button type="submit">مشاوره جدید</button>
-</form>
-
+<a href="{% url "new_consult" %}">new consult</a>
 </body>
 </html>
