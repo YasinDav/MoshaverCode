@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+{% load static account_tags%}
+
+{% block extra_head %}
+<link href="{% static 'profile.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+    <!-- Main Content -->
+    <main class="container my-5">
+        <!-- Header -->
+        <div class="mb-4">
+            <h1 class="display-6 fw-bold text-dark mb-2">پروفایل کاربری</h1>
+            <p class="lead text-muted">اطلاعات کامل و آمار شخصی شما</p>
+        </div>
+
+        <div class="row">
+            <!-- Left Column - Profile Info -->
+            <div class="col-lg-4">
+                <!-- Main Profile Card -->
+                <div class="profile-card mb-4">
+                    <div class="card-header-gradient text-center">
+                        <img src="{% if user.profile.profile_pic %}{{ user.profile.profile_pic.url }}{% else %}{% static 'images/default_user_profile_photo.jpg' %}{% endif %}"
+                             alt="{{ user.get_full_name }}"
+                             class="profile-avatar mb-3"
+                             loading="lazy">
+                        <h2 class="profile-name">{{ user.get_full_name }}</h2>
+                        <p class="profile-email">{{ user.email }}</p>
+                        <div class="d-flex gap-2 justify-content-center">
+                            <a href="{% url 'edit_profile' %}" class="btn btn-light btn-sm">
+                                <i class="lucide" data-icon="edit-3" width="16" height="16"></i>
+                                ویرایش
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="info-section">
+                    <h3>
+                        <i class="lucide" data-icon="contact" width="20" height="20"></i>
+                        اطلاعات تماس
+                    </h3>
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="lucide" data-icon="mail" width="20" height="20"></i>
+                        </div>
+                        <div class="info-content">
+                            <div class="info-label">ایمیل</div>
+                            <div class="info-value">{{ user.email }}</div>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="lucide" data-icon="phone" width="20" height="20"></i>
+                        </div>
+                        <div class="info-content">
+                            <div class="info-label">شماره تماس</div>
+                            <div class="info-value">{{ user.profile.phone_number }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Academic Stats -->
+                <div class="row g-3">
+                    <div class="col-12">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="lucide" data-icon="graduation-cap" width="24" height="24"></i>
+                            </div>
+                            <div class="stat-value">
+                                {% if user.profile.grade_point_average %}
+                                    {{ user.profile.grade_point_average }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </div>
+                            <div class="stat-label">معدل کل</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="lucide" data-icon="calendar" width="24" height="24"></i>
+                            </div>
+                            <div class="stat-value">{{ user.profile.graduation_year }}</div>
+                            <div class="stat-label">پایه تحصیلی</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="lucide" data-icon="award" width="24" height="24"></i>
+                            </div>
+                            <div class="stat-value">
+                                {% if user.profile.experience %}
+                                    {{ user.profile.experience }}/5
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </div>
+                            <div class="stat-label">سطح تجربه</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Detailed Info -->
+            <div class="col-lg-8">
+                <!-- Academic Information -->
+                <div class="info-section">
+                    <h3>
+                        <i class="lucide" data-icon="book-open" width="20" height="20"></i>
+                        اطلاعات تحصیلی
+                    </h3>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="info-item">
+                                <div class="info-icon">
+                                    <i class="lucide" data-icon="building" width="20" height="20"></i>
+                                </div>
+                                <div class="info-content">
+                                    <div class="info-label">مدرسه</div>
+                                    <div class="info-value">{{ user.profile.school }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-item">
+                                <div class="info-icon">
+                                    <i class="lucide" data-icon="graduation-cap" width="20" height="20"></i>
+                                </div>
+                                <div class="info-content">
+                                    <div class="info-label">رشته تحصیلی</div>
+                                    <div class="info-value">{{ user.profile.major }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-item">
+                                <div class="info-icon">
+                                    <i class="lucide" data-icon="target" width="20" height="20"></i>
+                                </div>
+                                <div class="info-content">
+                                    <div class="info-label">علاقه تحصیلی</div>
+                                    <div class="info-value">{{ user.profile.academic_interest }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-item">
+                                <div class="info-icon">
+                                    <i class="lucide" data-icon="calendar" width="20" height="20"></i>
+                                </div>
+                                <div class="info-content">
+                                    <div class="info-label">عضو از</div>
+                                    <div class="info-value">{{ user.date_joined|date:"F Y" }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bio Section -->
+                <div class="info-section">
+                    <h3>
+                        <i class="lucide" data-icon="user" width="20" height="20"></i>
+                        درباره من
+                    </h3>
+                    <p class="bio-text">
+                        {% if user.profile.bio %}
+                            {{ user.profile.bio }}
+                        {% else %}
+                            کاربر هنوز اطلاعاتی وارد نکرده است.
+                        {% endif %}
+                    </p>
+                </div>
+
+                <!-- Skills Section -->
+                <div class="info-section">
+                    <h3>
+                        <i class="lucide" data-icon="zap" width="20" height="20"></i>
+                        مهارت‌ها و علایق
+                    </h3>
+                    <div class="skills-container">
+                        {% if user.profile.sub_field_of_education %}
+                            <span class="skill-tag">{{ user.profile.sub_field_of_education }}</span>
+                        {% endif %}
+                        <!-- Additional skills can be added here -->
+                    </div>
+                </div>
+
+                <!-- AI Personality Traits -->
+                <div class="info-section">
+                    <h3>
+                        <i class="lucide" data-icon="brain" width="20" height="20"></i>
+                        ویژگی‌های شخصیتی
+                    </h3>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="personality-trait">
+                                <div class="trait-header d-flex justify-content-between align-items-center">
+                                    <span class="trait-name">تحلیلگر</span>
+                                    <span class="trait-percentage">
+                                        {% if user.profile.experience %}
+                                            {{ user.profile.experience|multiply:20 }}٪
+                                        {% else %}
+                                            0٪
+                                        {% endif %}
+                                    </span>
+                                </div>
+                                <div class="progress-bar-custom">
+                                    <div class="progress-fill"
+                                         style="background: #10b981; width: {% if user.profile.experience %}{{ user.profile.experience|multiply:20 }}%{% else %}0%{% endif %};"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Additional traits can be added here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+    <!-- Local Bootstrap JS -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Minimal JavaScript -->
+    <script>
+        // Simple DOM ready function
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize dropdowns
+            var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'))
+            var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
+                return new bootstrap.Dropdown(dropdownToggleEl)
+            });
+
+            // Initialize Lucide icons
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
+    </script>
