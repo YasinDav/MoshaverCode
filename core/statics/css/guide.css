@@ -1,0 +1,186 @@
+:root {
+            --primary-blue: #1a73e8; /* رنگ آبی اصلی */
+        }
+
+        body {
+            font-family: 'Vazir', 'Tahoma', 'Segoe UI', sans-serif;
+            line-height: 1.8;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: right;
+            direction: rtl;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: var(--primary-blue);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .guide-intro {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+
+        .guide-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .guide-nav {
+            flex: 1;
+            min-width: 250px;
+            max-width: 300px;
+            position: sticky;
+            top: 20px;
+            align-self: flex-start;
+        }
+
+        .guide-content {
+            flex: 3;
+            min-width: 300px;
+        }
+
+        .dropdown {
+            margin-bottom: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .dropdown-btn {
+            width: 100%;
+            padding: 15px 20px;
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            text-align: right;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-btn:hover {
+            background-color: #0d5bba; /* آبی تیره تر */
+        }
+
+        .dropdown-content {
+            display: none;
+            background-color: #f9f9f9;
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            transition: background-color 0.2s;
+            border-right: 3px solid transparent;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #e8f0fe;
+            border-right: 3px solid var(--primary-blue);
+            color: var(--primary-blue);
+        }
+
+        .guide-section {
+            margin-bottom: 50px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .guide-section h2 {
+            color: var(--primary-blue);
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            padding-top: 20px; /* فاصله برای لینک‌های انکر */
+        }
+
+        .guide-section p {
+            margin-bottom: 15px;
+            text-align: justify;
+            text-justify: inter-word;
+        }
+
+        /* Summernote Content Styles */
+        .summernote-content {
+            line-height: 1.8;
+            text-align: justify;
+        }
+
+        .summernote-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 15px auto;
+            border-radius: 8px;
+        }
+
+        .summernote-content iframe {
+            max-width: 100%;
+            display: block;
+            margin: 20px auto;
+            border: none;
+            border-radius: 8px;
+        }
+
+        .summernote-content table {
+            width: 100%;
+            margin: 20px 0;
+            border-collapse: collapse;
+        }
+
+        .summernote-content table,
+        .summernote-content th,
+        .summernote-content td {
+            border: 1px solid #ddd;
+        }
+
+        .summernote-content th,
+        .summernote-content td {
+            padding: 12px;
+            text-align: right;
+        }
+
+        .summernote-content th {
+            background-color: #f2f2f2;
+        }
+
+        .back-to-top {
+            display: inline-block;
+            margin-top: 20px;
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-to-top:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .guide-container {
+                flex-direction: column;
+            }
+
+            .guide-nav {
+                position: static;
+                max-width: 100%;
+            }
+
+            .summernote-content iframe {
+                height: auto;
+                min-height: 200px;
+            }
+        }
