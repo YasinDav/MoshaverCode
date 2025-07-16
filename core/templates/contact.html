@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block body %}
+    <div class="container my-5">
+        <!-- Page Header -->
+        <div class="text-center mb-5">
+            <h1 class="fw-bold">تماس با ما</h1>
+            <p class="text-muted">ما اینجا هستیم تا به سوالات شما پاسخ دهیم</p>
+        </div>
+
+        <div class="row">
+            <!-- Contact Form -->
+            <div class="col-lg-6 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title text-center mb-4">فرم تماس</h3>
+                        <form method="post" class="needs-validation" action="{% url "contact" %}">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="id_username" class="form-label">نام کامل</label>
+                                <input type="text" class="form-control" id="id_username" name="username" required maxlength="256">
+                                <div class="invalid-feedback">
+                                    لطفا نام خود را وارد کنید
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="id_email" class="form-label">ایمیل</label>
+                                <input type="email" class="form-control" id="id_email" name="email" required>
+                                <div class="invalid-feedback">
+                                    لطفا یک ایمیل معتبر وارد کنید
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="id_subject" class="form-label">موضوع</label>
+                                <input type="text" class="form-control" id="id_subject" name="subject" required id_username>
+                                <div class="invalid-feedback">
+                                    لطفا موضوع را وارد کنید
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="id_message" class="form-label">پیام</label>
+                                <textarea class="form-control" id="id_message" name="message" rows="5" required></textarea>
+
+                                <div class="invalid-feedback">
+                                    لطفا پیام خود را وارد کنید
+                                </div>
+                            </div>
+{#                            {{ form }}#}
+                            <button type="submit" class="btn btn-primary w-100">ارسال پیام</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Developer Information -->
+            <div class="col-lg-6">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <h3 class="card-title text-center mb-4">تیم توسعه</h3>
+                        <div class="row {% if developers.count == 1 %}justify-content-center{% endif %}">
+                            {% for developer in developers %}
+                                <div class="col-md-6 mb-4">
+                                    <div class="d-flex flex-column align-items-center text-center">
+                                        <img src="{{ developer.profile_pic.url }}"
+                                             alt="{{ developer.full_name }}"
+                                             class="rounded-circle mb-3"
+                                             width="100"
+                                             height="100"
+                                             style="object-fit: cover;">
+                                        <h5 class="mb-1">{{ developer.full_name }}</h5>
+                                        <small class="text-muted mb-2">{{ developer.role }}</small>
+                                        <div class="d-flex justify-content-center gap-2">
+                                            {#                                    <a href="{{ developer.github }}" target="_blank" class="btn btn-outline-dark btn-sm mx-1">#}
+                                            {#                                        <i class="bi bi-github"></i>#}
+                                            {#                                    </a>#}
+                                            {#                                    <a href="mailto:{{ developer.email }}" class="btn btn-outline-primary btn-sm mx-1">#}
+                                            {#                                        <i class="bi bi-envelope"></i>#}
+                                            {#                                    </a>#}
+                                            <a href="{{ developer.github }}" class="btn btn-sm btn-outline-primary">GitHub</a>
+                                            <a href="mailto:{{ developer.email }}"
+                                               class="btn btn-sm btn-outline-primary">ایمیل</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title text-center mb-4">اطلاعات تماس</h3>
+                        <ul class="list-unstyled">
+                            <li class="mb-3">
+                                <i class="bi bi-geo-alt-fill me-2 text-primary"></i>
+                                آدرس: چهارمحال و بختیاری، شهرکرد، رحمتیه، مدرسه استعداد های درخشان شهید بهشتی شهرکرد جنب دانشکده فنی و حرفه ای دخترانه
+                            </li>
+                            <li class="mb-3">
+                                <i class="bi bi-telephone-fill me-2 text-primary"></i>
+                                تلفن: 09939438287
+                            </li>
+                            <li class="mb-3">
+                                <i class="bi bi-envelope-fill me-2 text-primary"></i>
+                                ایمیل: githubyasin@gmail.com
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* RTL and Persian font styling */
+        body {
+            text-align: right;
+            direction: rtl;
+            font-family: 'Vazir', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .card {
+                margin-bottom: 20px;
+            }
+
+            .developer-card {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
+    </style>
+
+    <script>
+        // Form validation
+        (function () {
+            'use strict'
+
+            var forms = document.querySelectorAll('.needs-validation')
+
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
+{% endblock %}

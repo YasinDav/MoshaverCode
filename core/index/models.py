@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 # from django_summernote.fields
@@ -29,3 +30,16 @@ class Guide(models.Model):
 
     def __str__(self):
         return self.guide_name
+
+    def get_absolute_url(self):
+        return f"{reverse('guide')}#{self.guide_name}"
+
+
+class ContactUs(models.Model):
+    username = models.CharField(max_length=256)
+    email = models.EmailField()
+    subject = models.CharField(max_length=256)
+    message = models.TextField()
+
+    def __str__(self):
+        return self.subject

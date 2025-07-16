@@ -1,36 +1,324 @@
 {% extends "base.html" %}
 {% load static %}
-{% block body %}
 
+{% block extra_head %}
+    <style>
+
+
+        .blob-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 350px;
+            height: 350px;
+            margin: 0 auto;
+        }
+
+        .main-blob {
+            width: 440px;
+            height: 440px;
+            background: linear-gradient(45deg, #4A90E2, #7BB3F0);
+            border-radius: 50% 40% 60% 30%;
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            animation: mainBlobMorph 12s ease-in-out infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            z-index: 4;
+        }
+
+        .blob-image {
+            width: 500px;
+            height: 500px;
+        {#background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23E3F2FD;stop-opacity:1" /><stop offset="100%" style="stop-color:%23BBDEFB;stop-opacity:1" /></linearGradient></defs><circle cx="100" cy="100" r="80" fill="url(%23grad1)"/><circle cx="80" cy="80" r="15" fill="white" opacity="0.9"/><circle cx="120" cy="80" r="15" fill="white" opacity="0.9"/><circle cx="85" cy="85" r="5" fill="%23333"/><circle cx="125" cy="85" r="5" fill="%23333"/><path d="M 80 120 Q 100 140 120 120" stroke="%23333" stroke-width="3" fill="none" stroke-linecap="round"/></svg>') center/contain no-repeat;#} border-radius: 50%;
+            animation: imageFloat 8s ease-in-out infinite;
+        }
+
+        .small-blobs {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .small-blob {
+            width: 450px;
+            height: 450px;
+            border-radius: 50% 40% 60% 30%;
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            animation: smallBlobRotate 15s linear infinite, smallBlobMorph 10s ease-in-out infinite;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .blob-flat1 {
+            background: linear-gradient(45deg, #E3F2FD, #BBDEFB);
+            animation-delay: 0s;
+            z-index: 1;
+        }
+
+        .blob-flat2 {
+            background: linear-gradient(45deg, #1976D2, #42A5F5);
+            animation-delay: -2s;
+            z-index: 2;
+        }
+
+        .blob-color {
+            background: linear-gradient(45deg, #0D47A1, #1976D2, #42A5F5, #90CAF9);
+            background-size: 300% 300%;
+            animation: smallBlobRotate 15s linear infinite, smallBlobMorph 10s ease-in-out infinite, colorShift 8s ease-in-out infinite;
+            animation-delay: -4s;
+            z-index: 3;
+        }
+
+        .cta-section {
+            margin-top: 3rem;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            margin: 0 10px;
+        }
+
+        .cta-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: float 12s ease-in-out infinite;
+        }
+
+        .floating-dot:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-dot:nth-child(2) {
+            top: 60%;
+            left: 85%;
+            animation-delay: -2s;
+        }
+
+        .floating-dot:nth-child(3) {
+            top: 80%;
+            left: 20%;
+            animation-delay: -4s;
+        }
+
+        .floating-dot:nth-child(4) {
+            top: 30%;
+            left: 80%;
+            animation-delay: -1s;
+        }
+
+        .floating-dot:nth-child(5) {
+            top: 70%;
+            left: 60%;
+            animation-delay: -3s;
+        }
+
+
+        @keyframes mainBlobMorph {
+            0%, 100% {
+                border-radius: 50% 40% 60% 30%;
+            }
+            25% {
+                border-radius: 45% 55% 50% 40%;
+            }
+            50% {
+                border-radius: 55% 35% 45% 50%;
+            }
+            75% {
+                border-radius: 40% 50% 35% 55%;
+            }
+        }
+
+        @keyframes smallBlobRotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes smallBlobMorph {
+            0%, 100% {
+                border-radius: 50% 40% 60% 30%;
+            }
+            33% {
+                border-radius: 45% 55% 45% 50%;
+            }
+            66% {
+                border-radius: 55% 35% 50% 45%;
+            }
+        }
+
+        @keyframes colorShift {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        @keyframes imageFloat {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-5px) rotate(2deg);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateY(-20px);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+            }
+
+            .blob-container {
+                width: 280px;
+                height: 280px;
+            }
+
+            .main-blob {
+                width: 450px;
+                height: 450px;
+                top: 15px;
+                left: 15px;
+            }
+
+        {#.blob-image {#}
+        {#    width: 150px;#}
+        {#    height: 150px;#} {
+        #}#}
+
+            .small-blob {
+                width: 450px;
+                height: 450px;
+                top: 15px;
+                left: 15px;
+            }
+
+            .cta-button {
+                display: block;
+                margin: 10px 0;
+            }
+        }
+
+            @media (max-width: 480px) {
+                .blob-container {
+                    width: 220px;
+                    height: 220px;
+                }
+
+                .main-blob {
+                    width: 200px;
+                    height: 200px;
+                    top: 10px;
+                    left: 10px;
+                }
+
+                .small-blob {
+                    width: 200px;
+                    height: 200px;
+                    top: 10px;
+                    left: 10px;
+                }
+            }
+    </style>
+{% endblock %}
+
+{% block body %}
     <!-- Hero Section -->
-    <section class="hero-section" id="home">
+    <section id="home" class="hero">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6 hero-content" data-aos="fade-right" data-aos-duration="800">
+                <div class="col-lg-6 fade-in">
                     <h1 class="hero-title">مشاوره تحصیلی هوشمند با قدرت هوش مصنوعی</h1>
                     <p class="hero-subtitle">
                         هر سوالی درباره رشته‌ها، امتحانات و مسیرهای تحصیلی داری؟ مشاوره شخصی‌سازی شده را فوری دریافت کن.
                     </p>
-                    <div class="hero-buttons" data-aos="fade-up" data-aos-delay="200" data-aos-duration="600">
-                        <a class="btn btn-primary btn-lg" href="signup.html">شروع کنید</a>
-                        <a class="btn btn-outline-primary btn-lg" href="#about">بیشتر بدانید</a>
+                    <div class="d-flex gap-3 flex-wrap">
+                        <a href="signup.html" class="btn btn-primary btn-lg">شروع کنید</a>
+                        <a href="#about" class="btn btn-outline-primary btn-lg">بیشتر بدانید</a>
                     </div>
                 </div>
-                <div class="col-lg-6" data-aos="fade-left" data-aos-delay="400" data-aos-duration="800">
-                    <div class="chat-demo">
+
+                <div class="col-lg-6">
+                    <div class="chat-demo fade-in">
                         <div class="chat-header">
                             <div class="chat-dot red"></div>
                             <div class="chat-dot yellow"></div>
                             <div class="chat-dot green"></div>
                         </div>
                         <div class="chat-messages">
-                            <div class="chat-message ai" data-aos="fade-up" data-aos-delay="600">
+                            <div class="chat-message ai">
                                 سلام! چطور می‌تونم در مسیر تحصیلی‌ت کمکت کنم؟
                             </div>
-                            <div class="chat-message user" data-aos="fade-up" data-aos-delay="800">
+                            <div class="chat-message user">
                                 سردرگم انتخاب بین رشته کامپیوتر و طراحی هستم. کمکم کنی؟
                             </div>
-                            <div class="chat-message ai" data-aos="fade-up" data-aos-delay="1000">
+                            <div class="chat-message ai">
                                 سوال عالی! هر دو رشته نقاط قوت منحصربه‌فردی دارن. بذار بر اساس علایق و اهداف شغلی‌ت
                                 گزینه‌هاتو بررسی کنیم...
                             </div>
@@ -38,51 +326,66 @@
                     </div>
                 </div>
             </div>
+
+            <div class="blob-container mt-5 mb-5">
+                <div class="main-blob">
+                    {#                    <div class="blob-image">#}
+                    <img class="blob-image" src="{% static "A_photograph_showcases_a_middle-aged_Caucasian_man.png" %}"
+                         alt=""
+                         style="position: relative ">
+                    {#                    </div>#}
+                </div>
+
+                <div class="small-blobs">
+                    <div class="small-blob blob-flat1"></div>
+                    <div class="small-blob blob-flat2"></div>
+                    <div class="small-blob blob-color"></div>
+                </div>
+            </div>
         </div>
     </section>
+
     <!-- Team Section -->
-    <section class="team-section" id="team">
+    <section id="team" class="team-section mt-5">
         <div class="container">
             <div class="row">
-                <div class="col-12" data-aos="fade-up" data-aos-duration="800">
+                <div class="col-12">
                     <h2 class="section-title">تیم ما را بشناسید</h2>
                     <p class="section-subtitle">توسعه‌دهندگان با استعداد پشت مشاور کد</p>
                 </div>
             </div>
+
             <div class="row justify-content-center">
                 {% for developer in developers %}
-                    <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up" data-aos-delay="200" data-aos-duration="800">
-                        <div class="team-card">
-                            <div class="team-card-body">
-                                <img alt="{{ developer.profile_pic.name }}" class="team-avatar"
-                                     src="{{ developer.profile_pic.url }}"/>
-                                <h3 class="team-name">{{ developer.full_name }}</h3>
-                                <p class="team-role">{{ developer.role }}</p>
-                                <div class="team-social">
-                                    <a aria-label="گیت‌هاب" class="social-link" href="{{ developer.github }}">
-                                        <i data-lucide="github" height="20" width="20"></i>
-                                    </a>
-                                    <a aria-label="ایمیل" class="social-link" href="mailto:{{ developer.email }}">
-                                        <i data-lucide="mail" height="20" width="20"></i>
-                                    </a>
-                                </div>
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="team-card fade-in">
+                            <img src="
+                                {{ developer.profile_pic.url }}"
+                                 alt="{{ developer.profile_pic.name }}" class="team-avatar">
+                            <h3 class="team-name">{{ developer.full_name }}</h3>
+                            <p class="team-role">{{ developer.role }}</p>
+                            <div class="d-flex justify-content-center gap-2">
+                                <a href="{{ developer.github }}" class="btn btn-sm btn-outline-primary">GitHub</a>
+                                <a href="mailto:{{ developer.email }}" class="btn btn-sm btn-outline-primary">ایمیل</a>
                             </div>
                         </div>
                     </div>
                 {% endfor %}
 
+                {#                <div class="col-lg-4 col-md-6 mb-4">#}
+                {#                    <div class="team-card fade-in">#}
+                {#                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA4MCA4MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iNDAiIGN5PSI0MCIgcj0iNDAiIGZpbGw9IiNmMGY5ZmYiLz4KPHN2ZyB4PSIyMCIgeT0iMjAiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMwMjg0YzciIHN0cm9rZS13aWR0aD0iMiI+CjxwYXRoIGQ9Im0zIDkgOS03IDkgN20tMTgtMmE5IDkgMCAxIDAgMTggMGE5IDkgMCAxIDAtMTggMFoiLz4KPC9zdmc+Cjwvc3ZnPgo="#}
+                {#                             alt="جیمی اسمیت" class="team-avatar">#}
+                {#                        <h3 class="team-name">جیمی اسمیت</h3>#}
+                {#                        <p class="team-role">طراح UI/UX</p>#}
+                {#                        <div class="d-flex justify-content-center gap-2">#}
+                {#                            <a href="#" class="btn btn-sm btn-outline-primary">GitHub</a>#}
+                {#                            <a href="mailto:jamie@کدcounselor.com" class="btn btn-sm btn-outline-primary">ایمیل</a>#}
+                {#                        </div>#}
+                {#                    </div>#}
+                {#                </div>#}
             </div>
         </div>
     </section>
-
-
-{#    <iframe src="https://chromedino.com/" frameborder="0" scrolling="no" width="100%" height="100%"#}
-{#            loading="lazy"></iframe>#}
-{#    <style type="text/css">iframe {#}
-{#        position: absolute;#}
-{#        width: 100%;#}
-{#        height: 100%;#}
-{#        z-index: 999;#}
-{#    }</style>#}
 
 {% endblock %}

@@ -1,0 +1,431 @@
+* {
+    font-family: 'Vazir', 'Arial', sans-serif;
+}
+
+:root {
+    --primary: #0284c7;
+    --primary-dark: #0369a1;
+    --light-blue: #f0f9ff;
+    --gray-100: #f3f4f6;
+    --gray-600: #6b7280;
+    --gray-800: #1f2937;
+}
+
+body {
+    direction: rtl;
+    background: linear-gradient(to bottom, var(--light-blue), white);
+    min-height: 100vh;
+    line-height: 1.6;
+}
+
+/* Navbar */
+.navbar {
+    background: white !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1rem 0;
+}
+
+.navbar-brand {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--primary) !important;
+}
+
+.nav-link {
+    color: var(--gray-600) !important;
+    font-weight: 500;
+    margin: 0 0.5rem;
+}
+
+.nav-link:hover {
+    color: var(--primary) !important;
+}
+
+.btn-primary {
+    background: var(--primary);
+    border-color: var(--primary);
+    font-weight: 600;
+    padding: 0.6rem 1.5rem;
+    border-radius: 8px;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+.btn-outline-primary {
+    color: var(--primary);
+    border-color: var(--primary);
+    font-weight: 500;
+    padding: 0.6rem 1.5rem;
+    border-radius: 8px;
+}
+
+.btn-outline-primary:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+/* Hero Section */
+.hero {
+    padding: 4rem 0 6rem;
+    background: linear-gradient(135deg, var(--light-blue) 0%, white 100%);
+}
+
+.hero-title {
+    font-size: 2.8rem;
+    font-weight: bold;
+    color: var(--gray-800);
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    color: var(--gray-600);
+    margin-bottom: 2rem;
+}
+
+/* Chat Demo */
+.chat-demo {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    margin-top: 2rem;
+}
+
+.chat-header {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.chat-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.chat-dot.red {
+    background: #ef4444;
+}
+
+.chat-dot.yellow {
+    background: #f59e0b;
+}
+
+.chat-dot.green {
+    background: #10b981;
+}
+
+.chat-message {
+    margin-bottom: 1rem;
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+    max-width: 85%;
+}
+
+.chat-message.ai {
+    background: var(--gray-100);
+    color: var(--gray-800);
+}
+
+.chat-message.user {
+    background: var(--light-blue);
+    color: var(--gray-800);
+    margin-right: auto;
+}
+
+/* Team Section */
+.team-section {
+    padding: 4rem 0;
+    background: var(--gray-100);
+}
+
+.section-title {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: var(--gray-800);
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.section-subtitle {
+    font-size: 1.1rem;
+    color: var(--gray-600);
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.team-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.team-card:hover {
+    transform: translateY(-5px);
+}
+
+.team-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    border: 3px solid var(--light-blue);
+}
+
+.team-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--gray-800);
+    margin-bottom: 0.5rem;
+}
+
+.team-role {
+    color: var(--gray-600);
+    margin-bottom: 1rem;
+}
+
+/* Footer */
+.footer {
+    background: var(--gray-800);
+    color: white;
+    padding: 3rem 0 1rem;
+}
+
+.footer-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.footer-link {
+    color: #d1d5db;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.footer-link:hover {
+    color: white;
+}
+
+.footer-bottom {
+    border-top: 1px solid #374151;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    text-align: center;
+    color: #9ca3af;
+}
+
+/* Support Widget */
+.support-widget {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1000;
+}
+
+.support-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.support-btn:hover {
+    background: var(--primary-dark);
+    transform: scale(1.1);
+}
+
+.support-popup {
+    position: absolute;
+    bottom: 70px;
+    left: 0;
+    width: 300px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    display: none;
+    animation: slideUp 0.3s ease;
+}
+
+.support-popup.show {
+    display: block;
+}
+
+.support-popup-header {
+    background: var(--primary);
+    color: white;
+    padding: 1rem;
+    border-radius: 12px 12px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.support-popup-body {
+    padding: 1.5rem;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+/* Toast Notifications */
+.toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 1rem 1.5rem;
+    z-index: 1050;
+    min-width: 300px;
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+    transition: all 0.3s ease;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.toast.success {
+    border-right: 4px solid #10b981;
+}
+
+.toast.info {
+    border-right: 4px solid var(--primary);
+}
+
+.toast.warning {
+    border-right: 4px solid #f59e0b;
+}
+
+.toast-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.toast-title {
+    font-weight: bold;
+    color: var(--gray-800);
+}
+
+.toast-message {
+    color: var(--gray-600);
+    font-size: 0.9rem;
+}
+
+.toast-close {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: var(--gray-600);
+}
+
+/* Simple animations */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.2rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+    }
+
+    .support-popup {
+        width: calc(100vw - 40px);
+    }
+
+    .toast {
+        min-width: calc(100vw - 40px);
+        margin: 0 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero {
+        padding: 3rem 0 4rem;
+    }
+
+    .hero-title {
+        font-size: 1.8rem;
+    }
+
+    .navbar-brand {
+        font-size: 1.5rem;
+    }
+}
+
+/* Profile-specific styles */
+.profile-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f0f9ff 0%, white 50%, #e0f2fe 100%);
+}
+
+/* Override base navbar for profile pages */
+.profile-container ~ .navbar {
+    background: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Make support widget less intrusive on profile */
+.profile-container ~ .support-widget {
+    bottom: 80px;
+    right: 20px;
+}
