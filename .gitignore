@@ -166,3 +166,6 @@ cython_debug/
 model-data
 test.py
 /core/media/
+
+/core/statics/css/bootstrap/
+/core/statics/js/bootstrap/
