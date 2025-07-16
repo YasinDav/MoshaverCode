@@ -1,0 +1,37 @@
+{% if is_authenticated %}
+    <!-- User Dropdown -->
+    <div class="dropdown">
+        <button class="btn btn-outline-primary dropdown-toggle d-flex align-items-center gap-2"
+                type="button" data-bs-toggle="dropdown">
+            <img src="{{ profile.profile_pic.url }}" alt="{{ profile.profile_pic.name }}" class="rounded-circle"
+                 style="width: 2rem; height: 2rem;" id="navAvatar">
+            <span class="d-none d-md-inline" id="navName">{{ user.first_name }}</span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+            <li><h6 class="dropdown-header" id="navUserInfo">{{ user.get_full_name }}<br><small
+                    class="text-muted">{{ user.email }}</small>
+            </h6></li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href=""><i data-lucide="user" width="16" height="16"
+                                                    class="me-2"></i>مشاهده پروفایل</a></li>
+            <li><a class="dropdown-item" href=""><i data-lucide="edit" width="16"
+                                                    height="16" class="me-2"></i>ویرایش
+                پروفایل</a></li>
+            <li><a class="dropdown-item" href=""><i data-lucide="settings" width="16" height="16"
+                                                    class="me-2"></i>داشبورد</a></li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item text-danger" href="{% url "logout" %}"><i data-lucide="log-out" width="16"
+                                                                                  height="16" class="me-2"></i>خروج</a>
+            </li>
+        </ul>
+        {% else %}
+        <div class="d-flex gap-2">
+            <a href="{% url "login" %}" class="btn btn-outline-primary">ورود</a>
+            <a href="{% url "signup" %}" class="btn btn-primary">ثبت نام</a>
+        </div>
+    </div>
+{% endif %}

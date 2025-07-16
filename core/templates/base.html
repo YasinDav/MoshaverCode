@@ -1,181 +1,266 @@
 {% load static %}
+{% load account_tags %}
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>مشاوره تحصیلی هوشمند</title>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet"/>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <!-- AOS Animation Library -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"/>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <!-- Persian Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&amp;display=swap"
-          rel="stylesheet"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مشاور کد - مشاوره تحصیلی هوشمند</title>
 
-    <link href="{% static "style.css" %}" rel="stylesheet"/>
+    <!-- Simple CSS Framework - using minimal Bootstrap from jsDelivr (works better in Iran) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+
+    <!-- Persian Font - using system fonts as fallback -->
+    <link href="{% static "main.css" %}" rel="stylesheet">
+
+    {% block extra_head %}
+    {% endblock %}
 </head>
+
 <body>
 
-{% block header_nav %}
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg" data-aos="fade-down" data-aos-duration="800">
-    <div class="container">
-        <a class="navbar-brand" href="{% url "index" %}">مشاور کد</a>
-        <button aria-controls="navbarNav" aria-expanded="false" aria-label="تغییر منو" class="navbar-toggler"
-                data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <!-- Desktop Menu -->
-            <ul class="navbar-nav me-auto d-none d-lg-flex">
-                <li class="nav-item">
-                    <a class="nav-link" href="#features">ویژگی‌ها</a>
-                </li>
-                {#                <li class="nav-item">#}
-                {#                    <a class="nav-link" href="#about">درباره ما</a>#}
-                {#                </li>#}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url "index" %}#team">درباره ما</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#contact">تماس</a>
-                </li>
-            </ul>
-            <!-- Auth Buttons -->
-            <div class="d-flex gap-2">
-                <a class="btn btn-outline-primary" href="{% url "login" %}">ورود</a>
-                <a class="btn btn-primary" href="{% url "signup" %}">ثبت نام</a>
+{% block navbar %}
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="{% url "index" %}">مشاور کد</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto d-none d-lg-flex">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url "guide" %}">راهنمای سایت</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url "contact" %}">درباره ما</a>
+                    </li>
+                    {#                    <li class="nav-item">#}
+                    {#                        <a class="nav-link" href="#team">تیم</a>#}
+                    {#                    </li>#}
+                    <li class="nav-item">
+                        {#                        <a class="nav-link" href="#contact">تماس</a>#}
+                    </li>
+                </ul>
+                {% show_question request.user %}
+
+                <ul class="navbar-nav d-lg-none mt-3">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">ویژگی‌ها</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">درباره ما</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#team">تیم</a>
+                    </li>
+                    <li class="nav-item">
+                        {#                        <a class="nav-link" href="#contact">تماس</a>#}
+                    </li>
+                </ul>
             </div>
-            <!-- Mobile Menu -->
-            <ul class="navbar-nav d-lg-none mt-3">
-                <li class="nav-item">
-                    <a class="nav-link" href="#features">ویژگی‌ها</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#about">درباره ما</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#team">تیم</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#contact">تماس</a>
-                </li>
-            </ul>
         </div>
-    </div>
-</nav>
+    </nav>
 {% endblock %}
 
 {% block body %}{% endblock %}
+
+
+{% block footer %}
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h3 class="footer-title">مشاور کد</h3>
+                    <p>راهنمایی هوشمند برای مسیر تحصیلی شما.</p>
+                </div>
+
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h4 class="footer-title">لینک‌های سریع</h4>
+                    <a href="{% url "index" %}" class="footer-link">خانه</a>
+                    {#                    <a href="#features" class="footer-link">ویژگی‌ها</a>#}
+                    <a href="{% url "index" %}#team" class="footer-link">درباره ما</a>
+                    <a href="{% url "contact" %}" class="footer-link">تماس</a>
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h4 class="footer-title">تماس</h4>
+                    <p>
+                        ایمیل: githubyasin@gmail.com<br>
+                        تلفن: 09939438287
+                    </p>
+                </div>
+
+                <div class="col-lg-3 mb-4">
+                    <h4 class="footer-title">شبکه‌های اجتماعی</h4>
+                    <div class="d-flex gap-2">
+                        <a href="#" class="btn btn-sm btn-outline-light">توییتر</a>
+                        <a href="#" class="btn btn-sm btn-outline-light">لینکدین</a>
+                        <a href="#" class="btn btn-sm btn-outline-light">اینستاگرام</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear"></span> مشاور کد. تمامی حقوق محفوظ است.</p>
+            </div>
+        </div>
+    </footer>
+{% endblock %}
 
 <!-- Support Widget -->
 <div class="support-widget">
     <div class="support-popup" id="supportPopup">
         <div class="support-popup-header">
-            <h3 class="support-popup-title">نیاز به کمک دارید؟</h3>
-            <button aria-label="بستن" class="btn-close btn-close-white" id="closeSupportPopup" type="button"></button>
+            <h3>نیاز به کمک دارید؟</h3>
+            <button class="close-btn" onclick="closeSupportWidget()">×</button>
         </div>
         <div class="support-popup-body">
-            <div class="d-flex align-items-center mb-3">
-                <div class="me-3">
-                    <div style="width: 2.5rem; height: 2.5rem; background: var(--sky-100); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                        <i data-lucide="message-circle" height="20" style="color: var(--sky-600);" width="20"></i>
-                    </div>
-                </div>
-                <div>
-                    <p class="fw-medium mb-1">تیم پشتیبانی کد</p>
-                    <p class="text-success mb-0" style="font-size: 0.875rem;">● آنلاین</p>
-                </div>
-            </div>
-            <p class="support-popup-text">
-                ما اینجا هستیم تا در سوالات تحصیلی‌تون کمکتون کنیم. راهنمایی شخصی‌سازی شده برای انتخاب دوره، برنامه‌ریزی
-                مطالعه و مشاوره شغلی دریافت کنید.
-            </p>
-            <div class="support-actions">
-                <a class="support-action-btn primary"
-                   href="mailto:support@کدcounselor.com?subject=درخواست پشتیبانی تحصیلی">
-                    <i data-lucide="mail" height="18" width="18"></i>
-                    پشتیبانی ایمیلی
-                </a>
-                <button class="support-action-btn secondary" onclick="closeSupportWidget()">
-                    شروع چت زنده
-                </button>
-            </div>
-            <div class="mt-3 pt-3" style="border-top: 1px solid #f3f4f6;">
-                <p style="font-size: 0.875rem; color: #6b7280; margin-bottom: 0.5rem;">کمک سریع:</p>
-                <div style="display: flex; flex-direction: column; gap: 0.25rem;">
-                    <button onclick="showQuickHelp('major')"
-                            style="background: none; border: none; color: var(--sky-600); font-size: 0.875rem; text-align: right; padding: 0;">
-                        چطور رشته انتخاب کنم؟
-                    </button>
-                    <button onclick="showQuickHelp('study')"
-                            style="background: none; border: none; color: var(--sky-600); font-size: 0.875rem; text-align: right; padding: 0;">
-                        نکات برنامه‌ریزی مطالعه
-                    </button>
-                    <button onclick="showQuickHelp('career')"
-                            style="background: none; border: none; color: var(--sky-600); font-size: 0.875rem; text-align: right; padding: 0;">
-                        راهنمایی شغلی
-                    </button>
-                </div>
+            <p>ما اینجا هستیم تا در سوالات تحصیلی‌تون کمکتون کنیم.</p>
+            <div class="d-grid gap-2">
+                <a href="mailto:support@کدcounselor.com" class="btn btn-primary">پشتیبانی ایمیلی</a>
+                <button class="btn btn-outline-primary" onclick="startChat()">شروع چت</button>
             </div>
         </div>
     </div>
-    <button class="support-btn" id="supportBtn" onclick="toggleSupportWidget()">
-        <i data-lucide="message-circle" height="24" width="24"></i>
-        <span class="support-badge">1</span>
-    </button>
+
+    <button class="support-btn" onclick="toggleSupportWidget()">💬</button>
 </div>
 
-{% block footer %}
-<!-- Footer -->
-<footer class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4 mb-4">
-                <h3 class="footer-title">مشاور کد</h3>
-                <p class="footer-link">راهنمایی هوشمند برای مسیر تحصیلی شما.</p>
-            </div>
-            <div class="col-lg-2 col-md-6 mb-4">
-                <h4 class="footer-title">لینک‌های سریع</h4>
-                <a class="footer-link" href="{% url "index" %}">خانه</a>
-                <a class="footer-link" href="#features">ویژگی‌ها</a>
-                <a class="footer-link" href="{% url "index" %}#team">درباره ما</a>
-                <a class="footer-link" href="#contact">تماس</a>
-            </div>
-            <div class="col-lg-3 col-md-6 mb-4">
-                <h4 class="footer-title">ارتباط با ما</h4>
-                <a class="footer-link" href="mailto:githubyasin@gmail.com">ایمیل: githubyasin@gmail.com</a>
-                <p class="footer-link">تلفن: 09939438287</p><br/>
-            </div>
-{#            <div class="col-lg-3 mb-4">#}
-{#                <h4 class="footer-title">شبکه‌های اجتماعی</h4>#}
-{#                <div class="d-flex gap-3">#}
-{#                    <a aria-label="توییتر" class="social-link" href="#">#}
-{#                        <i data-lucide="twitter" height="20" width="20"></i>#}
-{#                    </a>#}
-{#                    <a aria-label="لینکدین" class="social-link" href="#">#}
-{#                        <i data-lucide="linkedin" height="20" width="20"></i>#}
-{#                    </a>#}
-{#                    <a aria-label="اینستاگرام" class="social-link" href="#">#}
-{#                        <i data-lucide="instagram" height="20" width="20"></i>#}
-{#                    </a>#}
-{#                </div>#}
-{#            </div>#}
-        </div>
-        <div class="footer-bottom">
-            <p>© <span id="currentYear"></span> مشاور کد. تمامی حقوق محفوظ است.</p>
-        </div>
-    </div>
-</footer>
-{% endblock %}
-
-</body>
-<!-- Bootstrap 5 JS -->
+<!-- Bootstrap JS (minimal) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<script src="{% static "main.js" %}"></script>
+<script>
+    // Set current year
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // Support Widget
+    let supportOpen = false;
+
+    function toggleSupportWidget() {
+        const popup = document.getElementById('supportPopup');
+        supportOpen = !supportOpen;
+        popup.classList.toggle('show', supportOpen);
+    }
+
+    function closeSupportWidget() {
+        document.getElementById('supportPopup').classList.remove('show');
+        supportOpen = false;
+    }
+
+    function startChat() {
+        showToast('چت زنده', 'به زودی راه‌اندازی می‌شود!', 'info');
+        closeSupportWidget();
+    }
+
+    // Simple Toast System
+    function showToast(title, message, type = 'info') {
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+
+        toast.innerHTML = `
+                <div class="toast-header">
+                    <div class="toast-title">${title}</div>
+                    <button class="toast-close" onclick="this.closest('.toast').remove()">×</button>
+                </div>
+                <div class="toast-message">${message}</div>
+            `;
+
+        document.body.appendChild(toast);
+
+        setTimeout(() => toast.classList.add('show'), 100);
+
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
+        }, 5000);
+    }
+
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({behavior: 'smooth'});
+            }
+        });
+    });
+
+    // Close support widget when clicking outside
+    document.addEventListener('click', function (event) {
+        const widget = document.querySelector('.support-widget');
+        if (supportOpen && !widget.contains(event.target)) {
+            closeSupportWidget();
+        }
+    });
+
+    // Demo notifications
+    {#setTimeout(() => {#}
+    {#    showToast('خوش آمدید!', 'به سیستم مشاوره تحصیلی کد خوش آمدید.', 'success');#}
+    {# }, 2000);#}
+    {##}
+    {#setTimeout(() => {#}
+    {#    showToast('نکته مهم', 'برای دریافت بهترین مشاوره، پروفایل خود را کامل کنید.', 'info');#}
+    {# }, 6000);#}
+
+    // Add fade-in animation on scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver(function (entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    // Observe elements for animation
+    document.querySelectorAll('.fade-in').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'all 0.6s ease-out';
+        observer.observe(el);
+    });
+
+    (function () {
+        function c() {
+            var b = a.contentDocument || a.contentWindow.document;
+            if (b) {
+                var d = b.createElement('script');
+                d.innerHTML = "window.__CF$cv$params={r:'95f80ee955ee92cd',t:'MTc1MjU2OTkwOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+                b.getElementsByTagName('head')[0].appendChild(d)
+            }
+        }
+
+        if (document.body) {
+            var a = document.createElement('iframe');
+            a.height = 1;
+            a.width = 1;
+            a.style.position = 'absolute';
+            a.style.top = 0;
+            a.style.left = 0;
+            a.style.border = 'none';
+            a.style.visibility = 'hidden';
+            document.body.appendChild(a);
+            if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else {
+                var e = document.onreadystatechange || function () {
+                };
+                document.onreadystatechange = function (b) {
+                    e(b);
+                    'loading' !== document.readyState && (document.onreadystatechange = e, c())
+                }
+            }
+        }
+    })();
+</script>
+
+</body>
 </html>
