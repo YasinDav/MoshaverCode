@@ -1,186 +1,219 @@
 :root {
-            --primary-blue: #1a73e8; /* رنگ آبی اصلی */
-        }
+    --primary-blue: #1a73e8; /* رنگ آبی اصلی */
+}
 
-        body {
-            font-family: 'Vazir', 'Tahoma', 'Segoe UI', sans-serif;
-            line-height: 1.8;
-            color: #333;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            text-align: right;
-            direction: rtl;
-        }
+body {
+    font-family: 'Vazir', 'Tahoma', 'Segoe UI', sans-serif;
+    line-height: 1.8;
+    color: #333;
+    text-align: right;
+    direction: rtl;
+}
 
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
+.page-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
 
-        h1 {
-            color: var(--primary-blue);
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
+header {
+    text-align: center;
+    margin-bottom: 40px;
+}
 
-        .guide-intro {
-            font-size: 1.1rem;
-            max-width: 800px;
-            margin: 0 auto 30px;
-        }
+h1 {
+    color: var(--primary-blue);
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
 
-        .guide-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-        }
+.guide-intro {
+    font-size: 1.1rem;
+    max-width: 800px;
+    margin: 0 auto 30px;
+}
 
-        .guide-nav {
-            flex: 1;
-            min-width: 250px;
-            max-width: 300px;
-            position: sticky;
-            top: 20px;
-            align-self: flex-start;
-        }
+.guide-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
 
-        .guide-content {
-            flex: 3;
-            min-width: 300px;
-        }
+.guide-nav {
+    flex: 1;
+    min-width: 250px;
+    max-width: 300px;
+    position: sticky;
+    top: 20px;
+    align-self: flex-start;
+}
 
-        .dropdown {
-            margin-bottom: 15px;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
+.guide-content {
+    flex: 3;
+    min-width: 300px;
+}
 
-        .dropdown-btn {
-            width: 100%;
-            padding: 15px 20px;
-            background-color: var(--primary-blue);
-            color: white;
-            border: none;
-            text-align: right;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
+.dropdown {
+    margin-bottom: 15px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
 
-        .dropdown-btn:hover {
-            background-color: #0d5bba; /* آبی تیره تر */
-        }
+.dropdown-btn {
+    width: 100%;
+    padding: 15px 20px;
+    background-color: var(--primary-blue);
+    color: white;
+    border: none;
+    text-align: right;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
 
-        .dropdown-content {
-            display: none;
-            background-color: #f9f9f9;
-        }
+.dropdown-btn:hover {
+    background-color: #0d5bba; /* آبی تیره تر */
+}
 
-        .dropdown-content a {
-            display: block;
-            padding: 12px 20px;
-            color: #333;
-            text-decoration: none;
-            transition: background-color 0.2s;
-            border-right: 3px solid transparent;
-        }
+.dropdown-content {
+    display: none;
+    background-color: #f9f9f9;
+}
 
-        .dropdown-content a:hover {
-            background-color: #e8f0fe;
-            border-right: 3px solid var(--primary-blue);
-            color: var(--primary-blue);
-        }
+.dropdown-content a {
+    display: block;
+    padding: 12px 20px;
+    color: #333;
+    text-decoration: none;
+    transition: background-color 0.2s;
+    border-right: 3px solid transparent;
+}
 
-        .guide-section {
-            margin-bottom: 50px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #eee;
-        }
+.dropdown-content a:hover {
+    background-color: #e8f0fe;
+    border-right: 3px solid var(--primary-blue);
+    color: var(--primary-blue);
+}
 
-        .guide-section h2 {
-            color: var(--primary-blue);
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-            padding-top: 20px; /* فاصله برای لینک‌های انکر */
-        }
+.guide-section {
+    margin-bottom: 50px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
 
-        .guide-section p {
-            margin-bottom: 15px;
-            text-align: justify;
-            text-justify: inter-word;
-        }
+.guide-section h2 {
+    color: var(--primary-blue);
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    padding-top: 20px; /* فاصله برای لینک‌های انکر */
+}
 
-        /* Summernote Content Styles */
-        .summernote-content {
-            line-height: 1.8;
-            text-align: justify;
-        }
+.guide-section p {
+    margin-bottom: 15px;
+    text-align: justify;
+    text-justify: inter-word;
+}
 
-        .summernote-content img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 15px auto;
-            border-radius: 8px;
-        }
+/* Summernote Content Styles */
+.summernote-content {
+    line-height: 1.8;
+    text-align: justify;
+}
 
-        .summernote-content iframe {
-            max-width: 100%;
-            display: block;
-            margin: 20px auto;
-            border: none;
-            border-radius: 8px;
-        }
+.summernote-content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 15px auto;
+    border-radius: 8px;
+}
 
-        .summernote-content table {
-            width: 100%;
-            margin: 20px 0;
-            border-collapse: collapse;
-        }
+.summernote-content iframe {
+    max-width: 100%;
+    display: block;
+    margin: 20px auto;
+    border: none;
+    border-radius: 8px;
+}
 
-        .summernote-content table,
-        .summernote-content th,
-        .summernote-content td {
-            border: 1px solid #ddd;
-        }
+.summernote-content table {
+    width: 100%;
+    margin: 20px 0;
+    border-collapse: collapse;
+}
 
-        .summernote-content th,
-        .summernote-content td {
-            padding: 12px;
-            text-align: right;
-        }
+.summernote-content table,
+.summernote-content th,
+.summernote-content td {
+    border: 1px solid #ddd;
+}
 
-        .summernote-content th {
-            background-color: #f2f2f2;
-        }
+.summernote-content th,
+.summernote-content td {
+    padding: 12px;
+    text-align: right;
+}
 
-        .back-to-top {
-            display: inline-block;
-            margin-top: 20px;
-            color: var(--primary-blue);
-            text-decoration: none;
-            font-weight: 500;
-        }
+.summernote-content th {
+    background-color: #f2f2f2;
+}
 
-        .back-to-top:hover {
-            text-decoration: underline;
-        }
+.back-to-top {
+    display: inline-block;
+    margin-top: 20px;
+    color: var(--primary-blue);
+    text-decoration: none;
+    font-weight: 500;
+}
 
-        @media (max-width: 768px) {
-            .guide-container {
-                flex-direction: column;
-            }
+.back-to-top:hover {
+    text-decoration: underline;
+}
 
-            .guide-nav {
-                position: static;
-                max-width: 100%;
-            }
+@media (max-width: 768px) {
+    .guide-container {
+        flex-direction: column;
+    }
 
-            .summernote-content iframe {
-                height: auto;
-                min-height: 200px;
-            }
-        }
+    .guide-nav {
+        position: static;
+        max-width: 100%;
+    }
+
+    .summernote-content iframe {
+        height: auto;
+        min-height: 200px;
+    }
+}
+
+/* Add these new styles */
+.section-header {
+    position: relative;
+}
+
+.copy-link-btn {
+    background: none;
+    border: none;
+    color: var(--primary-blue);
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-left: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.copy-link-btn:hover {
+    background-color: var(--light-blue);
+}
+
+.copy-link-btn.copied {
+    color: green;
+}
+
+.copy-link-btn.copied::after {
+    content: "✓";
+    margin-left: 5px;
+}

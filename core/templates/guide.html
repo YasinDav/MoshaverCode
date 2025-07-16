@@ -1,172 +1,170 @@
 {% extends "base.html" %}
 {% load static %}
+
 {% block extra_head %}
-    <!-- Include Vazir font (Persian font) -->
     <link href="{% static "guide.css" %}" rel="stylesheet" type="text/css"/>
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet"
-          type="text/css"/>
 {% endblock %}
-{% block navbar %}{% endblock %}
+
 {% block body %}
-    <header>
-        <h1>راهنمای سایت</h1>
-        <p class="guide-intro">
-            به راهنمای جامع ما خوش آمدید. در اینجا می‌توانید اطلاعات کامل درباره تمام ویژگی‌ها و قابلیت‌های پلتفرم ما را
-            پیدا کنید.
-        </p>
-    </header>
+    <div class="page-wrapper">
+        <header>
+            <h1>راهنمای سایت</h1>
+            <p class="guide-intro">
+                به راهنمای جامع ما خوش آمدید. در اینجا می‌توانید اطلاعات کامل درباره تمام ویژگی‌ها و قابلیت‌های پلتفرم
+                ما را
+                پیدا کنید.
+            </p>
+        </header>
 
-    <div class="guide-container">
-        <nav class="guide-nav">
-            {% for sub_guide, guides_query in guides_dict.items %}
-                <div class="dropdown">
-                    <button class="dropdown-btn">{{ sub_guide }}</button>
-                    <div class="dropdown-content">
-                        {% for guide in guides_query %}
-                            <a href="#{{ guide.guide_name }}">{{ guide.title }}</a>
-                        {% endfor %}
-                        {#                    <a href="#registration">ثبت نام</a>#}
-                        {#                    <a href="#first-steps">اولین قدم‌ها</a>#}
+        <div class="guide-container">
+            <nav class="guide-nav">
+                {% for sub_guide, guides_query in guides_dict.items %}
+                    <div class="dropdown">
+                        <button class="dropdown-btn">{{ sub_guide }}</button>
+                        <div class="dropdown-content">
+                            {% for guide in guides_query %}
+                                <a href="#{{ guide.guide_name }}">{{ guide.title }}</a>
+                            {% endfor %}
+                            {#                    <a href="#registration">ثبت نام</a>#}
+                            {#                    <a href="#first-steps">اولین قدم‌ها</a>#}
+                        </div>
                     </div>
-                </div>
-            {% endfor %}
-            {#            <div class="dropdown">#}
-            {#                <button class="dropdown-btn">ویژگی‌ها</button>#}
-            {#                <div class="dropdown-content">#}
-            {#                    <a href="#dashboard">داشبورد</a>#}
-            {#                    <a href="#analytics">تحلیل‌ها</a>#}
-            {#                    <a href="#settings">تنظیمات</a>#}
-            {#                </div>#}
-            {#            </div>#}
-            {##}
-            {#            <div class="dropdown">#}
-            {#                <button class="dropdown-btn">پیشرفته</button>#}
-            {#                <div class="dropdown-content">#}
-            {#                    <a href="#api-integration">یکپارچه سازی API</a>#}
-            {#                    <a href="#customization">شخصی‌سازی</a>#}
-            {#                    <a href="#troubleshooting">عیب‌یابی</a>#}
-            {#                </div>#}
-            {#            </div>#}
-    </nav>
+                {% endfor %}
 
-    <main class="guide-content">
-        <!-- Example Summernote Content Section -->
-        {% for guide in guides %}
-        <section id="{{ guide.guide_name }}" class="guide-section">
-            <h2>{{ guide.title }}</h2>
-            <div class="summernote-content">
-                {{ guide.description|safe }}
-            </div>
-{#            <a href="#" class="back-to-top">بازگشت به بالا</a>#}
-        </section>
-        {% endfor %}
+            </nav>
 
-{#        <!-- Additional Sections -->#}
-{#        <section id="registration" class="guide-section">#}
-{#            <h2>ثبت نام</h2>#}
-{#            <div class="summernote-content">#}
-{#                {{ registration_content|safe }}#}
-{#            </div>#}
-{#            <a href="#" class="back-to-top">بازگشت به بالا</a>#}
-{#        </section>#}
-{##}
-{#        <!-- Video Example Section -->#}
-{#        <section id="tutorials" class="guide-section">#}
-{#            <h2>آموزش‌های ویدئویی</h2>#}
-{#            <div class="summernote-content">#}
-{#                {{ video_tutorials_content|safe }}#}
-{#                <!-- Example of embedded video that might come from Summernote -->#}
-{#                <div class="video-wrapper">#}
-{#                    <iframe width="560" height="315" src="https://www.youtube.com/embed/example" frameborder="0"#}
-{#                            allowfullscreen></iframe>#}
-{#                </div>#}
-{#            </div>#}
-{#            <a href="#" class="back-to-top">بازگشت به بالا</a>#}
-{#        </section>#}
-    </main>
-    </div>
+            <main class="guide-content">
+                <!-- Example Summernote Content Section -->
 
-    <script>
-        // عملکرد منوی کشویی
-        document.addEventListener('DOMContentLoaded', function () {
-            // Dropdown functionality
-            const dropdowns = document.getElementsByClassName("dropdown-btn");
+                {% for guides_query in guides_dict.values %}
+                    {% for guide in guides_query %}
+                        <section id="{{ guide.guide_name }}" class="guide-section">
+                            <h2>{{ guide.title }}</h2>
+                            <button class="copy-link-btn" onclick="copySectionLink(event, '{{ guide.guide_name }}')">
+                                Copy Link
+                            </button>
+                            <div class="summernote-content">
+                                {{ guide.description|safe }}
+                            </div>
+                            {#            <a href="#" class="back-to-top">بازگشت به بالا</a>#}
+                        </section>
+                    {% endfor %}
+                {% endfor %}
 
-            for (let i = 0; i < dropdowns.length; i++) {
-                dropdowns[i].addEventListener("click", function () {
-                    this.classList.toggle("active");
-                    const dropdownContent = this.nextElementSibling;
+            </main>
+        </div>
 
-                    if (dropdownContent.style.display === "block") {
-                        dropdownContent.style.display = "none";
-                    } else {
-                        // Close other open dropdowns
-                        const openDropdowns = document.querySelectorAll(".dropdown-content");
-                        for (let j = 0; j < openDropdowns.length; j++) {
-                            if (openDropdowns[j] !== dropdownContent) {
-                                openDropdowns[j].style.display = "none";
-                                openDropdowns[j].previousElementSibling.classList.remove("active");
+        <script>
+            // New copy link function
+            function copySectionLink(event, sectionId) {
+                event.stopPropagation(); // Prevent triggering the section toggle
+                const baseUrl = window.location.href.split('#')[0];
+                const link = `${baseUrl}#${sectionId}`;
+
+                navigator.clipboard.writeText(link).then(() => {
+                    const btn = event.target;
+                    btn.classList.add('copied');
+                    setTimeout(() => {
+                        btn.classList.remove('copied');
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                    // Fallback for older browsers
+                    const textarea = document.createElement('textarea');
+                    textarea.value = link;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+
+                    const btn = event.target;
+                    btn.classList.add('copied');
+                    setTimeout(() => {
+                        btn.classList.remove('copied');
+                    }, 2000);
+                });
+            }
+
+            // عملکرد منوی کشویی
+            document.addEventListener('DOMContentLoaded', function () {
+                // Dropdown functionality
+                const dropdowns = document.getElementsByClassName("dropdown-btn");
+
+                for (let i = 0; i < dropdowns.length; i++) {
+                    dropdowns[i].addEventListener("click", function () {
+                        this.classList.toggle("active");
+                        const dropdownContent = this.nextElementSibling;
+
+                        if (dropdownContent.style.display === "block") {
+                            dropdownContent.style.display = "none";
+                        } else {
+                            // Close other open dropdowns
+                            const openDropdowns = document.querySelectorAll(".dropdown-content");
+                            for (let j = 0; j < openDropdowns.length; j++) {
+                                if (openDropdowns[j] !== dropdownContent) {
+                                    openDropdowns[j].style.display = "none";
+                                    openDropdowns[j].previousElementSibling.classList.remove("active");
+                                }
+                            }
+
+                            dropdownContent.style.display = "block";
+                        }
+                    });
+                }
+
+                // Close dropdowns when clicking outside
+                window.addEventListener('click', function (e) {
+                    if (!e.target.matches('.dropdown-btn')) {
+                        const dropdowns = document.getElementsByClassName("dropdown-content");
+                        for (let i = 0; i < dropdowns.length; i++) {
+                            if (dropdowns[i].style.display === "block") {
+                                dropdowns[i].style.display = "none";
+                                dropdowns[i].previousElementSibling.classList.remove("active");
                             }
                         }
-
-                        dropdownContent.style.display = "block";
                     }
                 });
-            }
 
-            // Close dropdowns when clicking outside
-            window.addEventListener('click', function (e) {
-                if (!e.target.matches('.dropdown-btn')) {
-                    const dropdowns = document.getElementsByClassName("dropdown-content");
-                    for (let i = 0; i < dropdowns.length; i++) {
-                        if (dropdowns[i].style.display === "block") {
-                            dropdowns[i].style.display = "none";
-                            dropdowns[i].previousElementSibling.classList.remove("active");
+                // Smooth scrolling for anchor links
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', function (e) {
+                        e.preventDefault();
+
+                        const targetId = this.getAttribute('href');
+                        if (targetId === '#') return;
+
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                            window.scrollTo({
+                                top: targetElement.offsetTop - 20,
+                                behavior: 'smooth'
+                            });
+
+                            // Close all dropdowns when a link is clicked
+                            const dropdowns = document.querySelectorAll(".dropdown-content");
+                            for (let i = 0; i < dropdowns.length; i++) {
+                                dropdowns[i].style.display = "none";
+                                dropdowns[i].previousElementSibling.classList.remove("active");
+                            }
                         }
-                    }
+                    });
+                });
+
+                // Adjust iframe dimensions for responsive videos
+                function adjustVideoIframes() {
+                    document.querySelectorAll('.summernote-content iframe').forEach(iframe => {
+                        const width = iframe.width;
+                        const height = iframe.height;
+                        const aspectRatio = height / width;
+                        iframe.style.width = '100%';
+                        iframe.style.height = (iframe.offsetWidth * aspectRatio) + 'px';
+                    });
                 }
+
+                // Run on load and resize
+                adjustVideoIframes();
+                window.addEventListener('resize', adjustVideoIframes);
             });
-
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-
-                    const targetId = this.getAttribute('href');
-                    if (targetId === '#') return;
-
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 20,
-                            behavior: 'smooth'
-                        });
-
-                        // Close all dropdowns when a link is clicked
-                        const dropdowns = document.querySelectorAll(".dropdown-content");
-                        for (let i = 0; i < dropdowns.length; i++) {
-                            dropdowns[i].style.display = "none";
-                            dropdowns[i].previousElementSibling.classList.remove("active");
-                        }
-                    }
-                });
-            });
-
-            // Adjust iframe dimensions for responsive videos
-            function adjustVideoIframes() {
-                document.querySelectorAll('.summernote-content iframe').forEach(iframe => {
-                    const width = iframe.width;
-                    const height = iframe.height;
-                    const aspectRatio = height / width;
-                    iframe.style.width = '100%';
-                    iframe.style.height = (iframe.offsetWidth * aspectRatio) + 'px';
-                });
-            }
-
-            // Run on load and resize
-            adjustVideoIframes();
-            window.addEventListener('resize', adjustVideoIframes);
-        });
-    </script>
+        </script>
+    </div>
 {% endblock %}
-{% block footer %}{% endblock %}
