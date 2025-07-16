@@ -9,8 +9,8 @@ from .forms import ProfileForm, AuthenticationFormCaptcha, UserCreationFormCaptc
 from .models import Profile
 
 
-@login_required(login_url=settings.LOGIN_REDIRECT_UR)
-def edit_profile(request):
+@login_required(login_url=settings.LOGIN_REDIRECT_URL)
+def edit_profile_view(request):
     if request.method == 'POST':
         form = ProfileForm(request.POST)
         if form.is_valid():
@@ -21,7 +21,16 @@ def edit_profile(request):
         user = request.user
         user_profile = Profile.objects.get(user=user)
         form = ProfileForm(instance=user_profile)
-        return render(request, 'show question.html', {'a': form})
+        return render(request, 'profile4.html', {'form': form})
+    else:
+        return HttpResponse('Something went wrong')
+
+
+@login_required(login_url=settings.LOGIN_REDIRECT_URL)
+def profile_view(request):
+    user = request.user
+    user_profile = Profile.objects.get(user=user)
+    return render(request, 'profile.html', {'user_profile': user_profile})
 
 
 def logout_view(request):

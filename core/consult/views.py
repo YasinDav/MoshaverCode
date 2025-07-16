@@ -80,8 +80,8 @@ type_mood = {
 starting_prompt = "just a text for test"
 
 
-@login_required(login_url=settings.LOGIN_REDIRECT_UR)
-def question(request, consult_id, question_model_id_hash):
+@login_required(login_url=settings.LOGIN_REDIRECT_URL)
+def question_view(request, consult_id, question_model_id_hash):
     consult = get_object_or_404(Consult, id=consult_id)
 
     if not consult.status:  # if status be False, it means consult is disable and finished
@@ -191,15 +191,8 @@ def find_secreted_url(consult: Consult, complete_url: bool = False):
         return None
 
 
-def test_secreted_url(request, id: int):
-    c = Consult.objects.get(id=id)
-    f = find_secreted_url(c)
-
-    return render(request, "show question.html", {"a": f})
-
-
-@login_required(login_url=settings.LOGIN_REDIRECT_UR)
-def consult_panel(request):
+@login_required(login_url=settings.LOGIN_REDIRECT_URL)
+def consult_panel_view(request):
     consults = Consult.objects.filter(user=request.user)
     consults_with_urls = {}
 
@@ -209,8 +202,8 @@ def consult_panel(request):
     return render(request, "consults panel.html", {"consults": consults_with_urls})
 
 
-@login_required(login_url=settings.LOGIN_REDIRECT_UR)
-def new_consult(request):
+@login_required(login_url=settings.LOGIN_REDIRECT_URL)
+def new_consult_view(request):
     if request.method == "POST":
         Consult.objects.create(
             user=request.user,
@@ -220,8 +213,8 @@ def new_consult(request):
     return redirect(reverse("consult"))
 
 
-@login_required(login_url=settings.LOGIN_REDIRECT_UR)
-def delete_consult(request, id):
+@login_required(login_url=settings.LOGIN_REDIRECT_URL)
+def delete_consult_view(request, id):
     if request.method == "POST":
         consult = get_object_or_404(Consult, id=id)
         if request.user == consult.user:
