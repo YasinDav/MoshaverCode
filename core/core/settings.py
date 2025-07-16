@@ -32,10 +32,11 @@ INSTALLED_APPS = [
     "account",
     "captcha",
     "django_summernote",
-    # "taggit",
-    # 'django.contrib.sites',
-    # 'django.contrib.sitemaps',
-    # 'robots',
+    "taggit",
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
+    'robots',
+    "debug_toolbar",
 
 ]
 
@@ -47,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -116,7 +118,9 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'statics' / 'css',
-    BASE_DIR / 'statics' / 'js'
+    BASE_DIR / 'statics' / 'js',
+    BASE_DIR / 'statics' / 'images',
+    BASE_DIR / 'statics' / 'fonts'
 ]
 
 MEDIA_URL = 'media/'
@@ -132,5 +136,15 @@ LOGIN_REDIRECT_URL = '/login/'
 LOGOUT_REDIRECT_URL = '/logout/'
 SIGNUP_REDIRECT_URL = '/signup/'
 
-#Sumernote setting
+# Summernote setting
 X_FRAME_OPTIONS = "SAMEORIGIN"
+
+# sites framework
+SITE_ID = 1
+
+# robots
+ROBOTS_USE_HOST = False
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
