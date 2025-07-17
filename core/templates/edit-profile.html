@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ویرایش پروفایل - مشاور v0</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- Persian Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <style>
+        :root {
+            --sky-50: #f0f9ff;
+            --sky-100: #e0f2fe;
+            --sky-200: #bae6fd;
+            --sky-300: #7dd3fc;
+            --sky-400: #38bdf8;
+            --sky-500: #0ea5e9;
+            --sky-600: #0284c7;
+            --sky-700: #0369a1;
+            --sky-800: #075985;
+            --sky-900: #0c4a6e;
+        }
+
+        * {
+            font-family: 'Vazirmatn', sans-serif;
+        }
+
+        body {
+            direction: rtl;
+            background: linear-gradient(135deg, var(--sky-50) 0%, white 50%, var(--sky-100) 100%);
+            min-height: 100vh;
+        }
+
+        /* Navbar Styles */
+        .dashboard-navbar {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--sky-600) !important;
+            text-decoration: none;
+        }
+
+        .btn-outline-primary {
+            border-color: var(--sky-600);
+            color: var(--sky-600);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--sky-600);
+            border-color: var(--sky-600);
+            color: white;
+        }
+
+        .btn-primary {
+            background-color: var(--sky-600);
+            border-color: var(--sky-600);
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--sky-700);
+            border-color: var(--sky-700);
+            transform: translateY(-2px);
+        }
+
+        /* Main Card */
+        .main-card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+        }
+
+        .card-header-gradient {
+            background: linear-gradient(135deg, var(--sky-600), var(--sky-700));
+            color: white;
+            padding: 1.5rem;
+        }
+
+        .card-header-gradient h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        /* Form Styles */
+        .form-label {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--sky-500);
+            box-shadow: 0 0 0 0.2rem rgba(2, 132, 199, 0.25);
+        }
+
+        .form-control.is-invalid {
+            border-color: #dc3545;
+        }
+
+        .form-control.is-invalid:focus {
+            border-color: #dc3545;
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+        }
+
+        .invalid-feedback {
+            display: block;
+            width: 100%;
+            margin-top: 0.25rem;
+            font-size: 0.875rem;
+            color: #dc3545;
+        }
+
+        /* Input with Icon */
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-with-icon .form-control {
+            padding-right: 2.5rem;
+        }
+
+        .input-with-icon .input-icon {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            z-index: 10;
+        }
+
+        .input-with-icon .password-toggle {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .input-with-icon .password-toggle:hover {
+            color: #6b7280;
+        }
+
+        /* Profile Picture */
+        .profile-picture-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .profile-avatar {
+            width: 8rem;
+            height: 8rem;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--sky-100);
+            transition: transform 0.3s ease;
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .avatar-upload-btn {
+            position: relative;
+            background: var(--sky-600);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            margin-top: -3rem;
+            margin-right: 5rem;
+        }
+
+        .avatar-upload-btn:hover {
+            background: var(--sky-700);
+            transform: scale(1.1);
+        }
+
+        .avatar-upload-input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        /* Skills Section */
+        {#.skills-section {#}
+        {#    background: linear-gradient(135deg, var(--sky-50), #e0f2fe);#}
+        {#    border: 1px solid var(--sky-200);#}
+        {#    border-radius: 0.75rem;#}
+        {#    padding: 1.5rem;#}
+        {# }#}
+        {##}
+        {#.skill-tag {#}
+        {#    background: var(--sky-100);#}
+        {#    color: var(--sky-800);#}
+        {#    padding: 0.5rem 0.75rem;#}
+        {#    border-radius: 1rem;#}
+        {#    font-size: 0.875rem;#}
+        {#    font-weight: 500;#}
+        {#    border: 1px solid var(--sky-200);#}
+        {#    display: inline-flex;#}
+        {#    align-items: center;#}
+        {#    gap: 0.5rem;#}
+        {#    margin: 0.25rem;#}
+        {#    transition: all 0.3s ease;#}
+        {# }#}
+        {##}
+        {#.skill-tag:hover {#}
+        {#    background: var(--sky-200);#}
+        {#    transform: translateY(-1px);#}
+        {# }#}
+        {##}
+        {#.skill-remove-btn {#}
+        {#    background: none;#}
+        {#    border: none;#}
+        {#    color: var(--sky-600);#}
+        {#    cursor: pointer;#}
+        {#    padding: 0;#}
+        {#    display: flex;#}
+        {#    align-items: center;#}
+        {#    justify-content: center;#}
+        {#    transition: color 0.3s ease;#}
+        {# }#}
+        {##}
+        {#.skill-remove-btn:hover {#}
+        {#    color: #dc3545;#}
+        {# }#}
+        {##}
+        {#.suggested-skill {#}
+        {#    background: #f3f4f6;#}
+        {#    color: #374151;#}
+        {#    padding: 0.25rem 0.75rem;#}
+        {#    border-radius: 1rem;#}
+        {#    font-size: 0.875rem;#}
+        {#    border: 1px solid #d1d5db;#}
+        {#    cursor: pointer;#}
+        {#    transition: all 0.3s ease;#}
+        {#    margin: 0.25rem;#}
+        {# }#}
+        {##}
+        {#.suggested-skill:hover {#}
+        {#    background: var(--sky-100);#}
+        {#    color: var(--sky-700);#}
+        {#    border-color: var(--sky-200);#}
+        {# }#}
+
+        .skills-container {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        {#max-width: 600px;#} margin: 0 auto;
+            padding: 10px;
+            background-color: #e6f5ff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .skills-header h4 {
+            color: #333;
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+            margin-right: 10px;
+        }
+
+        .description {
+            color: #6c757d;
+            font-size: 0.875rem;
+            margin-bottom: 20px;
+            margin-top: 20px;
+
+        }
+
+        .skills-tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+            min-height: 40px;
+            align-items: center;
+        }
+
+        #noSkillsMessage {
+            color: #6c757d;
+            font-style: italic;
+            font-size: 0.875rem;
+            width: 100%;
+            margin-right: 10px;
+        }
+
+        .skill-tag {
+            background-color: #b2d8f3;
+            color: #0083ff;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .remove-tag {
+            background: none;
+            border: none;
+            color: #0083ff;
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .skills-input-container {
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            display: flex;
+        }
+
+        .form-control-skills {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            margin-right: 10px;
+        }
+
+        .btn-primary {
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            margin-right: 8px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .suggested-skills p {
+            color: #6c757d;
+            font-size: 0.875rem;
+            margin-bottom: 8px;
+        }
+
+        .suggested-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .suggested-tag {
+            background-color: #f8f9fa;
+            color: #0d6efd;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            border: 1px solid #dee2e6;
+        }
+
+        .suggested-tag:hover {
+            background-color: #e9ecef;
+        }
+
+        /* Loading States */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid #f3f4f6;
+            border-radius: 50%;
+            border-top-color: var(--sky-600);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            padding: 1rem 1.5rem;
+            z-index: 1050;
+            min-width: 20rem;
+            max-width: 90vw;
+            opacity: 0;
+            transform: translateX(-50%) translateY(-20px);
+            transition: all 0.3s ease;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .notification.success {
+            border-right: 4px solid #10b981;
+        }
+
+        .notification.error {
+            border-right: 4px solid #ef4444;
+        }
+
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .notification-message {
+            color: #6b7280;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        .notification-close {
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 0;
+            margin-right: 0.5rem;
+        }
+
+        .notification-close:hover {
+            color: #6b7280;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .profile-picture-section {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-avatar {
+                width: 6rem;
+                height: 6rem;
+            }
+
+            .avatar-upload-btn {
+                margin-top: -2rem;
+                margin-right: 3.5rem;
+            }
+
+            .card-header-gradient {
+                padding: 1rem;
+            }
+
+            .main-card {
+                margin: 1rem;
+            }
+
+            .skill-tag {
+                font-size: 0.75rem;
+                padding: 0.375rem 0.5rem;
+            }
+
+            .navbar-brand {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .btn-primary, .btn-outline-primary {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+            }
+
+            .form-control {
+                padding: 0.5rem 0.75rem;
+            }
+
+            .input-with-icon .form-control {
+                padding-right: 2rem;
+            }
+
+            .input-with-icon .input-icon {
+                right: 0.5rem;
+            }
+
+            .input-with-icon .password-toggle {
+                left: 0.5rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+<!-- Dashboard Navbar -->
+<nav class="dashboard-navbar">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <!-- Logo -->
+            <a href="index.html" class="navbar-brand">مشاور v0</a>
+
+            <!-- Back Button -->
+            <div class="d-flex align-items-center gap-3">
+                <a href="dashboard.html" class="btn btn-outline-primary btn-sm d-flex align-items-center gap-2">
+                    <i data-lucide="arrow-right" width="16" height="16"></i>
+                    <span class="d-none d-md-inline">بازگشت به داشبورد</span>
+                </a>
+
+                <!-- User Info -->
+                <div class="d-flex align-items-center gap-2">
+                    <img src="/placeholder.svg?height=32&width=32" alt="سارا جانسون" class="rounded-circle"
+                         style="width: 2rem; height: 2rem;">
+                    <span class="d-none d-md-inline text-muted">سارا</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<main class="container my-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Header -->
+            <div class="mb-4" data-aos="fade-up">
+                <h1 class="display-6 fw-bold text-dark mb-2">ویرایش پروفایل</h1>
+                <p class="lead text-muted">اطلاعات شخصی و تنظیمات خود را به‌روزرسانی کنید</p>
+            </div>
+
+            <!-- Main Form Card -->
+            <div class="main-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="card-header-gradient">
+                    <h2>اطلاعات شخصی</h2>
+                    <p class="text-light mb-0 mt-1" style="font-size: 0.875rem;">جزئیات پروفایل و ترجیحات خود را
+                        به‌روزرسانی کنید</p>
+                </div>
+
+                <div class="p-4">
+                    <form id="editProfileForm" novalidate>
+                        <!-- Profile Picture Section -->
+                        <div class="mb-5">
+                            <div class="profile-picture-section">
+                                <div class="position-relative">
+                                    <img id="profileAvatar" src="/placeholder.svg?height=128&width=128"
+                                         alt="تصویر پروفایل" class="profile-avatar">
+                                    <label for="avatarUpload" class="avatar-upload-btn">
+                                        <i data-lucide="upload" width="16" height="16"></i>
+                                        <input type="file" id="avatarUpload" class="avatar-upload-input"
+                                               accept="image/*">
+                                    </label>
+                                </div>
+                                <div class="text-center">
+                                    <h3 class="h5 fw-semibold text-dark mb-2">تصویر پروفایل</h3>
+                                    <p class="text-muted mb-3" style="font-size: 0.875rem;">
+                                        تصویر جدیدی آپلود کنید. JPG، PNG یا GIF، حداکثر ۲ مگابایت.
+                                    </p>
+                                    <button type="button" class="btn btn-outline-primary btn-sm"
+                                            onclick="document.getElementById('avatarUpload').click()">
+                                        انتخاب تصویر
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Basic Information -->
+                        <div class="mb-4">
+                            <h3 class="h5 fw-semibold text-dark mb-4">اطلاعات پایه</h3>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="fullName" class="form-label">نام کامل</label>
+                                    <div class="input-with-icon">
+                                        <input type="text" class="form-control" id="fullName" value="سارا جانسون"
+                                               required>
+                                        <i data-lucide="user" class="input-icon" width="18" height="18"></i>
+                                        <div class="invalid-feedback"></div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label">آدرس ایمیل</label>
+                                    <div class="input-with-icon">
+                                        <input type="email" class="form-control" id="email"
+                                               value="sarah.johnson@university.edu" required>
+                                        <i data-lucide="mail" class="input-icon" width="18" height="18"></i>
+                                        <div class="invalid-feedback"></div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="major" class="form-label">رشته اصلی</label>
+                                    <select class="form-select" id="major" required>
+                                        <option value="">رشته خود را انتخاب کنید</option>
+                                        <option value="computer-science" selected>علوم کامپیوتر</option>
+                                        <option value="design">طراحی</option>
+                                        <option value="business">کسب و کار</option>
+                                        <option value="engineering">مهندسی</option>
+                                        <option value="psychology">روانشناسی</option>
+                                    </select>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="minor" class="form-label">رشته فرعی (اختیاری)</label>
+                                    <select class="form-select" id="minor">
+                                        <option value="">رشته فرعی خود را انتخاب کنید</option>
+                                        <option value="none">هیچ</option>
+                                        <option value="digital-arts" selected>هنرهای دیجیتال</option>
+                                        <option value="mathematics">ریاضیات</option>
+                                        <option value="marketing">بازاریابی</option>
+                                        <option value="communication">ارتباطات</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="graduationYear" class="form-label">سال فارغ‌التحصیلی مورد انتظار</label>
+                                    <select class="form-select" id="graduationYear" required>
+                                        <option value="">سال فارغ‌التحصیلی را انتخاب کنید</option>
+                                        <option value="2024">۱۴۰۳</option>
+                                        <option value="2025">۱۴۰۴</option>
+                                        <option value="2026" selected>۱۴۰۵</option>
+                                        <option value="2027">۱۴۰۶</option>
+                                        <option value="2028">۱۴۰۷</option>
+                                    </select>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="academicInterest" class="form-label">علاقه تحصیلی</label>
+                                    <div class="input-with-icon">
+                                        <input type="text" class="form-control" id="academicInterest"
+                                               value="علوم کامپیوتر و طراحی">
+                                        <i data-lucide="graduation-cap" class="input-icon" width="18" height="18"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bio Section -->
+                        <div class="mb-4">
+                            <label for="bio" class="form-label">بیوگرافی</label>
+                            <textarea class="form-control" id="bio" rows="4" placeholder="در مورد خودتان بگویید...">من دانشجوی سال سوم هستم که به تقاطع فناوری و طراحی علاقه‌مند است. به دنبال ساختن شغلی در طراحی UX/UI با پایه‌ای قوی در فناوری هستم.</textarea>
+                        </div>
+
+                        {# ------------------------------------------------------------------------------------------------------------------------------------------------------------#}
+                        {#                            <!-- Skills Section -->#}
+                        {#                            <div class="mb-4">#}
+                        {#                                <div class="skills-section">#}
+                        {#                                    <h4 class="h6 fw-semibold text-dark mb-3">مهارت‌ها و علایق</h4>#}
+                        {#                                    <p class="text-muted mb-4" style="font-size: 0.875rem;">#}
+                        {#                                        مهارت‌ها، علایق و حوزه‌های تخصصی خود را اضافه کنید. برای اضافه کردن مهارت جدید، Enter بزنید یا روی اضافه کلیک کنید.#}
+                        {#                                    </p>#}
+                        {#                                    #}
+                        {#                                    <!-- Current Skills -->#}
+                        {#                                    <div class="mb-4">#}
+                        {#                                        <div id="skillsList" class="d-flex flex-wrap gap-2 mb-3">#}
+                        {#                                            <!-- Skills will be populated here -->#}
+                        {#                                        </div>#}
+                        {#                                        <div id="noSkillsMessage" class="text-muted fst-italic" style="font-size: 0.875rem; display: none;">#}
+                        {#                                            هنوز مهارتی اضافه نشده است. در زیر اضافه کنید!#}
+                        {#                                        </div>#}
+                        {#                                    </div>#}
+                        {#                                    #}
+                        {#                                    <!-- Add New Skill -->#}
+                        {#                                    <div class="mb-4">#}
+                        {#                                        <div class="input-group">#}
+                        {#                                            <input type="text" class="form-control" id="newSkillInput" placeholder="مثال: پایتون، عکاسی، سخنرانی عمومی...">#}
+                        {#                                            <button type="button" class="btn btn-primary" id="addSkillBtn">اضافه</button>#}
+                        {#                                        </div>#}
+                        {#                                    </div>#}
+                        {#                                    #}
+                        {#                                    <!-- Suggested Skills -->#}
+                        {#                                    <div>#}
+                        {#                                        <p class="text-muted mb-2" style="font-size: 0.875rem;">مهارت‌های پیشنهادی:</p>#}
+                        {#                                        <div id="suggestedSkills" class="d-flex flex-wrap gap-2">#}
+                        {#                                            <!-- Suggested skills will be populated here -->#}
+                        {#                                        </div>#}
+                        {#                                    </div>#}
+                        {#                                </div>#}
+                        {#                            </div>#}
+                        <div class="mb-4">
+                            <h3 class="h5 fw-semibold text-dark mb-4">مهارت‌ها و علایق</h3>
+
+                            <div class="skills-container">
+                                <div class="skills-header">
+                                    {#                                <h4>مهارت‌ها و علایق</h4>#}
+                                    <p class="description">مهارت‌ها، علایق و حوزه‌های تخصصی خود را اضافه کنید. برای
+                                        اضافه
+                                        کردن مهارت جدید Enter بزنید یا روی اضافه کلیک کنید.</p>
+                                </div>
+
+                                <form id="skillsForm" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="tags" id="tagsOutput">
+
+                                    <div class="skills-tags-container" id="skillsList">
+                                        <!-- Tags will appear here -->
+                                        <p id="noSkillsMessage">هنوز مهارتی اضافه نشده است. در زیر اضافه کنید!</p>
+                                    </div>
+
+                                    <div class="skills-input-container">
+                                        <div class="input-group">
+                                            <input type="text"
+                                                   id="newSkillInput"
+                                                   class="form-control-skills"
+                                                   placeholder="مثال: پایتون، عکاسی، سخنرانی عمومی..."
+                                                   dir="rtl">
+                                            <button type="button" class="btn btn-primary" id="addSkillBtn">اضافه
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <div class="suggested-skills">
+                                    <p>مهارت‌های پیشنهادی:</p>
+                                    <div class="suggested-tags">
+                                        <span class="suggested-tag">+ مدیریت پروژه</span>
+                                        <span class="suggested-tag">+ سخنرانی عمومی</span>
+                                        <span class="suggested-tag">+ طراحی گرافیک</span>
+                                        <span class="suggested-tag">+ تحلیل داده</span>
+                                        <span class="suggested-tag">+ Node.js</span>
+                                        <span class="suggested-tag">+ React</span>
+                                        <span class="suggested-tag">+ نویسندگی</span>
+                                        <span class="suggested-tag">+ تحقیق</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {# ------------------------------------------------------------------------------------------------------------------------------------------------------------#}
+
+                        <hr class="my-4">
+
+                        <!-- Password Change Section -->
+                        <div class="mb-4">
+                            <h3 class="h5 fw-semibold text-dark mb-4">تغییر رمز عبور</h3>
+                            <p class="text-muted mb-4" style="font-size: 0.875rem;">
+                                اگر نمی‌خواهید رمز عبور خود را تغییر دهید، این فیلدها را خالی بگذارید.
+                            </p>
+
+                            <div class="row g-3">
+                                <div class="col-md-12">
+                                    <label for="currentPassword" class="form-label">رمز عبور فعلی</label>
+                                    <div class="input-with-icon">
+                                        <input type="password" class="form-control" id="currentPassword">
+                                        <i data-lucide="lock" class="input-icon" width="18" height="18"></i>
+                                        <button type="button" class="password-toggle"
+                                                onclick="togglePassword('currentPassword')">
+                                            <i data-lucide="eye" width="18" height="18"></i>
+                                        </button>
+                                        <div class="invalid-feedback"></div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="newPassword" class="form-label">رمز عبور جدید</label>
+                                    <div class="input-with-icon">
+                                        <input type="password" class="form-control" id="newPassword">
+                                        <i data-lucide="lock" class="input-icon" width="18" height="18"></i>
+                                        <button type="button" class="password-toggle"
+                                                onclick="togglePassword('newPassword')">
+                                            <i data-lucide="eye" width="18" height="18"></i>
+                                        </button>
+                                        <div class="invalid-feedback"></div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="confirmPassword" class="form-label">تأیید رمز عبور جدید</label>
+                                    <div class="input-with-icon">
+                                        <input type="password" class="form-control" id="confirmPassword">
+                                        <i data-lucide="lock" class="input-icon" width="18" height="18"></i>
+                                        <button type="button" class="password-toggle"
+                                                onclick="togglePassword('confirmPassword')">
+                                            <i data-lucide="eye" width="18" height="18"></i>
+                                        </button>
+                                        <div class="invalid-feedback"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="d-flex justify-content-end gap-3 pt-4 border-top">
+                            <a href="dashboard.html" class="btn btn-outline-secondary">لغو</a>
+                            <button type="submit" class="btn btn-primary" id="saveBtn">
+                                <i data-lucide="save" width="18" height="18" class="me-2"></i>
+                                ذخیره تغییرات
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Notification Container -->
+<div id="notificationContainer"></div>
+
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Initialize AOS
+    AOS.init({
+        duration: 800,
+        easing: 'ease-out',
+        once: true
+    });
+
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Skills data
+    {#let currentSkills = ["پایتون", "جاوااسکریپت", "طراحی UI/UX", "یادگیری ماشین", "عکاسی", "React", "Node.js"];#}
+    {#const suggestedSkillsList = ["React", "Node.js", "تحلیل داده", "طراحی گرافیک", "سخنرانی عمومی", "مدیریت پروژه", "نویسندگی", "تحقیق"];#}
+
+    // Notification system
+    let notificationId = 0;
+
+    function showNotification(type, title, message, duration = 5000) {
+        const id = ++notificationId;
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `
+                <div class="notification-header">
+                    <div class="notification-title">${title}</div>
+                    <button class="notification-close" onclick="hideNotification(${id})">
+                        <i data-lucide="x" width="16" height="16"></i>
+                    </button>
+                </div>
+                <div class="notification-message">${message}</div>
+            `;
+
+        document.getElementById('notificationContainer').appendChild(notification);
+        lucide.createIcons();
+
+        // Show notification
+        setTimeout(() => {
+            notification.classList.add('show');
+        }, 100);
+
+        // Auto hide
+        setTimeout(() => {
+            hideNotification(id);
+        }, duration);
+
+        return id;
+    }
+
+    function hideNotification(id) {
+        const notifications = document.querySelectorAll('.notification');
+        notifications.forEach(notification => {
+            if (notification.innerHTML.includes(`hideNotification(${id})`)) {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }
+        });
+    }
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const skillsList = document.getElementById('skillsList');
+        const noSkillsMessage = document.getElementById('noSkillsMessage');
+        const newSkillInput = document.getElementById('newSkillInput');
+        const addSkillBtn = document.getElementById('addSkillBtn');
+        const tagsOutput = document.getElementById('tagsOutput');
+        const suggestedTags = document.querySelectorAll('.suggested-tag');
+
+        let tags = [];
+
+        // Add tag function
+        function addTag(tagText) {
+            tagText = tagText.trim();
+            if (tagText && !tags.includes(tagText)) {
+                tags.push(tagText);
+                renderTags();
+                return true;
+            }
+            return false;
+        }
+
+        // Remove tag function
+        function removeTag(tagText) {
+            tags = tags.filter(tag => tag !== tagText);
+            renderTags();
+        }
+
+        // Render tags
+        function renderTags() {
+            if (tags.length === 0) {
+                noSkillsMessage.style.display = 'block';
+                skillsList.innerHTML = '';
+                skillsList.appendChild(noSkillsMessage);
+            } else {
+                noSkillsMessage.style.display = 'none';
+                skillsList.innerHTML = tags.map(tag => `
+                    <div class="skill-tag">
+                        ${tag}
+                        <button class="remove-tag" onclick="removeTag('${tag}')">×</button>
+                    </div>
+                `).join('');
+            }
+
+            // Update hidden input for form submission
+            tagsOutput.value = tags.join('، ');
+        }
+
+        // Add tag button click handler
+        addSkillBtn.addEventListener('click', function () {
+            if (addTag(newSkillInput.value)) {
+                newSkillInput.value = '';
+            }
+        });
+
+        // Add tag on Enter key
+        newSkillInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                addSkillBtn.click();
+            }
+        });
+
+        // Suggested tags click handlers
+        suggestedTags.forEach(tag => {
+            tag.addEventListener('click', function () {
+                const tagText = this.textContent.replace('+ ', '').trim();
+                if (addTag(tagText)) {
+                    newSkillInput.focus();
+                }
+            });
+        });
+
+        // Make removeTag available globally
+        window.removeTag = removeTag;
+    });
+
+
+    // Skills management
+    {#function renderSkills() {#}
+    {#    const skillsList = document.getElementById('skillsList');#}
+    {#    const noSkillsMessage = document.getElementById('noSkillsMessage');#}
+    {##}
+    {#    if (currentSkills.length === 0) {#}
+    {#        skillsList.innerHTML = '';#}
+    {#        noSkillsMessage.style.display = 'block';#}
+    {#    } else {#}
+    {#        noSkillsMessage.style.display = 'none';#}
+    {#        skillsList.innerHTML = currentSkills.map(skill => `#}
+    {#                <span class="skill-tag">#}
+    {#                    ${skill}#}
+    {#                    <button type="button" class="skill-remove-btn" onclick="removeSkill('${skill}')">#}
+    {#                        <i data-lucide="x" width="14" height="14"></i>#}
+    {#                    </button>#}
+    {#                </span>#}
+    {#            `).join('');#}
+    {#    }#}
+    {##}
+    {#    renderSuggestedSkills();#}
+    {#    lucide.createIcons();#}
+    {#}#}
+        {##}
+        {#function renderSuggestedSkills() {#}
+        {#    const suggestedSkills = document.getElementById('suggestedSkills');#}
+        {#    const availableSkills = suggestedSkillsList.filter(skill => !currentSkills.includes(skill));#}
+        {##}
+        {#    suggestedSkills.innerHTML = availableSkills.map(skill => `#}
+        {#            <span class="suggested-skill" onclick="addSuggestedSkill('${skill}')">#}
+        {#                + ${skill}#}
+        {#            </span>#}
+        {#        `).join('');#}
+        {#}#}
+            {##}
+            {#function addSkill(skill) {#}
+            {#    if (skill.trim() && !currentSkills.includes(skill.trim())) {#}
+            {#        currentSkills.push(skill.trim());#}
+            {#        renderSkills();#}
+            {#        return true;#}
+            {#    }#}
+            {#    return false;#}
+            {#}#}
+                {##}
+                {#function removeSkill(skill) {#}
+                {#    currentSkills = currentSkills.filter(s => s !== skill);#}
+                {#    renderSkills();#}
+                {#}#}
+                    {##}
+                    {#function addSuggestedSkill(skill) {#}
+                    {#    addSkill(skill);#}
+                    {#}#}
+
+                        // Add skill event listeners
+                        document.getElementById('addSkillBtn').addEventListener('click', function () {
+                            const input = document.getElementById('newSkillInput');
+                            const skill = input.value.trim();
+
+                            if (addSkill(skill)) {
+                                input.value = '';
+                            } else if (skill) {
+                                showNotification('error', 'خطا', 'این مهارت قبلاً اضافه شده است.', 3000);
+                            }
+                        });
+
+                        document.getElementById('newSkillInput').addEventListener('keypress', function (e) {
+                            if (e.key === 'Enter') {
+                                e.preventDefault();
+                                document.getElementById('addSkillBtn').click();
+                            }
+                        });
+
+                        // Password toggle functionality
+                        function togglePassword(fieldId) {
+                            const field = document.getElementById(fieldId);
+                            const button = field.parentElement.querySelector('.password-toggle');
+                            const icon = button.querySelector('i');
+
+                            if (field.type === 'password') {
+                                field.type = 'text';
+                                icon.setAttribute('data-lucide', 'eye-off');
+                            } else {
+                                field.type = 'password';
+                                icon.setAttribute('data-lucide', 'eye');
+                            }
+
+                            lucide.createIcons();
+                        }
+
+                        // Avatar upload functionality
+                        document.getElementById('avatarUpload').addEventListener('change', function (e) {
+                            const file = e.target.files[0];
+                            if (file) {
+                                const reader = new FileReader();
+                                reader.onload = function (e) {
+                                    document.getElementById('profileAvatar').src = e.target.result;
+                                };
+                                reader.readAsDataURL(file);
+
+                                showNotification('success', 'موفق', 'تصویر پروفایل با موفقیت آپلود شد.', 3000);
+                            }
+                        });
+
+                        // Form validation
+                        function validateForm() {
+                            let isValid = true;
+                            const errors = {};
+
+                            // Clear previous errors
+                            document.querySelectorAll('.form-control, .form-select').forEach(field => {
+                                field.classList.remove('is-invalid');
+                                const feedback = field.parentElement.querySelector('.invalid-feedback');
+                                if (feedback) feedback.textContent = '';
+                            });
+
+                            // Validate required fields
+                            const fullName = document.getElementById('fullName').value.trim();
+                            if (!fullName) {
+                                errors.fullName = 'نام کامل الزامی است';
+                                isValid = false;
+                            }
+
+                            const email = document.getElementById('email').value.trim();
+                            if (!email) {
+                                errors.email = 'آدرس ایمیل الزامی است';
+                                isValid = false;
+                            } else if (!/\S+@\S+\.\S+/.test(email)) {
+                                errors.email = 'لطفاً آدرس ایمیل معتبری وارد کنید';
+                                isValid = false;
+                            }
+
+                            const major = document.getElementById('major').value;
+                            if (!major) {
+                                errors.major = 'انتخاب رشته اصلی الزامی است';
+                                isValid = false;
+                            }
+
+                            const graduationYear = document.getElementById('graduationYear').value;
+                            if (!graduationYear) {
+                                errors.graduationYear = 'انتخاب سال فارغ‌التحصیلی الزامی است';
+                                isValid = false;
+                            }
+
+                            // Password validation (only if any password field is filled)
+                            const currentPassword = document.getElementById('currentPassword').value;
+                            const newPassword = document.getElementById('newPassword').value;
+                            const confirmPassword = document.getElementById('confirmPassword').value;
+
+                            if (currentPassword || newPassword || confirmPassword) {
+                                if (!currentPassword) {
+                                    errors.currentPassword = 'رمز عبور فعلی برای تغییر رمز عبور الزامی است';
+                                    isValid = false;
+                                }
+
+                                if (!newPassword) {
+                                    errors.newPassword = 'رمز عبور جدید الزامی است';
+                                    isValid = false;
+                                } else if (newPassword.length < 6) {
+                                    errors.newPassword = 'رمز عبور باید حداقل ۶ کاراکتر باشد';
+                                    isValid = false;
+                                }
+
+                                if (!confirmPassword) {
+                                    errors.confirmPassword = 'لطفاً رمز عبور جدید را تأیید کنید';
+                                    isValid = false;
+                                } else if (newPassword !== confirmPassword) {
+                                    errors.confirmPassword = 'رمزهای عبور مطابقت ندارند';
+                                    isValid = false;
+                                }
+                            }
+
+                            // Display errors
+                            Object.keys(errors).forEach(fieldName => {
+                                const field = document.getElementById(fieldName);
+                                if (field) {
+                                    field.classList.add('is-invalid');
+                                    const feedback = field.parentElement.querySelector('.invalid-feedback');
+                                    if (feedback) feedback.textContent = errors[fieldName];
+                                }
+                            });
+
+                            return isValid;
+                        }
+
+                        // Form submission
+                        document.getElementById('editProfileForm').addEventListener('submit', async function (e) {
+                            e.preventDefault();
+
+                            if (!validateForm()) {
+                                showNotification('error', 'خطا در فرم', 'لطفاً خطاهای موجود در فرم را برطرف کنید.', 5000);
+                                return;
+                            }
+
+                            const saveBtn = document.getElementById('saveBtn');
+                            const originalText = saveBtn.innerHTML;
+
+                            // Show loading state
+                            saveBtn.disabled = true;
+                            saveBtn.innerHTML = `
+                <span class="spinner me-2"></span>
+                در حال ذخیره...
+            `;
+
+                            try {
+                                // Simulate API call
+                                await new Promise(resolve => setTimeout(resolve, 2000));
+
+                                showNotification('success', 'پروفایل به‌روزرسانی شد', 'پروفایل شما با موفقیت به‌روزرسانی شد.', 5000);
+
+                                // In a real app, you would redirect or update the UI
+                                setTimeout(() => {
+                                    window.location.href = 'dashboard.html';
+                                }, 2000);
+
+                            } catch (error) {
+                                showNotification('error', 'خطا', 'مشکلی پیش آمده است. لطفاً دوباره تلاش کنید.', 5000);
+                            } finally {
+                                saveBtn.disabled = false;
+                                saveBtn.innerHTML = originalText;
+                                lucide.createIcons();
+                            }
+                        });
+
+                        // Initialize page
+                        document.addEventListener('DOMContentLoaded', function () {
+                            renderSkills();
+                        });
+
+                        // Handle responsive behavior
+                        function handleResize() {
+                            if (window.innerWidth < 768) {
+                                // Mobile specific adjustments
+                                document.querySelectorAll('.btn').forEach(btn => {
+                                    btn.classList.add('btn-sm');
+                                });
+                            }
+                        }
+
+                        window.addEventListener('resize', handleResize);
+                        handleResize(); // Initial call
+</script>
+</body>
+</html>
