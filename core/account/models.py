@@ -1,7 +1,10 @@
 from django.contrib.auth import get_user_model
+from django.core.validators import MinLengthValidator
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from taggit.managers import TaggableManager
+
 
 User = get_user_model()
 
@@ -10,7 +13,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     profile_pic = models.ImageField(upload_to='profile_pics/', default='default_user_profile_photo.jpg', blank=True)
 
-    phone_number = models.CharField(max_length=11, unique=True)
+    phone_number = models.CharField(max_length=11, unique=True, validators=[MinLengthValidator(11)])
 
     gender = models.CharField(max_length=10, choices=[('Male', 'زن'), ('Female', 'مرد'), ('Other', 'دیگر')],
                               default='Other')
@@ -33,13 +36,24 @@ class Profile(models.Model):
                                                               ('11', 'یازدهم متوسطه دوم'),
                                                               ('12', 'دوازدهم متوسطه دوم'), ])
     school = models.CharField(max_length=256)
-
+    skills = TaggableManager(blank=True)
     def __str__(self):
         return self.user.username
+
+    @property
+    def display_name(self):
+        """Returns the best available name representation"""
+        if self.user.get_full_name():
+            return self.user.get_full_name()
+        return self.user.username
+
+    @property
+    def display_email(self):
+        """Returns email or warning"""
+        return self.user.email or "No email set"
+
 
 @receiver(post_save, sender=User)
 def create_user_profile(instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
-
-

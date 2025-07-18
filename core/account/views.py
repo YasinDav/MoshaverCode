@@ -32,10 +32,16 @@ def edit_profile_view(request):
     profile = Profile.objects.get(user=user)
 
     if request.method == 'POST':
-        print("post")
         form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
-            form.save()
+            profile = form.save(commit=False)
+
+            profile.save()
+
+            tags_string = form.cleaned_data.get('tags', '')
+            tags_list = [tag.strip() for tag in tags_string.split(',') if tag.strip()]
+            profile.skills.set(tags_list)
+
             return redirect('profile')
         else:
             return HttpResponse(form.errors, status=400)

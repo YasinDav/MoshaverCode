@@ -190,67 +190,6 @@
             cursor: pointer;
         }
 
-        /* Skills Section */
-        {#.skills-section {#}
-        {#    background: linear-gradient(135deg, var(--sky-50), #e0f2fe);#}
-        {#    border: 1px solid var(--sky-200);#}
-        {#    border-radius: 0.75rem;#}
-        {#    padding: 1.5rem;#}
-        {# }#}
-        {##}
-        {#.skill-tag {#}
-        {#    background: var(--sky-100);#}
-        {#    color: var(--sky-800);#}
-        {#    padding: 0.5rem 0.75rem;#}
-        {#    border-radius: 1rem;#}
-        {#    font-size: 0.875rem;#}
-        {#    font-weight: 500;#}
-        {#    border: 1px solid var(--sky-200);#}
-        {#    display: inline-flex;#}
-        {#    align-items: center;#}
-        {#    gap: 0.5rem;#}
-        {#    margin: 0.25rem;#}
-        {#    transition: all 0.3s ease;#}
-        {# }#}
-        {##}
-        {#.skill-tag:hover {#}
-        {#    background: var(--sky-200);#}
-        {#    transform: translateY(-1px);#}
-        {# }#}
-        {##}
-        {#.skill-remove-btn {#}
-        {#    background: none;#}
-        {#    border: none;#}
-        {#    color: var(--sky-600);#}
-        {#    cursor: pointer;#}
-        {#    padding: 0;#}
-        {#    display: flex;#}
-        {#    align-items: center;#}
-        {#    justify-content: center;#}
-        {#    transition: color 0.3s ease;#}
-        {# }#}
-        {##}
-        {#.skill-remove-btn:hover {#}
-        {#    color: #dc3545;#}
-        {# }#}
-        {##}
-        {#.suggested-skill {#}
-        {#    background: #f3f4f6;#}
-        {#    color: #374151;#}
-        {#    padding: 0.25rem 0.75rem;#}
-        {#    border-radius: 1rem;#}
-        {#    font-size: 0.875rem;#}
-        {#    border: 1px solid #d1d5db;#}
-        {#    cursor: pointer;#}
-        {#    transition: all 0.3s ease;#}
-        {#    margin: 0.25rem;#}
-        {# }#}
-        {##}
-        {#.suggested-skill:hover {#}
-        {#    background: var(--sky-100);#}
-        {#    color: var(--sky-700);#}
-        {#    border-color: var(--sky-200);#}
-        {# }#}
 
         .skills-container {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -529,14 +468,7 @@
     </style>
 {% endblock %}
 
-{#{% block body %}#}
-{##}
-{#    <form method="post">#}
-{#        {% csrf_token %}#}
-{#        {{ form.as_p }}#}
-{#        <button type="submit">ذخیره</button>#}
-{#    </form>#}
-{#{% endblock %}#}
+
 
 
 {% block body %}
@@ -707,42 +639,7 @@
                                 {{ form.bio }}
                             </div>
 
-                            {# ------------------------------------------------------------------------------------------------------------------------------------------------------------#}
-                            {#                            <!-- Skills Section -->#}
-                            {#                            <div class="mb-4" id="change_password">#}
-                            {#                                <div class="skills-section">#}
-                            {#                                    <h4 class="h6 fw-semibold text-dark mb-3">مهارت‌ها و علایق</h4>#}
-                            {#                                    <p class="text-muted mb-4" style="font-size: 0.875rem;">#}
-                            {#                                        مهارت‌ها، علایق و حوزه‌های تخصصی خود را اضافه کنید. برای اضافه کردن مهارت جدید، Enter بزنید یا روی اضافه کلیک کنید.#}
-                            {#                                    </p>#}
-                            {#                                    #}
-                            {#                                    <!-- Current Skills -->#}
-                            {#                                    <div class="mb-4">#}
-                            {#                                        <div id="skillsList" class="d-flex flex-wrap gap-2 mb-3">#}
-                            {#                                            <!-- Skills will be populated here -->#}
-                            {#                                        </div>#}
-                            {#                                        <div id="noSkillsMessage" class="text-muted fst-italic" style="font-size: 0.875rem; display: none;">#}
-                            {#                                            هنوز مهارتی اضافه نشده است. در زیر اضافه کنید!#}
-                            {#                                        </div>#}
-                            {#                                    </div>#}
-                            {#                                    #}
-                            {#                                    <!-- Add New Skill -->#}
-                            {#                                    <div class="mb-4">#}
-                            {#                                        <div class="input-group">#}
-                            {#                                            <input type="text" class="form-control" id="newSkillInput" placeholder="مثال: پایتون، عکاسی، سخنرانی عمومی...">#}
-                            {#                                            <button type="button" class="btn btn-primary" id="addSkillBtn">اضافه</button>#}
-                            {#                                        </div>#}
-                            {#                                    </div>#}
-                            {#                                    #}
-                            {#                                    <!-- Suggested Skills -->#}
-                            {#                                    <div>#}
-                            {#                                        <p class="text-muted mb-2" style="font-size: 0.875rem;">مهارت‌های پیشنهادی:</p>#}
-                            {#                                        <div id="suggestedSkills" class="d-flex flex-wrap gap-2">#}
-                            {#                                            <!-- Suggested skills will be populated here -->#}
-                            {#                                        </div>#}
-                            {#                                    </div>#}
-                            {#                                </div>#}
-                            {#                            </div>#}
+
                             <div class="mb-4">
                                 <h3 class="h5 fw-semibold text-dark mb-4">مهارت‌ها و علایق</h3>
 
@@ -825,7 +722,7 @@
         // Initialize Lucide icons
         lucide.createIcons();
 
-        // Skills data
+
         {#let currentSkills = ["پایتون", "جاوااسکریپت", "طراحی UI/UX", "یادگیری ماشین", "عکاسی", "React", "Node.js"];#}
         {#const suggestedSkillsList = ["React", "Node.js", "تحلیل داده", "طراحی گرافیک", "سخنرانی عمومی", "مدیریت پروژه", "نویسندگی", "تحقیق"];#}
 
@@ -875,6 +772,7 @@
         }
 
 
+        {# skills #}
         document.addEventListener('DOMContentLoaded', function () {
             const skillsList = document.getElementById('skillsList');
             const noSkillsMessage = document.getElementById('noSkillsMessage');
@@ -911,18 +809,25 @@
                 } else {
                     noSkillsMessage.style.display = 'none';
                     skillsList.innerHTML = tags.map(tag => `
-                    <div class="skill-tag">
-                        ${tag}
-                        <button class="remove-tag" onclick="removeTag('${tag}')">×</button>
-                    </div>
-                `).join('');
+                <div class="skill-tag">
+                    ${tag}
+                    <button class="remove-tag" onclick="removeTag('${tag}')">×</button>
+                </div>
+            `).join('');
                 }
 
-                // Update hidden input for form submission
-                tagsOutput.value = tags.join('، ');
+                tagsOutput.value = tags.join(', ');
             }
 
-            // Add tag button click handler
+            // 👇👇👇 همینجا بیا اینو بنویس:
+            const initialTags = [
+                {% for tag in form.skills.value %}
+                    "{{ tag.name }}"{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            ];
+            initialTags.forEach(tag => addTag(tag));
+
+            // Add tag on button click
             addSkillBtn.addEventListener('click', function () {
                 if (addTag(newSkillInput.value)) {
                     newSkillInput.value = '';
@@ -947,251 +852,197 @@
                 });
             });
 
-            // Make removeTag available globally
             window.removeTag = removeTag;
         });
 
 
-        // Skills management
-        {#function renderSkills() {#}
-        {#    const skillsList = document.getElementById('skillsList');#}
-        {#    const noSkillsMessage = document.getElementById('noSkillsMessage');#}
-        {##}
-        {#    if (currentSkills.length === 0) {#}
-        {#        skillsList.innerHTML = '';#}
-        {#        noSkillsMessage.style.display = 'block';#}
-        {#    } else {#}
-        {#        noSkillsMessage.style.display = 'none';#}
-        {#        skillsList.innerHTML = currentSkills.map(skill => `#}
-        {#                <span class="skill-tag">#}
-        {#                    ${skill}#}
-        {#                    <button type="button" class="skill-remove-btn" onclick="removeSkill('${skill}')">#}
-        {#                        <i data-lucide="x" width="14" height="14"></i>#}
-        {#                    </button>#}
-        {#                </span>#}
-        {#            `).join('');#}
-        {#    }#}
-        {##}
-        {#    renderSuggestedSkills();#}
-        {#    lucide.createIcons();#}
-        {#}#}
-            {##}
-            {#function renderSuggestedSkills() {#}
-            {#    const suggestedSkills = document.getElementById('suggestedSkills');#}
-            {#    const availableSkills = suggestedSkillsList.filter(skill => !currentSkills.includes(skill));#}
-            {##}
-            {#    suggestedSkills.innerHTML = availableSkills.map(skill => `#}
-            {#            <span class="suggested-skill" onclick="addSuggestedSkill('${skill}')">#}
-            {#                + ${skill}#}
-            {#            </span>#}
-            {#        `).join('');#}
-            {#}#}
-                {##}
-                {#function addSkill(skill) {#}
-                {#    if (skill.trim() && !currentSkills.includes(skill.trim())) {#}
-                {#        currentSkills.push(skill.trim());#}
-                {#        renderSkills();#}
-                {#        return true;#}
-                {#    }#}
-                {#    return false;#}
-                {#}#}
-                    {##}
-                    {#function removeSkill(skill) {#}
-                    {#    currentSkills = currentSkills.filter(s => s !== skill);#}
-                    {#    renderSkills();#}
-                    {#}#}
-                        {##}
-                        {#function addSuggestedSkill(skill) {#}
-                        {#    addSkill(skill);#}
-                        {#}#}
+        // Add skill event listeners
+        document.getElementById('addSkillBtn').addEventListener('click', function () {
+            const input = document.getElementById('newSkillInput');
+            const skill = input.value.trim();
 
-                            // Add skill event listeners
-                            document.getElementById('addSkillBtn').addEventListener('click', function () {
-                                const input = document.getElementById('newSkillInput');
-                                const skill = input.value.trim();
+            if (addSkill(skill)) {
+                input.value = '';
+            } else if (skill) {
+                showNotification('error', 'خطا', 'این مهارت قبلاً اضافه شده است.', 3000);
+            }
+        });
 
-                                if (addSkill(skill)) {
-                                    input.value = '';
-                                } else if (skill) {
-                                    showNotification('error', 'خطا', 'این مهارت قبلاً اضافه شده است.', 3000);
-                                }
-                            });
+        document.getElementById('newSkillInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById('addSkillBtn').click();
+            }
+        });
 
-                            document.getElementById('newSkillInput').addEventListener('keypress', function (e) {
-                                if (e.key === 'Enter') {
-                                    e.preventDefault();
-                                    document.getElementById('addSkillBtn').click();
-                                }
-                            });
+        // Password toggle functionality
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            const button = field.parentElement.querySelector('.password-toggle');
+            const icon = button.querySelector('i');
 
-                            // Password toggle functionality
-                            function togglePassword(fieldId) {
-                                const field = document.getElementById(fieldId);
-                                const button = field.parentElement.querySelector('.password-toggle');
-                                const icon = button.querySelector('i');
+            if (field.type === 'password') {
+                field.type = 'text';
+                icon.setAttribute('data-lucide', 'eye-off');
+            } else {
+                field.type = 'password';
+                icon.setAttribute('data-lucide', 'eye');
+            }
 
-                                if (field.type === 'password') {
-                                    field.type = 'text';
-                                    icon.setAttribute('data-lucide', 'eye-off');
-                                } else {
-                                    field.type = 'password';
-                                    icon.setAttribute('data-lucide', 'eye');
-                                }
+            lucide.createIcons();
+        }
 
-                                lucide.createIcons();
-                            }
+        // Avatar upload functionality
+        document.getElementById('avatarUpload').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('profileAvatar').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
 
-                            // Avatar upload functionality
-                            document.getElementById('avatarUpload').addEventListener('change', function (e) {
-                                const file = e.target.files[0];
-                                if (file) {
-                                    const reader = new FileReader();
-                                    reader.onload = function (e) {
-                                        document.getElementById('profileAvatar').src = e.target.result;
-                                    };
-                                    reader.readAsDataURL(file);
+                showNotification('success', 'موفق', 'تصویر پروفایل با موفقیت آپلود شد.', 3000);
+            }
+        });
 
-                                    showNotification('success', 'موفق', 'تصویر پروفایل با موفقیت آپلود شد.', 3000);
-                                }
-                            });
+        // Form validation
+        function validateForm() {
+            let isValid = true;
+            const errors = {};
 
-                            // Form validation
-                            function validateForm() {
-                                let isValid = true;
-                                const errors = {};
+            // Clear previous errors
+            document.querySelectorAll('.form-control, .form-select').forEach(field => {
+                field.classList.remove('is-invalid');
+                const feedback = field.parentElement.querySelector('.invalid-feedback');
+                if (feedback) feedback.textContent = '';
+            });
 
-                                // Clear previous errors
-                                document.querySelectorAll('.form-control, .form-select').forEach(field => {
-                                    field.classList.remove('is-invalid');
-                                    const feedback = field.parentElement.querySelector('.invalid-feedback');
-                                    if (feedback) feedback.textContent = '';
-                                });
+            // Validate required fields
+            const fullName = document.getElementById('fullName').value.trim();
+            if (!fullName) {
+                errors.fullName = 'نام کامل الزامی است';
+                isValid = false;
+            }
 
-                                // Validate required fields
-                                const fullName = document.getElementById('fullName').value.trim();
-                                if (!fullName) {
-                                    errors.fullName = 'نام کامل الزامی است';
-                                    isValid = false;
-                                }
+            const email = document.getElementById('email').value.trim();
+            if (!email) {
+                errors.email = 'آدرس ایمیل الزامی است';
+                isValid = false;
+            } else if (!/\S+@\S+\.\S+/.test(email)) {
+                errors.email = 'لطفاً آدرس ایمیل معتبری وارد کنید';
+                isValid = false;
+            }
 
-                                const email = document.getElementById('email').value.trim();
-                                if (!email) {
-                                    errors.email = 'آدرس ایمیل الزامی است';
-                                    isValid = false;
-                                } else if (!/\S+@\S+\.\S+/.test(email)) {
-                                    errors.email = 'لطفاً آدرس ایمیل معتبری وارد کنید';
-                                    isValid = false;
-                                }
+            const major = document.getElementById('major').value;
+            if (!major) {
+                errors.major = 'انتخاب رشته اصلی الزامی است';
+                isValid = false;
+            }
 
-                                const major = document.getElementById('major').value;
-                                if (!major) {
-                                    errors.major = 'انتخاب رشته اصلی الزامی است';
-                                    isValid = false;
-                                }
+            const graduationYear = document.getElementById('graduationYear').value;
+            if (!graduationYear) {
+                errors.graduationYear = 'انتخاب سال فارغ‌التحصیلی الزامی است';
+                isValid = false;
+            }
 
-                                const graduationYear = document.getElementById('graduationYear').value;
-                                if (!graduationYear) {
-                                    errors.graduationYear = 'انتخاب سال فارغ‌التحصیلی الزامی است';
-                                    isValid = false;
-                                }
+            // Password validation (only if any password field is filled)
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
 
-                                // Password validation (only if any password field is filled)
-                                const currentPassword = document.getElementById('currentPassword').value;
-                                const newPassword = document.getElementById('newPassword').value;
-                                const confirmPassword = document.getElementById('confirmPassword').value;
+            if (currentPassword || newPassword || confirmPassword) {
+                if (!currentPassword) {
+                    errors.currentPassword = 'رمز عبور فعلی برای تغییر رمز عبور الزامی است';
+                    isValid = false;
+                }
 
-                                if (currentPassword || newPassword || confirmPassword) {
-                                    if (!currentPassword) {
-                                        errors.currentPassword = 'رمز عبور فعلی برای تغییر رمز عبور الزامی است';
-                                        isValid = false;
-                                    }
+                if (!newPassword) {
+                    errors.newPassword = 'رمز عبور جدید الزامی است';
+                    isValid = false;
+                } else if (newPassword.length < 6) {
+                    errors.newPassword = 'رمز عبور باید حداقل ۶ کاراکتر باشد';
+                    isValid = false;
+                }
 
-                                    if (!newPassword) {
-                                        errors.newPassword = 'رمز عبور جدید الزامی است';
-                                        isValid = false;
-                                    } else if (newPassword.length < 6) {
-                                        errors.newPassword = 'رمز عبور باید حداقل ۶ کاراکتر باشد';
-                                        isValid = false;
-                                    }
+                if (!confirmPassword) {
+                    errors.confirmPassword = 'لطفاً رمز عبور جدید را تأیید کنید';
+                    isValid = false;
+                } else if (newPassword !== confirmPassword) {
+                    errors.confirmPassword = 'رمزهای عبور مطابقت ندارند';
+                    isValid = false;
+                }
+            }
 
-                                    if (!confirmPassword) {
-                                        errors.confirmPassword = 'لطفاً رمز عبور جدید را تأیید کنید';
-                                        isValid = false;
-                                    } else if (newPassword !== confirmPassword) {
-                                        errors.confirmPassword = 'رمزهای عبور مطابقت ندارند';
-                                        isValid = false;
-                                    }
-                                }
+            // Display errors
+            Object.keys(errors).forEach(fieldName => {
+                const field = document.getElementById(fieldName);
+                if (field) {
+                    field.classList.add('is-invalid');
+                    const feedback = field.parentElement.querySelector('.invalid-feedback');
+                    if (feedback) feedback.textContent = errors[fieldName];
+                }
+            });
 
-                                // Display errors
-                                Object.keys(errors).forEach(fieldName => {
-                                    const field = document.getElementById(fieldName);
-                                    if (field) {
-                                        field.classList.add('is-invalid');
-                                        const feedback = field.parentElement.querySelector('.invalid-feedback');
-                                        if (feedback) feedback.textContent = errors[fieldName];
-                                    }
-                                });
+            return isValid;
+        }
 
-                                return isValid;
-                            }
+        // Form submission
+        document.getElementById('editProfileForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
 
-                            // Form submission
-                            document.getElementById('editProfileForm').addEventListener('submit', async function (e) {
-                                e.preventDefault();
+            if (!validateForm()) {
+                showNotification('error', 'خطا در فرم', 'لطفاً خطاهای موجود در فرم را برطرف کنید.', 5000);
+                return;
+            }
 
-                                if (!validateForm()) {
-                                    showNotification('error', 'خطا در فرم', 'لطفاً خطاهای موجود در فرم را برطرف کنید.', 5000);
-                                    return;
-                                }
+            const saveBtn = document.getElementById('saveBtn');
+            const originalText = saveBtn.innerHTML;
 
-                                const saveBtn = document.getElementById('saveBtn');
-                                const originalText = saveBtn.innerHTML;
-
-                                // Show loading state
-                                saveBtn.disabled = true;
-                                saveBtn.innerHTML = `
+            // Show loading state
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = `
                 <span class="spinner me-2"></span>
                 در حال ذخیره...
             `;
 
-                                try {
-                                    // Simulate API call
-                                    await new Promise(resolve => setTimeout(resolve, 2000));
+            try {
+                // Simulate API call
+                await new Promise(resolve => setTimeout(resolve, 2000));
 
-                                    showNotification('success', 'پروفایل به‌روزرسانی شد', 'پروفایل شما با موفقیت به‌روزرسانی شد.', 5000);
+                showNotification('success', 'پروفایل به‌روزرسانی شد', 'پروفایل شما با موفقیت به‌روزرسانی شد.', 5000);
 
-                                    // In a real app, you would redirect or update the UI
-                                    setTimeout(() => {
-                                        window.location.href = 'dashboard.html';
-                                    }, 2000);
+                // In a real app, you would redirect or update the UI
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 2000);
 
-                                } catch (error) {
-                                    showNotification('error', 'خطا', 'مشکلی پیش آمده است. لطفاً دوباره تلاش کنید.', 5000);
-                                } finally {
-                                    saveBtn.disabled = false;
-                                    saveBtn.innerHTML = originalText;
-                                    lucide.createIcons();
-                                }
-                            });
+            } catch (error) {
+                showNotification('error', 'خطا', 'مشکلی پیش آمده است. لطفاً دوباره تلاش کنید.', 5000);
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = originalText;
+                lucide.createIcons();
+            }
+        });
 
-                            // Initialize page
-                            document.addEventListener('DOMContentLoaded', function () {
-                                renderSkills();
-                            });
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function () {
+            renderSkills();
+        });
 
-                            // Handle responsive behavior
-                            function handleResize() {
-                                if (window.innerWidth < 768) {
-                                    // Mobile specific adjustments
-                                    document.querySelectorAll('.btn').forEach(btn => {
-                                        btn.classList.add('btn-sm');
-                                    });
-                                }
-                            }
+        // Handle responsive behavior
+        function handleResize() {
+            if (window.innerWidth < 768) {
+                // Mobile specific adjustments
+                document.querySelectorAll('.btn').forEach(btn => {
+                    btn.classList.add('btn-sm');
+                });
+            }
+        }
 
-                            window.addEventListener('resize', handleResize);
-                            handleResize(); // Initial call
+        window.addEventListener('resize', handleResize);
+        handleResize(); // Initial call
     </script>
 
 {% endblock %}
