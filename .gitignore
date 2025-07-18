@@ -169,3 +169,5 @@ test.py
 
 /core/statics/css/bootstrap/
 /core/statics/js/bootstrap/
+/core/templates/blog/
+/core/blog/

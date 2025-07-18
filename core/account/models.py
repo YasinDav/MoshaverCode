@@ -15,7 +15,7 @@ class Profile(models.Model):
 
     phone_number = models.CharField(max_length=11, unique=True, validators=[MinLengthValidator(11)])
 
-    gender = models.CharField(max_length=10, choices=[('Male', 'زن'), ('Female', 'مرد'), ('Other', 'دیگر')],
+    gender = models.CharField(max_length=10, choices=[('زن', 'زن'), ('مرد', 'مرد'), ('دیگر', 'دیگر')],
                               default='Other')
 
     created_at = models.DateTimeField(auto_now_add=True)
