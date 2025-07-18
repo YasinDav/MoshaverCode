@@ -1,15 +1,14 @@
 from account.urls import urlpatterns as account
-from account.views import login_view, signup_view, logout_view
+from account.views import login_view, signup_view, logout_view, change_password_view
 from consult.urls import urlpatterns as consult
+# from debug_toolbar.toolbar import debug_toolbar_urls
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include
-from debug_toolbar.toolbar import debug_toolbar_urls
-
-from index.urls import urlpatterns as index
 from django.contrib.sitemaps.views import sitemap
+from django.urls import path, include
 from index.sitemaps import StaticViewSitemap
+from index.urls import urlpatterns as index
 
 dashboard_urlpatterns = [
     path('consult/', include(consult)),
@@ -28,6 +27,7 @@ urlpatterns = [
     path('login/', login_view, name="login"),
     path('signup/', signup_view, name="signup"),
     path('logout/', logout_view, name="logout"),
+    path('changepw/', change_password_view, name="change_password"),
     path('summernote/', include('django_summernote.urls')),
     path(
         "sitemap.xml", sitemap, {"sitemaps": sitemaps}, name="django.contrib.sitemaps.views.sitemap"),
@@ -40,4 +40,4 @@ urlpatterns += [
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-urlpatterns += debug_toolbar_urls()
+# urlpatterns += debug_toolbar_urls()

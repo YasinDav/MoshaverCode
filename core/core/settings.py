@@ -30,13 +30,14 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     "index",
     "account",
+    "blog",
     "captcha",
     "django_summernote",
     "taggit",
     'django.contrib.sites',
     'django.contrib.sitemaps',
     'robots',
-    "debug_toolbar",
+    # "debug_toolbar",
 
 ]
 
@@ -48,7 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    # "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -139,6 +140,14 @@ SIGNUP_REDIRECT_URL = '/signup/'
 # Summernote setting
 X_FRAME_OPTIONS = "SAMEORIGIN"
 
+SUMMERNOTE_CONFIG = {
+    'summernote': {
+        'fontNames': ['Vazirmatn', 'Sahel', 'Samim', 'Shabnam', 'Gandom', 'Arial', 'Tahoma'],
+        'fontNamesIgnoreCheck': ['Vazirmatn', 'Sahel', 'Samim', 'Shabnam', 'Gandom'],
+    },
+    "lang": "fa-IR",
+}
+
 # sites framework
 SITE_ID = 1
 
@@ -148,3 +157,7 @@ ROBOTS_USE_HOST = False
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+
+# taggit setting
+TAGGIT_CASE_INSENSITIVE = True
+TAGGIT_STRIP_UNICODE_WHEN_SLUGIFYING = False
