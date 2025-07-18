@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, reverse, redirect
+from django.urls import reverse_lazy
 
 from .forms import ConsultFormRange, ConsultFormInput
 from .models import Consult, Question
@@ -205,10 +206,14 @@ def consult_panel_view(request):
 @login_required(login_url=settings.LOGIN_REDIRECT_URL)
 def new_consult_view(request):
     if request.method == "POST":
-        Consult.objects.create(
+        c = Consult.objects.create(
             user=request.user,
             status=True,
         )
+
+        return redirect(reverse_lazy("question",
+                                     kwargs={"question_model_id_hash": find_secreted_url(consult=c, complete_url=False),
+                                             "consult_id": c.id}))
 
     return redirect(reverse("consult"))
 
