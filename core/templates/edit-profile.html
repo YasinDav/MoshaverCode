@@ -573,6 +573,15 @@
     </style>
 </head>
 <body>
+
+{##}
+{#<form method="post">#}
+{#    {% csrf_token %}#}
+{#    {{ form.as_p }}#}
+{#    <button type="submit">ذخیره</button>#}
+{#</form>#}
+
+
 <!-- Dashboard Navbar -->
 <nav class="dashboard-navbar">
     <div class="container">
@@ -589,7 +598,7 @@
 
                 <!-- User Info -->
                 <div class="d-flex align-items-center gap-2">
-                    <img src="/placeholder.svg?height=32&width=32" alt="سارا جانسون" class="rounded-circle"
+                    <img src="" alt="سارا جانسون" class="rounded-circle"
                          style="width: 2rem; height: 2rem;">
                     <span class="d-none d-md-inline text-muted">سارا</span>
                 </div>
@@ -617,17 +626,21 @@
                 </div>
 
                 <div class="p-4">
-                    <form id="editProfileForm" novalidate>
+                    <form {# id="editProfileForm" novalidate #} method="post" action="{% url "edit_profile" %}">
+                        {% csrf_token %}
                         <!-- Profile Picture Section -->
                         <div class="mb-5">
                             <div class="profile-picture-section">
                                 <div class="position-relative">
-                                    <img id="profileAvatar" src="/placeholder.svg?height=128&width=128"
-                                         alt="تصویر پروفایل" class="profile-avatar">
-                                    <label for="avatarUpload" class="avatar-upload-btn">
+                                    {% if form.profile_pic.value %}
+                                        <img src="{{ form.profile_pic.value.url }}" alt="Profile Pic"
+                                             style="max-height: 150px;" id="profileAvatar" class="profile-avatar">
+                                    {% endif %}
+
+                                    <label for="id_profile_pic" class="avatar-upload-btn">
                                         <i data-lucide="upload" width="16" height="16"></i>
-                                        <input type="file" id="avatarUpload" class="avatar-upload-input"
-                                               accept="image/*">
+                                        <input type="file" id="id_profile_pic" class="avatar-upload-input"
+                                               accept="image/*" name="profile_pic">
                                     </label>
                                 </div>
                                 <div class="text-center">
@@ -650,78 +663,110 @@
                             <h3 class="h5 fw-semibold text-dark mb-4">اطلاعات پایه</h3>
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <label for="fullName" class="form-label">نام کامل</label>
+                                    <label for="id_first_name" class="form-label">نام</label>
                                     <div class="input-with-icon">
-                                        <input type="text" class="form-control" id="fullName" value="سارا جانسون"
-                                               required>
+                                        {{ form.first_name }}
                                         <i data-lucide="user" class="input-icon" width="18" height="18"></i>
                                         <div class="invalid-feedback"></div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="email" class="form-label">آدرس ایمیل</label>
+                                    <label for="id_last_name" class="form-label">نام خانوادگی</label>
                                     <div class="input-with-icon">
-                                        <input type="email" class="form-control" id="email"
-                                               value="sarah.johnson@university.edu" required>
+                                        {{ form.last_name }}
+                                        <i data-lucide="user" class="input-icon" width="18" height="18"></i>
+                                        <div class="invalid-feedback"></div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="id_email" class="form-label">آدرس ایمیل</label>
+                                    <div class="input-with-icon">
+                                        {{ form.email }}
                                         <i data-lucide="mail" class="input-icon" width="18" height="18"></i>
                                         <div class="invalid-feedback"></div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="major" class="form-label">رشته اصلی</label>
-                                    <select class="form-select" id="major" required>
-                                        <option value="">رشته خود را انتخاب کنید</option>
-                                        <option value="computer-science" selected>علوم کامپیوتر</option>
-                                        <option value="design">طراحی</option>
-                                        <option value="business">کسب و کار</option>
-                                        <option value="engineering">مهندسی</option>
-                                        <option value="psychology">روانشناسی</option>
-                                    </select>
-                                    <div class="invalid-feedback"></div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="minor" class="form-label">رشته فرعی (اختیاری)</label>
-                                    <select class="form-select" id="minor">
-                                        <option value="">رشته فرعی خود را انتخاب کنید</option>
-                                        <option value="none">هیچ</option>
-                                        <option value="digital-arts" selected>هنرهای دیجیتال</option>
-                                        <option value="mathematics">ریاضیات</option>
-                                        <option value="marketing">بازاریابی</option>
-                                        <option value="communication">ارتباطات</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="graduationYear" class="form-label">سال فارغ‌التحصیلی مورد انتظار</label>
-                                    <select class="form-select" id="graduationYear" required>
-                                        <option value="">سال فارغ‌التحصیلی را انتخاب کنید</option>
-                                        <option value="2024">۱۴۰۳</option>
-                                        <option value="2025">۱۴۰۴</option>
-                                        <option value="2026" selected>۱۴۰۵</option>
-                                        <option value="2027">۱۴۰۶</option>
-                                        <option value="2028">۱۴۰۷</option>
-                                    </select>
-                                    <div class="invalid-feedback"></div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="academicInterest" class="form-label">علاقه تحصیلی</label>
+                                    <label for="id_username" class="form-label">نام کاربری</label>
                                     <div class="input-with-icon">
-                                        <input type="text" class="form-control" id="academicInterest"
-                                               value="علوم کامپیوتر و طراحی">
+                                        {{ form.username }}
+                                        <i data-lucide="user" class="input-icon" width="18" height="18"></i>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="id_major" class="form-label">رشته اصلی</label>
+                                    <div class="input-with-icon">
+                                        {{ form.major }}
                                         <i data-lucide="graduation-cap" class="input-icon" width="18" height="18"></i>
                                     </div>
                                 </div>
+
+                                <div class="col-md-6">
+                                    <label for="id_sub_field_of_education" class="form-label">رشته فرعی
+                                        (اختیاری)</label>
+                                    <div class="input-with-icon">
+                                        {{ form.sub_field_of_education }}
+                                        <i data-lucide="graduation-cap" class="input-icon" width="18" height="18"></i>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="id_expected_graduation_year" class="form-label">سال فارغ‌التحصیلی مورد
+                                        انتظار</label>
+                                    <div class="input-with-icon">
+                                        {{ form.expected_graduation_year }}
+                                        <i data-lucide="graduation-cap" class="input-icon" width="18" height="18"></i>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="id_academic_interest" class="form-label">علاقه تحصیلی</label>
+                                    <div class="input-with-icon">
+                                        {{ form.academic_interest }}
+                                        <i data-lucide="graduation-cap" class="input-icon" width="18" height="18"></i>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="id_phone_number" class="form-label">شماره همراه</label>
+                                    <div class="input-with-icon">
+                                        {{ form.phone_number }}
+                                        <i data-lucide="phone" class="input-icon" width="18" height="18"></i>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="id_gender" class="form-label">جنسیت</label>
+                                    {{ form.gender }}
+
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="id_grade_point_average" class="form-label">معدل کل</label>
+                                    {{ form.grade_point_average }}
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="id_school" class="form-label">مدرسه / محل تحصیل</label>
+                                    {{ form.school }}
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="id_graduation_year" class="form-label">سال تحصیلی</label>
+                                    {{ form.graduation_year }}
+                                </div>
+
                             </div>
                         </div>
 
                         <!-- Bio Section -->
                         <div class="mb-4">
-                            <label for="bio" class="form-label">بیوگرافی</label>
-                            <textarea class="form-control" id="bio" rows="4" placeholder="در مورد خودتان بگویید...">من دانشجوی سال سوم هستم که به تقاطع فناوری و طراحی علاقه‌مند است. به دنبال ساختن شغلی در طراحی UX/UI با پایه‌ای قوی در فناوری هستم.</textarea>
+                            <label for="id_bio" class="form-label">بیوگرافی</label>
+                            {{ form.bio }}
                         </div>
 
                         {# ------------------------------------------------------------------------------------------------------------------------------------------------------------#}
@@ -814,61 +859,62 @@
                         <hr class="my-4">
 
                         <!-- Password Change Section -->
-                        <div class="mb-4">
-                            <h3 class="h5 fw-semibold text-dark mb-4">تغییر رمز عبور</h3>
-                            <p class="text-muted mb-4" style="font-size: 0.875rem;">
-                                اگر نمی‌خواهید رمز عبور خود را تغییر دهید، این فیلدها را خالی بگذارید.
-                            </p>
-
-                            <div class="row g-3">
-                                <div class="col-md-12">
-                                    <label for="currentPassword" class="form-label">رمز عبور فعلی</label>
-                                    <div class="input-with-icon">
-                                        <input type="password" class="form-control" id="currentPassword">
-                                        <i data-lucide="lock" class="input-icon" width="18" height="18"></i>
-                                        <button type="button" class="password-toggle"
-                                                onclick="togglePassword('currentPassword')">
-                                            <i data-lucide="eye" width="18" height="18"></i>
-                                        </button>
-                                        <div class="invalid-feedback"></div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="newPassword" class="form-label">رمز عبور جدید</label>
-                                    <div class="input-with-icon">
-                                        <input type="password" class="form-control" id="newPassword">
-                                        <i data-lucide="lock" class="input-icon" width="18" height="18"></i>
-                                        <button type="button" class="password-toggle"
-                                                onclick="togglePassword('newPassword')">
-                                            <i data-lucide="eye" width="18" height="18"></i>
-                                        </button>
-                                        <div class="invalid-feedback"></div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="confirmPassword" class="form-label">تأیید رمز عبور جدید</label>
-                                    <div class="input-with-icon">
-                                        <input type="password" class="form-control" id="confirmPassword">
-                                        <i data-lucide="lock" class="input-icon" width="18" height="18"></i>
-                                        <button type="button" class="password-toggle"
-                                                onclick="togglePassword('confirmPassword')">
-                                            <i data-lucide="eye" width="18" height="18"></i>
-                                        </button>
-                                        <div class="invalid-feedback"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        {#                        <div class="mb-4">#}
+                        {#                            <h3 class="h5 fw-semibold text-dark mb-4">تغییر رمز عبور</h3>#}
+                        {#                            <p class="text-muted mb-4" style="font-size: 0.875rem;">#}
+                        {#                                اگر نمی‌خواهید رمز عبور خود را تغییر دهید، این فیلدها را خالی بگذارید.#}
+                        {#                            </p>#}
+                        {##}
+                        {#                            <div class="row g-3">#}
+                        {#                                <div class="col-md-12">#}
+                        {#                                    <label for="currentPassword" class="form-label">رمز عبور فعلی</label>#}
+                        {#                                    <div class="input-with-icon">#}
+                        {#                                        <input type="password" class="form-control" id="currentPassword">#}
+                        {#                                        <i data-lucide="lock" class="input-icon" width="18" height="18"></i>#}
+                        {#                                        <button type="button" class="password-toggle"#}
+                        {#                                                onclick="togglePassword('currentPassword')">#}
+                        {#                                            <i data-lucide="eye" width="18" height="18"></i>#}
+                        {#                                        </button>#}
+                        {#                                        <div class="invalid-feedback"></div>#}
+                        {#                                    </div>#}
+                        {#                                </div>#}
+                        {##}
+                        {#                                <div class="col-md-6">#}
+                        {#                                    <label for="newPassword" class="form-label">رمز عبور جدید</label>#}
+                        {#                                    <div class="input-with-icon">#}
+                        {#                                        <input type="password" class="form-control" id="newPassword">#}
+                        {#                                        <i data-lucide="lock" class="input-icon" width="18" height="18"></i>#}
+                        {#                                        <button type="button" class="password-toggle"#}
+                        {#                                                onclick="togglePassword('newPassword')">#}
+                        {#                                            <i data-lucide="eye" width="18" height="18"></i>#}
+                        {#                                        </button>#}
+                        {#                                        <div class="invalid-feedback"></div>#}
+                        {#                                    </div>#}
+                        {#                                </div>#}
+                        {##}
+                        {#                                <div class="col-md-6">#}
+                        {#                                    <label for="confirmPassword" class="form-label">تأیید رمز عبور جدید</label>#}
+                        {#                                    <div class="input-with-icon">#}
+                        {#                                        <input type="password" class="form-control" id="confirmPassword">#}
+                        {#                                        <i data-lucide="lock" class="input-icon" width="18" height="18"></i>#}
+                        {#                                        <button type="button" class="password-toggle"#}
+                        {#                                                onclick="togglePassword('confirmPassword')">#}
+                        {#                                            <i data-lucide="eye" width="18" height="18"></i>#}
+                        {#                                        </button>#}
+                        {#                                        <div class="invalid-feedback"></div>#}
+                        {#                                    </div>#}
+                        {#                                </div>#}
+                        {#                            </div>#}
+                        {#                        </div>#}
 
                         <!-- Form Actions -->
                         <div class="d-flex justify-content-end gap-3 pt-4 border-top">
                             <a href="dashboard.html" class="btn btn-outline-secondary">لغو</a>
-                            <button type="submit" class="btn btn-primary" id="saveBtn">
-                                <i data-lucide="save" width="18" height="18" class="me-2"></i>
-                                ذخیره تغییرات
-                            </button>
+{#                            <button type="submit" class="btn btn-primary" id="saveBtn">#}
+{#                                <i data-lucide="save" width="18" height="18" class="me-2"></i>#}
+{#                                ذخیره تغییرات#}
+{#                            </button>#}
+                            <button type="submit">ذخیره</button>
                         </div>
                     </form>
                 </div>
