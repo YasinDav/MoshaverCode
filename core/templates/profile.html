@@ -1,105 +1,521 @@
 {% extends "base.html" %}
-{% load static account_tags%}
+{% load static account_tags %}
+
 
 {% block extra_head %}
-<link href="{% static 'profile.css' %}" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <style>
+        :root {
+            --sky-50: #f0f9ff;
+            --sky-100: #e0f2fe;
+            --sky-200: #bae6fd;
+            --sky-300: #7dd3fc;
+            --sky-400: #38bdf8;
+            --sky-500: #0ea5e9;
+            --sky-600: #0284c7;
+            --sky-700: #0369a1;
+            --sky-800: #075985;
+            --sky-900: #0c4a6e;
+        }
+
+        {#* {#}
+        {#    font-family: 'Vazirmatn', sans-serif;#}
+        {# }#}
+
+        body {
+            direction: rtl;
+            background: linear-gradient(135deg, var(--sky-50) 0%, white 50%, var(--sky-100) 100%);
+            min-height: 100vh;
+        }
+
+        /* Navbar Styles */
+        .dashboard-navbar {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--sky-600) !important;
+            text-decoration: none;
+        }
+
+        .navbar-nav .nav-link {
+            color: #374151 !important;
+            font-weight: 500;
+            margin: 0 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: var(--sky-600) !important;
+        }
+
+        .btn-outline-primary {
+            border-color: var(--sky-600);
+            color: var(--sky-600);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--sky-600);
+            border-color: var(--sky-600);
+            color: white;
+        }
+
+        .btn-primary {
+            background-color: var(--sky-600);
+            border-color: var(--sky-600);
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--sky-700);
+            border-color: var(--sky-700);
+            transform: translateY(-2px);
+        }
+
+        /* Profile Cards */
+        .profile-card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header-gradient {
+            background: linear-gradient(135deg, var(--sky-600), var(--sky-700));
+            color: white;
+            padding: 2rem;
+        }
+
+        .card-header-gradient h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        /* Profile Avatar */
+        .profile-avatar {
+            width: 8rem;
+            height: 8rem;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--sky-100);
+            transition: transform 0.3s ease;
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .profile-name {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-email {
+            color: #6b7280;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Info Sections */
+        .info-section {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .info-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-section h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: #f9fafb;
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .info-item:hover {
+            background: var(--sky-50);
+        }
+
+        .info-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .info-content {
+            flex: 1;
+        }
+
+        .info-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.25rem;
+        }
+
+        .info-value {
+            color: #4b4b52;
+            font-size: 0.875rem;
+        }
+
+        .info-empty-value {
+            color: #7b7b8f;
+            font-size: 0.875rem;
+        }
+
+        /* Skills Section */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .skill-tag {
+            background: var(--sky-100);
+            color: var(--sky-800);
+            padding: 0.5rem 1rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border: 1px solid var(--sky-200);
+            transition: all 0.3s ease;
+        }
+
+        .skill-tag:hover {
+            background: var(--sky-200);
+            transform: translateY(-1px);
+        }
+
+        /* Personality Traits */
+        .personality-trait {
+            background: white;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #f3f4f6;
+            margin-bottom: 0.75rem;
+        }
+
+        .trait-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .trait-name {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .trait-percentage {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .progress-bar-custom {
+            height: 0.5rem;
+            border-radius: 0.25rem;
+            background: #e5e7eb;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 0.25rem;
+            transition: width 1s ease-in-out;
+        }
+
+        /* Stats Cards */
+        .stat-card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #6b7280;
+        }
+
+        /* Bio Section */
+        .bio-text {
+            line-height: 1.7;
+            color: #4b5563;
+            font-size: 1rem;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .profile-card {
+                margin-bottom: 1.5rem;
+            }
+
+            .info-section {
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .profile-avatar {
+                width: 6rem;
+                height: 6rem;
+            }
+
+            .profile-name {
+                font-size: 1.5rem;
+            }
+
+            .card-header-gradient {
+                padding: 1.5rem;
+            }
+
+            .stat-card {
+                margin-bottom: 1rem;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+            }
+
+            .navbar-brand {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .card-header-gradient {
+                padding: 1rem;
+            }
+
+            .info-section {
+                padding: 0.75rem;
+            }
+
+            .info-item {
+                padding: 0.5rem;
+            }
+
+            .profile-name {
+                font-size: 1.25rem;
+            }
+
+            .skills-container {
+                gap: 0.25rem;
+            }
+
+            .skill-tag {
+                padding: 0.25rem 0.75rem;
+                font-size: 0.75rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .slide-in-right {
+            animation: slideInRight 0.6s ease-out;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
+
     <!-- Main Content -->
     <main class="container my-5">
-        <!-- Header -->
-        <div class="mb-4">
-            <h1 class="display-6 fw-bold text-dark mb-2">پروفایل کاربری</h1>
-            <p class="lead text-muted">اطلاعات کامل و آمار شخصی شما</p>
-        </div>
-
         <div class="row">
             <!-- Left Column - Profile Info -->
             <div class="col-lg-4">
                 <!-- Main Profile Card -->
-                <div class="profile-card mb-4">
+                <div class="profile-card mb-4" data-aos="fade-right">
                     <div class="card-header-gradient text-center">
-                        <img src="{% if user.profile.profile_pic %}{{ user.profile.profile_pic.url }}{% else %}{% static 'images/default_user_profile_photo.jpg' %}{% endif %}"
-                             alt="{{ user.get_full_name }}"
+                        <img src="{{ user_profile.profile_pic.url }}" alt="{{ user_profile.profile_pic.name }}"
                              class="profile-avatar mb-3"
-                             loading="lazy">
-                        <h2 class="profile-name">{{ user.get_full_name }}</h2>
-                        <p class="profile-email">{{ user.email }}</p>
+                             id="profileAvatar">
+                        <h2 class="profile-name" id="profileName">{{ user_profile.display_name }}</h2><br>
+                        {#                        <p class="profile-email" id="profileEmail">{{ user_profile.user.email }}</p>#}
                         <div class="d-flex gap-2 justify-content-center">
-                            <a href="{% url 'edit_profile' %}" class="btn btn-light btn-sm">
-                                <i class="lucide" data-icon="edit-3" width="16" height="16"></i>
+                            <a href="{% url "edit_profile" %}" class="btn btn-light btn-sm">
+                                <i data-lucide="edit-3" width="16" height="16" class="me-1"></i>
                                 ویرایش
                             </a>
+                            {#                            <button class="btn btn-light btn-sm" onclick="shareProfile()">#}
+                            {#                                <i data-lucide="share-2" width="16" height="16" class="me-1"></i>#}
+                            {#                                اشتراک‌گذاری#}
+                            {#                            </button>#}
                         </div>
                     </div>
                 </div>
 
                 <!-- Contact Info -->
-                <div class="info-section">
+                <div class="info-section" data-aos="fade-right" data-aos-delay="100">
                     <h3>
-                        <i class="lucide" data-icon="contact" width="20" height="20"></i>
+                        <i data-lucide="contact" width="20" height="20" style="color: var(--sky-600);"></i>
                         اطلاعات تماس
                     </h3>
                     <div class="info-item">
-                        <div class="info-icon">
-                            <i class="lucide" data-icon="mail" width="20" height="20"></i>
+                        <div class="info-icon" style="background: var(--sky-100);">
+                            <i data-lucide="mail" width="20" height="20" style="color: var(--sky-600);"></i>
                         </div>
                         <div class="info-content">
                             <div class="info-label">ایمیل</div>
-                            <div class="info-value">{{ user.email }}</div>
+                            <div class="info-value" id="contactEmail">{{ user_profile.user.email }}</div>
                         </div>
                     </div>
                     <div class="info-item">
-                        <div class="info-icon">
-                            <i class="lucide" data-icon="phone" width="20" height="20"></i>
+                        <div class="info-icon" style="background: #dcfce7;">
+                            <i data-lucide="phone" width="20" height="20" style="color: #16a34a;"></i>
                         </div>
                         <div class="info-content">
                             <div class="info-label">شماره تماس</div>
-                            <div class="info-value">{{ user.profile.phone_number }}</div>
+                            <div class="info-value" id="contactPhone">+98 {{ user_profile.phone_number }}</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Academic Stats -->
-                <div class="row g-3">
+                <div class="row g-3" data-aos="fade-right" data-aos-delay="200">
                     <div class="col-12">
                         <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="lucide" data-icon="graduation-cap" width="24" height="24"></i>
+                            <div class="stat-icon" style="background: var(--sky-100);">
+                                <i data-lucide="graduation-cap" style="color: var(--sky-600);" width="24"
+                                   height="24"></i>
                             </div>
-                            <div class="stat-value">
-                                {% if user.profile.grade_point_average %}
-                                    {{ user.profile.grade_point_average }}
-                                {% else %}
-                                    -
-                                {% endif %}
-                            </div>
+                            <div class="stat-value" id="gpaValue">{{ user_profile.grade_point_average }}</div>
                             <div class="stat-label">معدل کل</div>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="lucide" data-icon="calendar" width="24" height="24"></i>
+                            <div class="stat-icon" style="background: #f3e8ff;">
+                                <i data-lucide="calendar" style="color: #a855f7;" width="24" height="24"></i>
                             </div>
-                            <div class="stat-value">{{ user.profile.graduation_year }}</div>
-                            <div class="stat-label">پایه تحصیلی</div>
+                            <div class="stat-value"
+                                 id="yearValue">{{ user_profile.graduation_year| change_number_to_graduation_year }}</div>
+                            <div class="stat-label">سال تحصیلی</div>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="lucide" data-icon="award" width="24" height="24"></i>
-                            </div>
-                            <div class="stat-value">
-                                {% if user.profile.experience %}
-                                    {{ user.profile.experience }}/5
+                            <div class="stat-icon" style="background: {% if user_profile.gender == "مرد" %}#e8eaff{% elif user_profile.gender == "زن" %}#fee8ff{% else %}#e8e8e8{% endif %};">
+                                {% if user_profile.gender == "زن" %}
+                                    <i data-lucide="user" style="color: #b30bf5;" width="24" height="24"></i>
+                                {% elif user_profile.gender == "مرد" %}
+                                    <i data-lucide="user" style="color: #0b4df5;" width="24" height="24"></i>
                                 {% else %}
-                                    -
+                                    <i data-lucide="user" style="color: #696969;" width="24" height="24"></i>
                                 {% endif %}
+
                             </div>
-                            <div class="stat-label">سطح تجربه</div>
+                            <div class="stat-value">{{ user_profile.gender }}</div>
+                            <div class="stat-label">جنسیت</div>
                         </div>
                     </div>
                 </div>
@@ -108,136 +524,314 @@
             <!-- Right Column - Detailed Info -->
             <div class="col-lg-8">
                 <!-- Academic Information -->
-                <div class="info-section">
+                <div class="info-section" data-aos="fade-left">
                     <h3>
-                        <i class="lucide" data-icon="book-open" width="20" height="20"></i>
+                        <i data-lucide="book-open" width="20" height="20" style="color: var(--sky-600);"></i>
                         اطلاعات تحصیلی
                     </h3>
                     <div class="row g-3">
                         <div class="col-md-6">
                             <div class="info-item">
-                                <div class="info-icon">
-                                    <i class="lucide" data-icon="building" width="20" height="20"></i>
+                                <div class="info-icon" style="background: var(--sky-100);">
+                                    <i data-lucide="building" width="20" height="20" style="color: var(--sky-600);"></i>
                                 </div>
                                 <div class="info-content">
                                     <div class="info-label">مدرسه</div>
-                                    <div class="info-value">{{ user.profile.school }}</div>
+                                    <div class="info-value" id="universityName">{{ user_profile.school }}</div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="info-item">
-                                <div class="info-icon">
-                                    <i class="lucide" data-icon="graduation-cap" width="20" height="20"></i>
+                                <div class="info-icon" style="background: #dcfce7;">
+                                    <i data-lucide="graduation-cap" width="20" height="20" style="color: #16a34a;"></i>
                                 </div>
                                 <div class="info-content">
                                     <div class="info-label">رشته تحصیلی</div>
-                                    <div class="info-value">{{ user.profile.major }}</div>
+                                    <div class="info-value" id="majorName">{{ user_profile.major }}</div>
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-md-6">
                             <div class="info-item">
-                                <div class="info-icon">
-                                    <i class="lucide" data-icon="target" width="20" height="20"></i>
+                                <div class="info-icon" style="background: #dcfce7;">
+                                    <i data-lucide="graduation-cap" width="20" height="20" style="color: #16a34a;"></i>
+                                </div>
+                                <div class="info-content">
+                                    <div class="info-label">زیر رشته تحصیلی</div>
+                                    {% if user_profile.sub_field_of_education.value %}
+                                        <div class="info-value"
+                                             id="sub_field_of_education">{{ user_profile.sub_field_of_education }}</div>
+                                    {% else %}
+                                        <div class="info-empty-value"
+                                             id="sub_field_of_education">هنوز انتخاب نشده
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="info-item">
+                                <div class="info-icon" style="background: #f3e8ff;">
+                                    <i data-lucide="target" width="20" height="20" style="color: #a855f7;"></i>
                                 </div>
                                 <div class="info-content">
                                     <div class="info-label">علاقه تحصیلی</div>
-                                    <div class="info-value">{{ user.profile.academic_interest }}</div>
+                                    <div class="info-value"
+                                         id="academicInterestValue">{{ user_profile.academic_interest }}</div>
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-md-6">
                             <div class="info-item">
-                                <div class="info-icon">
-                                    <i class="lucide" data-icon="calendar" width="20" height="20"></i>
+                                <div class="info-icon" style="background: #fef3c7;">
+                                    <i data-lucide="award" width="20" height="20" style="color: #f59e0b;"></i>
+                                </div>
+                                <div class="info-content">
+                                    <div class="info-label">سال فارق التحصیلی مورد انتظار</div>
+                                    <div class="info-value">{{ user_profile.expected_graduation_year }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="info-item">
+                                <div class="info-icon" style="background: #fef3c7;">
+                                    <i data-lucide="calendar" width="20" height="20" style="color: #f59e0b;"></i>
                                 </div>
                                 <div class="info-content">
                                     <div class="info-label">عضو از</div>
-                                    <div class="info-value">{{ user.date_joined|date:"F Y" }}</div>
+                                    <div class="info-value">{{ user_profile.created_at| format_date }}</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Bio Section -->
-                <div class="info-section">
-                    <h3>
-                        <i class="lucide" data-icon="user" width="20" height="20"></i>
-                        درباره من
-                    </h3>
-                    <p class="bio-text">
-                        {% if user.profile.bio %}
-                            {{ user.profile.bio }}
-                        {% else %}
-                            کاربر هنوز اطلاعاتی وارد نکرده است.
-                        {% endif %}
-                    </p>
-                </div>
-
                 <!-- Skills Section -->
-                <div class="info-section">
+                <div class="info-section" data-aos="fade-left" data-aos-delay="100">
                     <h3>
-                        <i class="lucide" data-icon="zap" width="20" height="20"></i>
+                        <i data-lucide="zap" width="20" height="20" style="color: var(--sky-600);"></i>
                         مهارت‌ها و علایق
                     </h3>
-                    <div class="skills-container">
-                        {% if user.profile.sub_field_of_education %}
-                            <span class="skill-tag">{{ user.profile.sub_field_of_education }}</span>
-                        {% endif %}
-                        <!-- Additional skills can be added here -->
+                    <div class="skills-container" id="skillsContainer">
+                        {% for skill in user_profile.skills.all %}
+                            <span class="skill-tag">{{ skill }}</span>
+                        {% empty %}
+                            <span class="text-muted">مهارتی ثبت نشده است.</span>
+                        {% endfor %}
                     </div>
                 </div>
 
-                <!-- AI Personality Traits -->
-                <div class="info-section">
+                <!-- Career Goals -->
+                {#                <div class="info-section" data-aos="fade-left" data-aos-delay="200">#}
+                {#                    <h3>#}
+                {#                        <i data-lucide="target" width="20" height="20" style="color: var(--sky-600);"></i>#}
+                {#                        اهداف شغلی#}
+                {#                    </h3>#}
+                {#                    <p class="bio-text" id="careerGoalsText">#}
+                {#                        توسعه‌دهنده فرانت‌اند و طراح UX/UI در شرکت‌های فناوری بزرگ#}
+                {#                    </p>#}
+                {#                </div>#}
+
+                <!-- Bio Section -->
+                <div class="info-section" data-aos="fade-left" data-aos-delay="300">
                     <h3>
-                        <i class="lucide" data-icon="brain" width="20" height="20"></i>
-                        ویژگی‌های شخصیتی
+                        <i data-lucide="user" width="20" height="20" style="color: var(--sky-600);"></i>
+                        درباره من
+                    </h3>
+                    <p class="bio-text" id="bioText">
+                        {{ user_profile.bio }}
+                    </p>
+                </div>
+
+                <!-- AI Personality Traits -->
+                <div class="info-section" data-aos="fade-left" data-aos-delay="400">
+                    <h3>
+                        <i data-lucide="brain" width="20" height="20" style="color: #a855f7;"></i>
+                        ویژگی‌های شخصیتی تشخیص داده شده توسط هوش مصنوعی
+                        <span class="badge"
+                              style="background: #e879f9; color: white; font-size: 0.7rem; margin-right: 0.5rem;">تولید شده با AI</span>
                     </h3>
                     <div class="row g-3">
                         <div class="col-md-6">
                             <div class="personality-trait">
                                 <div class="trait-header d-flex justify-content-between align-items-center">
                                     <span class="trait-name">تحلیلگر</span>
-                                    <span class="trait-percentage">
-                                        {% if user.profile.experience %}
-                                            {{ user.profile.experience|multiply:20 }}٪
-                                        {% else %}
-                                            0٪
-                                        {% endif %}
-                                    </span>
+                                    <span class="trait-percentage">۹۲٪</span>
                                 </div>
                                 <div class="progress-bar-custom">
-                                    <div class="progress-fill"
-                                         style="background: #10b981; width: {% if user.profile.experience %}{{ user.profile.experience|multiply:20 }}%{% else %}0%{% endif %};"></div>
+                                    <div class="progress-fill" style="background: #10b981; width: 0%;"
+                                         data-width="92"></div>
                                 </div>
                             </div>
                         </div>
-                        <!-- Additional traits can be added here -->
+                        <div class="col-md-6">
+                            <div class="personality-trait">
+                                <div class="trait-header d-flex justify-content-between align-items-center">
+                                    <span class="trait-name">خلاق</span>
+                                    <span class="trait-percentage">۸۷٪</span>
+                                </div>
+                                <div class="progress-bar-custom">
+                                    <div class="progress-fill" style="background: var(--sky-500); width: 0%;"
+                                         data-width="87"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="personality-trait">
+                                <div class="trait-header d-flex justify-content-between align-items-center">
+                                    <span class="trait-name">تیمی</span>
+                                    <span class="trait-percentage">۷۸٪</span>
+                                </div>
+                                <div class="progress-bar-custom">
+                                    <div class="progress-fill" style="background: #f59e0b; width: 0%;"
+                                         data-width="78"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="personality-trait">
+                                <div class="trait-header d-flex justify-content-between align-items-center">
+                                    <span class="trait-name">دقیق</span>
+                                    <span class="trait-percentage">۸۵٪</span>
+                                </div>
+                                <div class="progress-bar-custom">
+                                    <div class="progress-fill" style="background: #a855f7; width: 0%;"
+                                         data-width="85"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    <p class="text-muted mt-3 fst-italic small">
+                        این ویژگی‌ها بر اساس تعاملات و ترجیحات تحصیلی شما تحلیل شده‌اند.
+                    </p>
                 </div>
             </div>
         </div>
     </main>
-{% endblock %}
-    <!-- Local Bootstrap JS -->
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 
-    <!-- Minimal JavaScript -->
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
-        // Simple DOM ready function
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize dropdowns
-            var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'))
-            var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
-                return new bootstrap.Dropdown(dropdownToggleEl)
-            });
-
-            // Initialize Lucide icons
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
-            }
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            easing: 'ease-out',
+            once: true
         });
+
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+
+        // Load user data
+
+
+        function loadUserData() {
+            const savedData = localStorage.getItem('userProfile');
+            const userData = savedData ? JSON.parse(savedData) : defaultUserData;
+
+            // Update profile information
+            document.getElementById('profileName').textContent = `${userData.firstName} ${userData.lastName}`;
+            document.getElementById('profileEmail').textContent = userData.email;
+            document.getElementById('profileAvatar').src = userData.avatar;
+            document.getElementById('navAvatar').src = userData.avatar;
+            document.getElementById('navName').textContent = userData.firstName;
+            document.getElementById('navUserInfo').innerHTML = `${userData.firstName} ${userData.lastName}<br><small class="text-muted">${userData.email}</small>`;
+
+            // Update contact information
+            document.getElementById('contactEmail').textContent = userData.email;
+            document.getElementById('contactPhone').textContent = userData.phone;
+
+            // Update academic information
+            document.getElementById('universityName').textContent = userData.university;
+            document.getElementById('majorName').textContent = getMajorName(userData.major);
+            document.getElementById('academicInterestValue').textContent = userData.academicInterest;
+            document.getElementById('gpaValue').textContent = userData.gpa;
+            document.getElementById('yearValue').textContent = userData.year;
+
+            // Update goals and bio
+            document.getElementById('careerGoalsText').textContent = userData.careerGoals;
+            document.getElementById('bioText').textContent = userData.bio;
+
+        }
+
+        // Get major name in Persian
+        function getMajorName(major) {
+            const majorNames = {
+                'computer-science': 'علوم کامپیوتر',
+                'design': 'طراحی',
+                'engineering': 'مهندسی',
+                'business': 'کسب و کار',
+                'medicine': 'پزشکی',
+                'other': 'سایر'
+            };
+            return majorNames[major] || major;
+        }
+
+        // Load skills
+        function loadSkills(skills) {
+            const container = document.getElementById('skillsContainer');
+            container.innerHTML = '';
+
+            skills.forEach(skill => {
+                const skillTag = document.createElement('span');
+                skillTag.className = 'skill-tag';
+                skillTag.textContent = skill;
+                container.appendChild(skillTag);
+            });
+        }
+
+        // Animate progress bars
+        function animateProgressBars() {
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+                const width = bar.getAttribute('data-width');
+                setTimeout(() => {
+                    bar.style.width = width + '%';
+                }, 500);
+            });
+        }
+
+        // Share profile function
+        function shareProfile() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'پروفایل من - مشاور v0',
+                    text: 'مشاهده پروفایل تحصیلی من در مشاور v0',
+                    url: window.location.href
+                });
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                const url = window.location.href;
+                navigator.clipboard.writeText(url).then(() => {
+                    alert('لینک پروفایل کپی شد!');
+                });
+            }
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function () {
+            loadUserData();
+            animateProgressBars();
+        });
+
+        // Handle responsive behavior
+        function handleResize() {
+            if (window.innerWidth < 768) {
+                // Mobile specific adjustments
+                document.querySelectorAll('.info-section').forEach(section => {
+                    section.style.marginBottom = '1rem';
+                });
+            }
+        }
+
+        window.addEventListener('resize', handleResize);
+        handleResize(); // Initial call
     </script>
+{% endblock %}
