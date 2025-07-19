@@ -23,8 +23,7 @@ class Profile(models.Model):
 
     bio = models.TextField()
 
-    experience = models.DecimalField(max_digits=2, decimal_places=1, null=True, blank=True,
-                                     choices=[(5, "5"), (4, '4'), (3, '3'), (2, '2'), (1, '1')])
+    experience = models.DecimalField(max_digits=2, decimal_places=1, null=True, blank=True)
 
     expected_graduation_year = models.IntegerField(null=True)
     academic_interest = models.CharField(max_length=512)

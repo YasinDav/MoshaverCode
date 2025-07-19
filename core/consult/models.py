@@ -1,3 +1,4 @@
+from account.models import Profile
 from auditlog.registry import auditlog
 from django.contrib.auth import get_user_model
 from django.db import models
@@ -25,6 +26,9 @@ class Consult(models.Model):
 
     # status of consult model, that show the end of consulting
     status = models.BooleanField(default=False)
+
+    experience = models.DecimalField(max_digits=2, decimal_places=1, null=True, blank=True,
+                                     choices=[(5, 5), (4, 4), (3, 3), (2, 2), (1, 1)])
 
     def __str__(self):
         user_extra = ""
@@ -75,6 +79,7 @@ type_mood_reverse = {
 
 @receiver(post_save, sender=Consult)
 def create_first_question(instance, created, **kwargs):
+    # creating first question
     if created:
         response = simulate_ai_request("q")
         Question.objects.create(
@@ -83,6 +88,19 @@ def create_first_question(instance, created, **kwargs):
             question=response["question"],
             prompt="just a text for test"
         )
+    else:
+        # handel experience
+        if not instance.status and instance.experience is not None:
+            consults = Consult.objects.filter(status=False, experience__isnull=False)
+
+            sum = 0
+            for consult in consults:
+                sum += consult.experience
+
+            profile = Profile.objects.get(user=instance.user)
+            print(profile)
+            profile.experience = round(sum / consults.count(), 1)
+            profile.save()
 
 
 @receiver(post_save, sender=Question)
