@@ -135,6 +135,7 @@ def signup_view(request):
 
 @login_required(login_url=settings.LOGIN_REDIRECT_URL)
 def change_password_view(request):
+    errors = None
     if request.method == 'POST':
         form = PasswordChangeForm(data=request.POST, user=request.user)
         if form.is_valid():
@@ -153,7 +154,9 @@ def change_password_view(request):
 
         else:
             errors = form.errors
-        #     return
+
     form = PasswordChangeForm(user=request.user)
-    # return HttpResponse("bad request", status=402)
-    return render(request, "changepw.html", {"form": form, "errors": errors})
+    context_change_password = {"form": form}
+    if errors is not None:
+        context_change_password["errors"] = errors
+    return render(request, "changepw.html", context_change_password)
