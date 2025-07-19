@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'robots',
     # "debug_toolbar",
+    "auditlog",
 
 ]
 
@@ -50,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "auditlog.middleware.AuditlogMiddleware",
 ]
 
 ROOT_URLCONF = 'core.urls'

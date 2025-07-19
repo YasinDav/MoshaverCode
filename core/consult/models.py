@@ -1,3 +1,4 @@
+from auditlog.registry import auditlog
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models.signals import post_save
@@ -90,3 +91,7 @@ def update_consult(created, instance, **kwargs):
         consult = instance.consult
         consult.updated_date = timezone.now()
         consult.save()
+
+
+auditlog.register(Consult)
+auditlog.register(Question)

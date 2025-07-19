@@ -1,10 +1,10 @@
+from auditlog.registry import auditlog
 from django.contrib.auth import get_user_model
 from django.core.validators import MinLengthValidator
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from taggit.managers import TaggableManager
-
 
 User = get_user_model()
 
@@ -37,6 +37,7 @@ class Profile(models.Model):
                                                               ('12', 'دوازدهم متوسطه دوم'), ])
     school = models.CharField(max_length=256)
     skills = TaggableManager(blank=True)
+
     def __str__(self):
         return self.user.username
 
@@ -57,3 +58,7 @@ class Profile(models.Model):
 def create_user_profile(instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
+
+
+auditlog.register(User)
+auditlog.register(Profile)
