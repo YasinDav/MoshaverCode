@@ -27,7 +27,7 @@ class Consult(models.Model):
     # status of consult model, that show the end of consulting
     status = models.BooleanField(default=False)
 
-    experience = models.DecimalField(max_digits=2, decimal_places=1, null=True, blank=True,
+    experience = models.IntegerField(null=True, blank=True,
                                      choices=[(5, 5), (4, 4), (3, 3), (2, 2), (1, 1)])
 
     def __str__(self):

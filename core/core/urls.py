@@ -9,10 +9,12 @@ from django.contrib.sitemaps.views import sitemap
 from django.urls import path, include
 from index.sitemaps import StaticViewSitemap
 from index.urls import urlpatterns as index
+from index.views import dashboard_view
 
 dashboard_urlpatterns = [
     path('consult/', include(consult)),
     path('profile/', include(account)),
+    path('', dashboard_view, name="dashboard")
 
 ]
 

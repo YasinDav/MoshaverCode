@@ -1,0 +1,547 @@
+{% extends "base.html" %}
+{% load humanize log_tags %}
+
+{% block extra_head %}
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+    <!-- Persian Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
+    <style>
+        :root {
+            --sky-50: #f0f9ff;
+            --sky-100: #e0f2fe;
+            --sky-200: #bae6fd;
+            --sky-300: #7dd3fc;
+            --sky-400: #38bdf8;
+            --sky-500: #0ea5e9;
+            --sky-600: #0284c7;
+            --sky-700: #0369a1;
+            --sky-800: #075985;
+            --sky-900: #0c4a6e;
+        }
+
+        * {
+            font-family: 'Vazirmatn', sans-serif;
+        }
+
+        body {
+            direction: rtl;
+            background-color: #f8fafc;
+            min-height: 100vh;
+        }
+
+        /* Toast Notifications */
+        .toast-notification {
+            position: fixed;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            padding: 1rem 1.5rem;
+            z-index: 1050;
+            min-width: 20rem;
+            max-width: 90vw;
+            opacity: 0;
+            transform: translateX(-50%) translateY(-20px);
+            transition: all 0.3s ease;
+        }
+
+        .toast-notification.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast-notification.success {
+            border-right: 4px solid #10b981;
+        }
+
+        .toast-notification.info {
+            border-right: 4px solid var(--sky-500);
+        }
+
+        .toast-notification.warning {
+            border-right: 4px solid #f59e0b;
+        }
+
+        .toast-notification.error {
+            border-right: 4px solid #ef4444;
+        }
+
+        .toast-notification.timer-paused {
+            background: #fffbeb !important;
+            border-right-color: #f59e0b !important;
+        }
+
+        .toast-notification.timer-paused::after {
+            content: 'توقف تایمر';
+            position: absolute;
+            top: 0.5rem;
+            left: 0.5rem;
+            background: #f59e0b;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            z-index: 10;
+        }
+
+        .toast-notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .toast-notification-title {
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .toast-notification-message {
+            color: #6b7280;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        .toast-notification-close {
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            padding: 0;
+            margin-right: 0.5rem;
+        }
+
+        .toast-notification-close:hover {
+            color: #6b7280;
+        }
+
+        /* Timer Progress Bar for Toast */
+        .toast-notification-timer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #f3f4f6;
+            overflow: hidden;
+        }
+
+        .toast-notification-timer-progress {
+            height: 100%;
+            background: var(--sky-600);
+            transition: width 0.1s linear;
+            transform-origin: right;
+        }
+
+        .toast-notification-timer-progress.paused {
+            background: #f59e0b;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        /* Dashboard Styles */
+        .dashboard-header {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin: 0;
+        }
+
+        .stats-card {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats-card-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .stats-card-icon.blue {
+            background: var(--sky-100);
+            color: var(--sky-600);
+        }
+
+        .stats-card-icon.green {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .stats-card-icon.yellow {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .stats-card-icon.red {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .stats-card-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .stats-card-label {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .card {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .btn-primary {
+            background-color: var(--sky-600);
+            border-color: var(--sky-600);
+            font-weight: 500;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--sky-700);
+            border-color: var(--sky-700);
+        }
+
+        .btn-outline-primary {
+            border-color: var(--sky-600);
+            color: var(--sky-600);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--sky-600);
+            border-color: var(--sky-600);
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--sky-600) !important;
+        }
+
+        .navbar {
+            background: white !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-link {
+            color: #374151 !important;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            color: var(--sky-600) !important;
+        }
+
+        .nav-link.active {
+            color: var(--sky-600) !important;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .toast-notification {
+                min-width: auto;
+                margin: 0 1rem;
+            }
+        }
+    </style>
+
+{% endblock %}
+
+{% block footer %}{% endblock %}
+
+{% block body %}
+
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+        <div class="container">
+            <h1 class="dashboard-title">داشبورد</h1>
+            <p class="text-muted mb-0">خوش آمدید! آمار و فعالیت‌های اخیر خود را مشاهده کنید.</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Stats Cards -->
+        <div class="row mb-4">
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="stats-card">
+                    <div class="stats-card-icon blue">
+                        <i data-lucide="message-circle" width="24" height="24"></i>
+                    </div>
+                    <div class="stats-card-value">{{ consults.count }}</div>
+                    <div class="stats-card-label">مکالمات انجام شده</div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="stats-card">
+                    <div class="stats-card-icon green">
+                        <i data-lucide="check-circle" width="24" height="24"></i>
+                    </div>
+                    <div class="stats-card-value">{{ finished_consults.count }}</div>
+                    <div class="stats-card-label">مشاوره‌های تکمیل شده</div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="stats-card">
+                    <div class="stats-card-icon yellow">
+                        <i data-lucide="clock" width="24" height="24"></i>
+                    </div>
+                    <div class="stats-card-value">{{ unfinished_consults.count }}</div>
+                    <div class="stats-card-label">جلسات در انتظار</div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="stats-card">
+                    <div class="stats-card-icon red">
+                        <i data-lucide="star" width="24" height="24"></i>
+                    </div>
+                    <div class="stats-card-value">{{ experience }}</div>
+                    <div class="stats-card-label">امتیاز رضایت</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="row">
+            <div class="col-lg-8 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">فعالیت‌های اخیر</h5>
+                    </div>
+                    <div class="card-body">
+                        {% for log in logs %}
+                            {% log_metadata log.action as meta %}
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="me-3">
+                                    <div style="width: 2.5rem; height: 2.5rem; background: {{ meta.bg }}; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                        <i data-lucide="{{ meta.icon }}" style="color: {{ meta.color }};" width="16"
+                                           height="16"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1">
+                                        {{ log.content_type.model|title }} {{ meta.label }}
+                                    </h6>
+
+
+
+                                    <p class="text-muted mb-0" style="font-size: 0.875rem;">
+                                        {{ log.timestamp|naturaltime }}
+                                    </p>
+                                </div>
+                                <span class="badge {{ meta.badge }}">{{ meta.label }}</span>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">اقدامات سریع</h5>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="d-grid gap-2">
+                            <form method="post" action="{% url "new_consult" %}" class="btn btn-primary">
+                                {% csrf_token %}
+                                <button class="btn btn-primary" type="submit">
+                                    <i data-lucide="plus" width="16" height="16" class="me-2"></i>
+                                    شروع مشاوره جدید
+                                </button>
+                            </form>
+                            <button class="btn btn-outline-primary"
+                                    onclick="showNotification('پیام جدید', 'پیام جدید دریافت شد', 'info')">
+                                <i data-lucide="message-square" width="16" height="16" class="me-2"></i>
+                                ارسال پیام
+                            </button>
+                            <button class="btn btn-outline-secondary"
+                                    onclick="showNotification('تنظیمات', 'تنظیمات به‌روزرسانی شد', 'warning')">
+                                <i data-lucide="settings" width="16" height="16" class="me-2"></i>
+                                تنظیمات
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {#    {% for log in logs %}#}
+    {#        <p>{{ log }}</p><br>#}
+    {#    {% endfor %}#}
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Toast Notification System with Timer
+        class NotificationTimer {
+            constructor(element, duration = 5000) {
+                this.element = element;
+                this.duration = duration;
+                this.remaining = duration;
+                this.startTime = Date.now();
+                this.isPaused = false;
+                this.intervalId = null;
+                this.progressBar = element.querySelector('.toast-notification-timer-progress');
+
+                this.start();
+                this.setupHoverEvents();
+            }
+
+            start() {
+                this.startTime = Date.now();
+                this.intervalId = setInterval(() => {
+                    if (!this.isPaused) {
+                        const elapsed = Date.now() - this.startTime;
+                        this.remaining = Math.max(0, this.duration - elapsed);
+
+                        if (this.progressBar) {
+                            const progress = ((this.duration - this.remaining) / this.duration) * 100;
+                            this.progressBar.style.width = progress + '%';
+                        }
+
+                        if (this.remaining <= 0) {
+                            this.dismiss();
+                        }
+                    }
+                }, 100);
+            }
+
+            pause() {
+                if (!this.isPaused) {
+                    this.isPaused = true;
+                    this.element.classList.add('timer-paused');
+                    if (this.progressBar) {
+                        this.progressBar.classList.add('paused');
+                    }
+                }
+            }
+
+            resume() {
+                if (this.isPaused) {
+                    this.isPaused = false;
+                    this.startTime = Date.now() - (this.duration - this.remaining);
+                    this.element.classList.remove('timer-paused');
+                    if (this.progressBar) {
+                        this.progressBar.classList.remove('paused');
+                    }
+                }
+            }
+
+            dismiss() {
+                clearInterval(this.intervalId);
+                this.element.classList.remove('show');
+                setTimeout(() => {
+                    if (this.element.parentNode) {
+                        this.element.parentNode.removeChild(this.element);
+                    }
+                }, 300);
+            }
+
+            setupHoverEvents() {
+                this.element.addEventListener('mouseenter', () => this.pause());
+                this.element.addEventListener('mouseleave', () => this.resume());
+            }
+        }
+
+        function showNotification(title, message, type = 'info', duration = 5000) {
+            const notification = document.createElement('div');
+            notification.className = `toast-notification ${type}`;
+
+            notification.innerHTML = `
+                <div class="toast-notification-header">
+                    <div class="toast-notification-title">${title}</div>
+                    <button class="toast-notification-close" onclick="this.closest('.toast-notification').remove()">
+                        <i data-lucide="x" width="16" height="16"></i>
+                    </button>
+                </div>
+                <div class="toast-notification-message">${message}</div>
+                <div class="toast-notification-timer">
+                    <div class="toast-notification-timer-progress"></div>
+                </div>
+            `;
+
+            document.body.appendChild(notification);
+            lucide.createIcons();
+
+            // Show notification
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+
+            // Initialize timer
+            new NotificationTimer(notification, duration);
+        }
+
+        // Demo notifications on page load
+        setTimeout(() => {
+            showNotification('خوش آمدید!', 'به داشبورد مشاور v0 خوش آمدید', 'success', 6000);
+        }, 1000);
+
+        setTimeout(() => {
+            showNotification('یادآوری', 'شما 3 جلسه مشاوره در انتظار دارید', 'warning', 7000);
+        }, 3000);
+    </script>
+
+{% endblock %}
