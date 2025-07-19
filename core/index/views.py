@@ -2,9 +2,14 @@ from account.models import Profile
 from auditlog.models import LogEntry
 from consult.models import Consult
 from django.conf import settings
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
+from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponse
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import redirect, reverse
+from django.shortcuts import render
+from django.db.models.functions import TruncDate
+from django.db.models import Count
 
 from .forms import ContactUsForm
 from .models import Developer, Guide, SubGuide
@@ -69,3 +74,53 @@ def dashboard_view(request):
     return render(request, 'dashboard.html', {'consults': consults, 'finished_consults': finished_consults,
                                               'unfinished_consults': unfinished_consults, 'experience': experience,
                                               'logs': filtered_logs[:10]})
+
+
+@staff_member_required
+def log_list_view(request):
+    logs = LogEntry.objects.select_related('actor', 'content_type').order_by('-timestamp')
+
+    # دریافت پارامترها از GET
+    action = request.GET.get('action')
+    models_selected = request.GET.getlist('model')
+    date_from = request.GET.get('date_from')
+    date_to = request.GET.get('date_to')
+
+    # فیلتر نوع عملیات
+    if action in ['0', '1', '2']:
+        logs = logs.filter(action=action)
+
+    # فیلتر مدل
+    if models_selected:
+        logs = logs.filter(content_type__model__in=models_selected)
+
+    # فیلتر تاریخ
+    if date_from:
+        logs = logs.filter(timestamp__date__gte=date_from)
+    if date_to:
+        logs = logs.filter(timestamp__date__lte=date_to)
+
+    # لیست مدل‌ها برای منوی کشویی
+    models = ContentType.objects.values_list('model', flat=True).distinct()
+
+    # نمودار
+    log_counts = (
+        logs.annotate(date=TruncDate('timestamp'))  # تبدیل تاریخ‌ و زمان به فقط "تاریخ"
+        .values('date')  # فقط تاریخ رو نگه می‌داریم
+        .annotate(count=Count('id'))  # شمارش تعداد لاگ‌ها در هر تاریخ
+        .order_by('date')  # مرتب‌سازی صعودی بر اساس تاریخ
+    )
+
+    chart_labels = [entry['date'].strftime('%Y-%m-%d') for entry in log_counts]
+    chart_data = [entry['count'] for entry in log_counts]
+
+    return render(request, 'logs.html', {
+        'logs': logs,
+        'models': models,
+        'selected_action': action,
+        'selected_model': models_selected,
+        'date_from': date_from,
+        'date_to': date_to,
+        'chart_labels': chart_labels,
+        'chart_data': chart_data,
+    })

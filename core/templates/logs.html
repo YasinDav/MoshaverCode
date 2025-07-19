@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% load static %}
+{% block body %}
+    <div class="container py-4">
+        <h3 class="mb-4">فیلتر لاگ‌ها</h3>
+
+        <form method="get" class="row g-2 mb-4">
+            <div class="col-md-2">
+                <label class="form-label">نوع عملیات</label>
+                <select name="action" class="form-select">
+                    <option value="">همه</option>
+                    <option value="0" {% if selected_action == "0" %}selected{% endif %}>ایجاد</option>
+                    <option value="1" {% if selected_action == "1" %}selected{% endif %}>ویرایش</option>
+                    <option value="2" {% if selected_action == "2" %}selected{% endif %}>حذف</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">مدل</label>
+                <select name="model" class="form-select" multiple size="5">
+                    {% for m in models %}
+                        <option value="{{ m }}" {% if m in models_selected %}selected{% endif %}>{{ m }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">از تاریخ</label>
+                <input type="date" name="date_from" class="form-control" value="{{ date_from }}">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">تا تاریخ</label>
+                <input type="date" name="date_to" class="form-control" value="{{ date_to }}">
+            </div>
+            <div class="col-md-2 align-self-end">
+                <button type="submit" class="btn btn-primary w-100">اعمال فیلتر</button>
+            </div>
+            <div class="col-md-2 align-self-end">
+                <a href="{% url 'log_list' %}" class="btn btn-secondary w-100">پاک‌سازی</a>
+            </div>
+        </form>
+
+        <h4>نتایج:</h4>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover text-center align-middle">
+                <thead class="table-light">
+                <tr>
+                    <th>زمان</th>
+                    <th>کاربر</th>
+                    <th>مدل</th>
+                    <th>نوع عملیات</th>
+                    <th>آی‌دی</th>
+                    <th>فیلدهای تغییر کرده</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for log in logs %}
+                    <tr>
+                        <td>{{ log.timestamp|date:"Y/m/d H:i" }}</td>
+                        <td>{{ log.actor }}</td>
+                        <td>{{ log.content_type.model }}</td>
+                        <td>
+                            {% if log.action == 0 %}<span class="badge bg-success">ایجاد</span>
+                            {% elif log.action == 1 %}<span class="badge bg-warning">ویرایش</span>
+                            {% elif log.action == 2 %}<span class="badge bg-danger">حذف</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ log.object_pk }}</td>
+                        <td>
+                            {% if log.changes_dict %}
+                                <ul class="list-unstyled text-start">
+                                    {% for key, val in log.changes_dict.items %}
+                                        <li><strong>{{ key }}</strong>: {{ val.0 }} → {{ val.1 }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6">لاگی برای این فیلترها وجود ندارد.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <h4 class="mt-5">نمودار زمانی لاگ‌ها</h4>
+        <canvas id="logTimelineChart" height="100"></canvas>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('logTimelineChart').getContext('2d');
+        const logChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ chart_labels|safe }},
+                datasets: [{
+                    label: 'تعداد لاگ‌ها در روز',
+                    data: {{ chart_data|safe }},
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    tension: 0.3,
+                    fill: true,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {beginAtZero: true},
+                    x: {ticks: {autoSkip: true, maxTicksLimit: 10}}
+                },
+                plugins: {
+                    legend: {position: 'top'},
+                    tooltip: {mode: 'index', intersect: false}
+                }
+            }
+        });
+    </script>
+{% endblock %}
