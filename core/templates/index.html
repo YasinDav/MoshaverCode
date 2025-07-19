@@ -299,8 +299,8 @@
                         هر سوالی درباره رشته‌ها، امتحانات و مسیرهای تحصیلی داری؟ مشاوره شخصی‌سازی شده را فوری دریافت کن.
                     </p>
                     <div class="d-flex gap-3 flex-wrap">
-                        <a href="signup.html" class="btn btn-primary btn-lg">شروع کنید</a>
-                        <a href="#about" class="btn btn-outline-primary btn-lg">بیشتر بدانید</a>
+                        <a href="{% url "login" %}" class="btn btn-primary btn-lg">شروع کنید</a>
+                        <a href="{% url "guide" %}" class="btn btn-outline-primary btn-lg">بیشتر بدانید</a>
                     </div>
                 </div>
 
@@ -372,18 +372,7 @@
                     </div>
                 {% endfor %}
 
-                {#                <div class="col-lg-4 col-md-6 mb-4">#}
-                {#                    <div class="team-card fade-in">#}
-                {#                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA4MCA4MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iNDAiIGN5PSI0MCIgcj0iNDAiIGZpbGw9IiNmMGY5ZmYiLz4KPHN2ZyB4PSIyMCIgeT0iMjAiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMwMjg0YzciIHN0cm9rZS13aWR0aD0iMiI+CjxwYXRoIGQ9Im0zIDkgOS03IDkgN20tMTgtMmE5IDkgMCAxIDAgMTggMGE5IDkgMCAxIDAtMTggMFoiLz4KPC9zdmc+Cjwvc3ZnPgo="#}
-                {#                             alt="جیمی اسمیت" class="team-avatar">#}
-                {#                        <h3 class="team-name">جیمی اسمیت</h3>#}
-                {#                        <p class="team-role">طراح UI/UX</p>#}
-                {#                        <div class="d-flex justify-content-center gap-2">#}
-                {#                            <a href="#" class="btn btn-sm btn-outline-primary">GitHub</a>#}
-                {#                            <a href="mailto:jamie@کدcounselor.com" class="btn btn-sm btn-outline-primary">ایمیل</a>#}
-                {#                        </div>#}
-                {#                    </div>#}
-                {#                </div>#}
+
             </div>
         </div>
     </section>

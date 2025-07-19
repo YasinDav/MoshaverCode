@@ -35,14 +35,19 @@
                         <a class="nav-link" href="{% url "guide" %}">راهنمای سایت</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url "contact" %}">درباره ما</a>
+                        <a class="nav-link" href="{% url "contact" %}">تماس</a>
                     </li>
-                    {#                    <li class="nav-item">#}
-                    {#                        <a class="nav-link" href="#team">تیم</a>#}
-                    {#                    </li>#}
                     <li class="nav-item">
-                        {#                        <a class="nav-link" href="#contact">تماس</a>#}
+                        <a class="nav-link" href="{% url "index" %}#team">درباره ما</a>
                     </li>
+                    {% if request.user.is_staff %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/">مدیریت</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url "log_list" %}">گزارش فعالیت ها</a>
+                        </li>
+                    {% endif %}
                 </ul>
                 {% show_question request.user %}
 
@@ -81,9 +86,9 @@
                 <div class="col-lg-2 col-md-6 mb-4">
                     <h4 class="footer-title">لینک‌های سریع</h4>
                     <a href="{% url "index" %}" class="footer-link">خانه</a>
-                    {#                    <a href="#features" class="footer-link">ویژگی‌ها</a>#}
-                    <a href="{% url "index" %}#team" class="footer-link">درباره ما</a>
+                    <a href="{% url "guide" %}" class="footer-link">راهنما سایت</a>
                     <a href="{% url "contact" %}" class="footer-link">تماس</a>
+                    <a href="{% url "index" %}#team" class="footer-link">درباره ما</a>
                 </div>
 
                 <div class="col-lg-3 col-md-6 mb-4">

@@ -14,12 +14,12 @@
             <li>
                 <hr class="dropdown-divider">
             </li>
-            <li><a class="dropdown-item" href=""><i data-lucide="user" width="16" height="16"
+            <li><a class="dropdown-item" href="{% url "profile" %}"><i data-lucide="user" width="16" height="16"
                                                     class="me-2"></i>مشاهده پروفایل</a></li>
-            <li><a class="dropdown-item" href=""><i data-lucide="edit" width="16"
+            <li><a class="dropdown-item" href="{% url "edit_profile" %}"><i data-lucide="edit" width="16"
                                                     height="16" class="me-2"></i>ویرایش
                 پروفایل</a></li>
-            <li><a class="dropdown-item" href=""><i data-lucide="settings" width="16" height="16"
+            <li><a class="dropdown-item" href="{% url "dashboard" %}"><i data-lucide="settings" width="16" height="16"
                                                     class="me-2"></i>داشبورد</a></li>
             <li>
                 <hr class="dropdown-divider">
