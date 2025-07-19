@@ -1,5 +1,4 @@
-{% load static %}
-{% load account_tags %}
+{% load account_tags static %}
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -12,6 +11,7 @@
 
     <!-- Persian Font - using system fonts as fallback -->
     <link href="{% static "main.css" %}" rel="stylesheet">
+
 
     {% block extra_head %}
     {% endblock %}
@@ -42,13 +42,17 @@
                     </li>
                     {% if request.user.is_staff %}
                         <li class="nav-item">
-                            <a class="nav-link" href="/admin/">مدیریت</a>
+                            <a class="btn btn-outline-primary" href="/admin/" style="font-weight: 500;
+                                margin: 0 0.5rem;">مدیریت</a>
+                            {# style="border: 2px solid #0284c7;border-radius: 7px;" #}
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url "log_list" %}">گزارش فعالیت ها</a>
+                            <a class="btn btn-outline-primary" href="{% url "log_list" %}" style="font-weight: 500;
+                                margin: 0 0.5rem;">گزارش فعالیت ها</a>
                         </li>
                     {% endif %}
                 </ul>
+
                 {% show_question request.user %}
 
                 <ul class="navbar-nav d-lg-none mt-3">
