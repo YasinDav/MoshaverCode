@@ -41,10 +41,17 @@
             <div class="col-md-2 align-self-end">
                 <a href="{% url 'log_list' %}" class="btn btn-secondary w-100">پاک‌سازی</a>
             </div>
+
+
         </form>
+        <br><br>
+        <div class="col-md-2 align-self-end">
+            <a href="{% url 'log_list' %}#logTimelineChart" class="btn btn-secondary w-100">نمودار</a>
+        </div>
+        <br><br>
 
         <h4>نتایج:</h4>
-        <div class="table-responsive">
+        <div class="table-responsive" id="table">
             <table class="table table-bordered table-hover text-center align-middle">
                 <thead class="table-light">
                 <tr>
@@ -90,6 +97,12 @@
             </table>
         </div>
 
+
+        <br><br>
+
+        <div class="col-md-2 align-self-end">
+            <a href="{% url 'log_list' %}#table" class="btn btn-secondary w-100">جدول</a>
+        </div>
         <h4 class="mt-5">نمودار زمانی لاگ‌ها</h4>
         <canvas id="logTimelineChart" height="100"></canvas>
     </div>
