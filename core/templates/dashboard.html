@@ -1,5 +1,7 @@
 {% extends "base.html" %}
-{% load humanize log_tags %}
+{% load humanize log_tags static %}
+
+{% block title %}پنل کاربری{% endblock %}
 
 {% block extra_head %}
     <!-- Bootstrap 5 CSS -->
@@ -8,9 +10,8 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 
-    <!-- Persian Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap"
-          rel="stylesheet">
+    <!-- Persian Font - using system fonts as fallback -->
+    <link href="{% static "main.css" %}" rel="stylesheet">
     <style>
         :root {
             --sky-50: #f0f9ff;
@@ -399,9 +400,9 @@
                     <div class="card-body">
 
                         <div class="d-grid gap-2">
-                            <form method="post" action="{% url "new_consult" %}" class="btn btn-primary">
+                            <form method="post" action="{% url "new_consult" %}" class="d-grid gap-2">
                                 {% csrf_token %}
-                                <button class="btn btn-primary" type="submit">
+                                <button class="btn btn-primary btn-lg" type="submit">
                                     <i data-lucide="plus" width="16" height="16" class="me-2"></i>
                                     شروع مشاوره جدید
                                 </button>
@@ -422,7 +423,7 @@
             </div>
         </div>
     </div>
-    
+
 
     <script>
         // Initialize Lucide icons
