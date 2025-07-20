@@ -1,5 +1,7 @@
 {% extends "base.html" %}
+{% load static %}
 
+{% block title %}ویرایش پروفایل{% endblock %}
 
 {% block extra_head %}
     <meta charset="UTF-8">
@@ -16,9 +18,8 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
-    <!-- Persian Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap"
-          rel="stylesheet">
+    <!-- Persian Font - using system fonts as fallback -->
+    <link href="{% static "main.css" %}" rel="stylesheet">
 
     <style>
         :root {
