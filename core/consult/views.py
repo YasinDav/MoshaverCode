@@ -133,15 +133,15 @@ def question_view(request, consult_id, question_model_id_hash):
                 prompt=prompt
             )
 
-            if question_model.type:
-                form = ConsultFormRange()
-            else:
-                form = ConsultFormInput()
+            # if question_model.type:
+            #     form = ConsultFormRange()
+            # else:
+            #     form = ConsultFormInput()
 
-            return render(request, "consult form.html",
-                          {"form": form, "consult_id": consult_id,
-                           "question_id": sha256(str(question_model.id).encode()).hexdigest(),
-                           "question": question_model.question})
+            return redirect(reverse("question", kwargs={
+                "consult_id": consult_id,
+                "question_model_id_hash": sha256(str(question_model.id).encode()).hexdigest()
+            }))
 
             # return render(request, "consult form.html", {"form": form})
         else:
@@ -162,13 +162,16 @@ def question_view(request, consult_id, question_model_id_hash):
         elif question_model is not None:
             if question_model.type:
                 form = ConsultFormRange()
+                type = "range"
             else:
                 form = ConsultFormInput()
+                type = "input"
 
             return render(request, "consult form.html",
                           {"form": form, "consult_id": consult_id,
                            "question_id": sha256(str(question_model.id).encode()).hexdigest(),
-                           "question": question_model.question})
+                           "question": question_model.question,
+                           "type": type})
 
     else:
         return HttpResponse("Bad request")

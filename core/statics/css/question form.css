@@ -1,0 +1,55 @@
+
+body {
+  background: linear-gradient(135deg, #edf4ff, #e7f2ff);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.card {
+  border-radius: 24px;
+  background: white;
+}
+
+.emoji-btn {
+  width: 90px;
+  height: 90px;
+  border: 2px solid #eee;
+  border-radius: 16px;
+  background: #fff;
+  text-align: center;
+  font-size: 1.5rem;
+  padding: 10px;
+  transition: all 0.2s ease-in-out;
+}
+
+.emoji-btn:hover, .emoji-btn.selected {
+  border-color: #00aaff;
+  box-shadow: 0 4px 10px rgba(0, 170, 255, 0.2);
+  transform: scale(1.05);
+}
+
+.emoji-btn small {
+  display: block;
+  font-size: 0.8rem;
+}
+
+.dot {
+  height: 10px;
+  width: 10px;
+  margin: 0 4px;
+  background-color: #ccc;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot.active {
+  background-color: #00aaff;
+}
+
+@media (max-width: 576px) {
+  .emoji-btn {
+    width: 100%;
+    height: auto;
+    font-size: 1.2rem;
+    padding: 12px;
+  }
+}

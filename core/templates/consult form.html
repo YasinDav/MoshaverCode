@@ -1,14 +1,98 @@
 {% extends "base.html" %}
 {% load static %}
+
+{% block title %}مشاوره{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static "question form.css" %}"/>
+    <style>
+        .emoji-radio-wrapper input[type="radio"] {
+            display: none; /* 🔴 این خط دایره‌ی انتخابی رو مخفی می‌کنه */
+        }
+
+    </style>
+
+{% endblock %}
+
+
+
 {% block body %}
 
-    <p>{{ question }}</p>
-    <form action="{% url "question" consult_id question_id %}" method="post">
-        {% csrf_token %}
-        {{ form.answer }}
-        <button type="submit">next</button>
+    {#    <p>{{ question }}</p>#}
+    {#    <form action="{% url "question" consult_id question_id %}" method="post">#}
+    {#        {% csrf_token %}#}
+    {#        {{ form.answer }}#}
+    {#        <button type="submit">next</button>#}
+    {##}
+    {#    </form>#}
+    {##}
+    <div class="container py-5 d-flex justify-content-center">
+        <div class="card shadow-lg p-4 rounded-4" style="max-width: 640px; width: 100%;">
 
-    </form>
+            <div class="align-items-center">
+                <span class="badge rounded-pill bg-light text-primary mb-2 px-3 py-2 fw-semibold">Academic Planning</span>
+                <h4 class="fw-bold">{{ question }}</h4>
+                <p class="mt-2 text-muted">Share your thoughts</p>
+                <form action="{% url "question" consult_id question_id %}" method="post">
+                    {% csrf_token %}
+                    {#<textarea class="form-control mb-2" rows="4" placeholder="Write your answer here..."></textarea>#}
 
+                    {% if type == "input" %}
+                        {{ form.answer }}
+                    {% elif type == "range" %}
+                        <div class="emoji-radio-wrapper d-flex flex-wrap justify-content-between gap-2 my-3">
+                            <label class="emoji-btn">
+                                <input type="radio" name="answer" value="very much">
+                                <span>😄<br><small>خیلی زیاد</small></span>
+                            </label>
+                            <label class="emoji-btn">
+                                <input type="radio" name="answer" value="very">
+                                <span>😊<br><small>زیاد</small></span>
+                            </label>
+                            <label class="emoji-btn">
+                                <input type="radio" name="answer" value="neutral">
+                                <span>😐<br><small>خنثی</small></span>
+                            </label>
+                            <label class="emoji-btn">
+                                <input type="radio" name="answer" value="bad">
+                                <span>😟<br><small>بد</small></span>
+                            </label>
+                            <label class="emoji-btn">
+                                <input type="radio" name="answer" value="very bad">
+                                <span>😠<br><small>خیلی بد</small></span>
+                            </label>
+                        </div>
+                    {% endif %}
+                    <div class="d-flex justify-content-between mt-4 align-items-center">
+                        <button class="btn btn-info text-white align-content-center" type="submit"
+                                style="--bs-btn-bg: #0284c7 !important;--bs-btn-hover-bg: #02a3c7 !important">Next →
+                        </button>
+                    </div>
+                </form>
+                <div class="text-end"><small class="text-muted">Take your time to provide a detailed response</small>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static "question form.js" %}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const buttons = document.querySelectorAll('.emoji-btn');
+
+            buttons.forEach(btn => {
+                const input = btn.querySelector('input[type="radio"]');
+                if (input.checked) btn.classList.add('selected');
+
+                btn.addEventListener('click', () => {
+                    buttons.forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    input.checked = true;
+                });
+            });
+        });
+    </script>
 {% endblock %}
 {% block footer %}{% endblock %}
