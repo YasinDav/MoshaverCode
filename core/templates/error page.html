@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}{{ error_title }}{% endblock %}
+{% block extra_head %}
+
+    <style>
+        .error-container {
+            text-align: center; !important;
+            padding: 2rem;
+        }
+
+        .error-image {
+            max-width: 150px;
+            margin-bottom: 1rem;
+        }
+
+        .error-code {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #0d6efd;
+        }
+
+        .error-title {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .error-message {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 2rem;
+        }
+
+        .btn-return {
+            padding: 10px 20px;
+            font-size: 1rem;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="error-container">
+        <img src="{{ image_url|default:'https://cdn-icons-png.flaticon.com/512/2748/2748558.png' }}" alt="خطا"
+             class="error-image">
+        <div class="error-code">{{ error_code }}</div>
+        <div class="error-title">{{ error_title }}</div>
+        <div class="error-message">{{ error_message }}</div>
+        <a href="{{ return_url|default:'javascript:history.back()' }}" class="btn btn-primary btn-return">{{ button_value }}</a>
+    </div>
+{% endblock %}

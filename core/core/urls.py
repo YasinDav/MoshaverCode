@@ -1,6 +1,7 @@
 from account.urls import urlpatterns as account
 from account.views import login_view, signup_view, logout_view, change_password_view
 from consult.urls import urlpatterns as consult
+from core import error_handlers
 # from debug_toolbar.toolbar import debug_toolbar_urls
 from django.conf import settings
 from django.conf.urls.static import static
@@ -43,3 +44,8 @@ urlpatterns += [
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 # urlpatterns += debug_toolbar_urls()
+
+handler403 = error_handlers.handler403
+handler404 = error_handlers.handler404
+handler405 = error_handlers.handler405
+handler500 = error_handlers.handler500

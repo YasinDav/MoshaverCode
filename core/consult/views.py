@@ -1,79 +1,37 @@
-# from django.http import JsonResponse
-# from django.views.decorators.csrf import csrf_exempt
-# from django.views.decorators.http import require_POST
-# import json
-# import requests
-# from django.contrib.auth.decorators import login_required
-# from django.utils.decorators import method_decorator
 from hashlib import sha256
 
+from core.error_handlers import render_error
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.urls import reverse_lazy
+from index.views import profile_complete_required
 
 from .forms import ConsultFormRange, ConsultFormInput
 from .models import Consult, Question
 from .simulator import simulate_ai_request
-from index.views import profile_complete_required
 
-# OLLAMA_URL = "http://localhost:11500/api/chat"
-# OLLAMA_MODEL = "mistral"
-#
-#
-# @csrf_exempt
-# # @require_POST
-# # @login_required
-# def advisor_chat(request):
-#     if request.method == "POST":
-#         try:
-#             data = json.loads(request.body)
-#             user_input = data.get("question")
-#
-#             if not user_input:
-#                 return JsonResponse({"error": "Missing 'question' field."}, status=400)
-#
-#             # Create a consult object for the user if not exists (optional logic)
-#             # consult = Consult.objects.create(user=request.user)
-#
-#             # پیام‌های مکالمه با نقش مشخص (برای context بیشتر)
-#             messages = [
-#                 {"role": "system", "content": "You are a helpful academic advisor who recommends careers and "
-#                                               "university majors based on interests."},
-#                 {"role": "user", "content": user_input}
-#             ]
-#
-#             # ارسال درخواست به Ollama
-#             response = requests.post(
-#                 OLLAMA_URL,
-#                 json={
-#                     "model": OLLAMA_MODEL,
-#                     "messages": messages,
-#                     "stream": False
-#                 }
-#             )
-#             response.raise_for_status()
-#             result = response.json()
-#
-#             # ذخیره پرسش و پاسخ در دیتابیس
-#             # Question.objects.create(
-#             #     prompt=messages[1]["content"],
-#             #     question=user_input,
-#             #     answer=result["message"]["content"],
-#             #     next_prompt=""  # فعلاً خالی می‌گذاریم تا ساختار کامل‌تر شود
-#             # )
-#
-#             return JsonResponse({"response": result["message"]["content"]})
-#
-#         except requests.RequestException as e:
-#             return JsonResponse({"error": "Failed to contact model.", "details": str(e)}, status=502)
-#
-#         except Exception as e:
-#             return JsonResponse({"error": "Internal server error.", "details": str(e)}, status=500)
-#     else:
-#         return HttpResponse("bad request")
+
+def find_secreted_url(consult: Consult, complete_url: bool = False):
+    if consult is not None:
+
+        question = Question.objects.filter(consult=consult).order_by("created_date").last()
+
+        if question is not None:
+            question_model_id_hash = sha256(str(question.id).encode()).hexdigest()
+            if complete_url:
+                return reverse("question",
+                               kwargs={"consult_id": consult.id, "question_model_id_hash": question_model_id_hash})
+            else:
+                return question_model_id_hash
+        else:
+            return None
+    else:
+        return None
+
+
 type_mood = {
     "range": True,
     "input": False
@@ -81,13 +39,15 @@ type_mood = {
 
 starting_prompt = "just a text for test"
 
+
 @profile_complete_required
 @login_required(login_url=settings.LOGIN_REDIRECT_URL)
 def question_view(request, consult_id, question_model_id_hash):
     consult = get_object_or_404(Consult, id=consult_id)
 
     if not consult.status:  # if status be False, it means consult is disable and finished
-        return HttpResponse("consult is finished")
+        return render_error(request, 410, "مشاوره به پایان رسیده",
+                            "این مشاوره قبلاً تکمیل شده و امکان ادامه یا ویرایش آن وجود ندارد.", reverse("consult"))
 
     questions_of_consult_model = Question.objects.filter(consult_id=consult_id)
 
@@ -102,10 +62,13 @@ def question_view(request, consult_id, question_model_id_hash):
                 break
 
         if question_model is None:
-            return HttpResponse("question not found")
+            return render_error(request, 404, "سؤال یافت نشد", "سؤالی با این شناسه پیدا نشد یا ممکن است حذف شده باشد.",
+                                reverse("consult"))
 
         if question_model.answer:
-            return HttpResponse("question already answered")
+            return render_error(request, 410, "سوال پاسخ داده شده",
+                                "این سوال قبلاً تکمیل شده و امکان ویرایش آن وجود ندارد. میتوانید به ادامه ی مشاوره بپردازید.",
+                                find_secreted_url(consult, True), button_value='ادامه سوالات')
 
         if question_model.type:
             form = ConsultFormRange(request.POST)
@@ -146,7 +109,11 @@ def question_view(request, consult_id, question_model_id_hash):
 
             # return render(request, "consult form.html", {"form": form})
         else:
-            return HttpResponse("bad request")
+            messages.error(request, "فرم ارسالی معتبر نیست. لطفاً ورودی‌ها را بررسی کنید.")
+            return redirect(reverse("question", kwargs={
+                "consult_id": consult_id,
+                "question_model_id_hash": sha256(str(question_model.id).encode()).hexdigest()
+            }))
     elif request.method == 'GET':
 
         question_model = None
@@ -156,9 +123,12 @@ def question_view(request, consult_id, question_model_id_hash):
                 break
 
         if question_model is None:
-            return HttpResponse("question not found")
+            return render_error(request, 404, "سؤال یافت نشد", "سؤالی با این شناسه پیدا نشد یا ممکن است حذف شده باشد.",
+                                reverse("consult"))
         elif question_model.answer:
-            return HttpResponse("question already answered")
+            return render_error(request, 410, "سوال پاسخ داده شده",
+                                "این سوال قبلاً تکمیل شده و امکان ویرایش آن وجود ندارد. میتوانید به ادامه ی مشاوره بپردازید.",
+                                find_secreted_url(consult, True), button_value='ادامه سوالات')
 
         elif question_model is not None:
             if question_model.type:
@@ -173,27 +143,16 @@ def question_view(request, consult_id, question_model_id_hash):
                            "question_id": sha256(str(question_model.id).encode()).hexdigest(),
                            "question": question_model.question,
                            "type": type})
-
     else:
-        return HttpResponse("Bad request")
+        return render_error(
+            request,
+            error_code=405,
+            error_title="متد نامعتبر",
+            error_message="درخواست ارسالی با متدی غیرمجاز انجام شده است.",
+            redirect_to=request.path,
+            button_value="بازگشت به فرم"
+        )
 
-
-def find_secreted_url(consult: Consult, complete_url: bool = False):
-    if consult is not None:
-
-        question = Question.objects.filter(consult=consult).order_by("created_date").last()
-
-        if question is not None:
-            question_model_id_hash = sha256(str(question.id).encode()).hexdigest()
-            if complete_url:
-                return reverse("question",
-                               kwargs={"consult_id": consult.id, "question_model_id_hash": question_model_id_hash})
-            else:
-                return question_model_id_hash
-        else:
-            return None
-    else:
-        return None
 
 @profile_complete_required
 @login_required(login_url=settings.LOGIN_REDIRECT_URL)
@@ -205,6 +164,7 @@ def consult_panel_view(request):
         consults_with_urls[consult] = find_secreted_url(consult)
     # consults_with_urls.
     return render(request, "consults panel.html", {"consults": consults_with_urls})
+
 
 @profile_complete_required
 @login_required(login_url=settings.LOGIN_REDIRECT_URL)
