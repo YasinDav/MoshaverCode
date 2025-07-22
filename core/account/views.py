@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect, reverse
 
 from .forms import ProfileForm, AuthenticationFormCaptcha, UserCreationFormCaptcha
 from .models import Profile
-
+from index.views import profile_complete_required
 
 # @login_required(login_url=settings.LOGIN_REDIRECT_URL)
 # def edit_profile_view(request):
@@ -50,7 +50,7 @@ def edit_profile_view(request):
 
     return render(request, 'edit-profile.html', {'form': form})
 
-
+profile_complete_required
 @login_required(login_url=settings.LOGIN_REDIRECT_URL)
 def profile_view(request):
     user = request.user

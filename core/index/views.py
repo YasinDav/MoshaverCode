@@ -1,18 +1,39 @@
+from functools import wraps
+
 from account.models import Profile
 from auditlog.models import LogEntry
 from consult.models import Consult
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
+from django.db.models import Count
+from django.db.models.functions import TruncDate
 from django.http import HttpResponse
 from django.shortcuts import redirect, reverse
 from django.shortcuts import render
-from django.db.models.functions import TruncDate
-from django.db.models import Count
 
 from .forms import ContactUsForm
 from .models import Developer, Guide, SubGuide
+
+
+def profile_complete_required(view_func):
+    @wraps(view_func)
+    def _wrapped_view(request, *args, **kwargs):
+        user = request.user
+        if user.is_authenticated:
+            profile = getattr(user, 'profile', None)
+            if profile:
+                if not profile.bio or not profile.phone_number:
+                    messages.warning(request, 'لطفاً ابتدا پروفایل خود را کامل کنید.')
+                    return redirect(reverse('edit_profile'))
+            else:
+                messages.warning(request, 'لطفاً ابتدا پروفایل خود را کامل کنید.')
+                return redirect(reverse('edit_profile'))
+        return view_func(request, *args, **kwargs)
+
+    return _wrapped_view
 
 
 def index_view(request):
@@ -53,8 +74,10 @@ def contact_view(request):
         return render(request, 'contact.html', context)
 
 
+@profile_complete_required
 @login_required(login_url=settings.LOGIN_REDIRECT_URL)
 def dashboard_view(request):
+    messages.error(request, "Dashboard view")
     consults = Consult.objects.filter(user=request.user)
     finished_consults = consults.filter(status=False)
     unfinished_consults = consults.filter(status=True)
@@ -76,6 +99,7 @@ def dashboard_view(request):
                                               'logs': filtered_logs[:10]})
 
 
+@profile_complete_required
 @staff_member_required
 def log_list_view(request):
     logs = LogEntry.objects.select_related('actor', 'content_type').order_by('-timestamp')

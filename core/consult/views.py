@@ -17,6 +17,7 @@ from django.urls import reverse_lazy
 from .forms import ConsultFormRange, ConsultFormInput
 from .models import Consult, Question
 from .simulator import simulate_ai_request
+from index.views import profile_complete_required
 
 # OLLAMA_URL = "http://localhost:11500/api/chat"
 # OLLAMA_MODEL = "mistral"
@@ -80,7 +81,7 @@ type_mood = {
 
 starting_prompt = "just a text for test"
 
-
+@profile_complete_required
 @login_required(login_url=settings.LOGIN_REDIRECT_URL)
 def question_view(request, consult_id, question_model_id_hash):
     consult = get_object_or_404(Consult, id=consult_id)
@@ -194,7 +195,7 @@ def find_secreted_url(consult: Consult, complete_url: bool = False):
     else:
         return None
 
-
+@profile_complete_required
 @login_required(login_url=settings.LOGIN_REDIRECT_URL)
 def consult_panel_view(request):
     consults = Consult.objects.filter(user=request.user)
@@ -205,7 +206,7 @@ def consult_panel_view(request):
     # consults_with_urls.
     return render(request, "consults panel.html", {"consults": consults_with_urls})
 
-
+@profile_complete_required
 @login_required(login_url=settings.LOGIN_REDIRECT_URL)
 def new_consult_view(request):
     if request.method == "POST":
