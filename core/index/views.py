@@ -77,7 +77,6 @@ def contact_view(request):
 @profile_complete_required
 @login_required(login_url=settings.LOGIN_REDIRECT_URL)
 def dashboard_view(request):
-    messages.error(request, "Dashboard view")
     consults = Consult.objects.filter(user=request.user)
     finished_consults = consults.filter(status=False)
     unfinished_consults = consults.filter(status=True)
