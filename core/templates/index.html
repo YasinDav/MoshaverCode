@@ -299,7 +299,7 @@
                         هر سوالی درباره رشته‌ها، امتحانات و مسیرهای تحصیلی داری؟ مشاوره شخصی‌سازی شده را فوری دریافت کن.
                     </p>
                     <div class="d-flex gap-3 flex-wrap">
-                        <a href="{% url "login" %}" class="btn btn-primary btn-lg">شروع کنید</a>
+                        <a href="{% if not user.is_authenticated %}{% url "login" %}{% else %}{% url 'consult' %}{% endif %}" class="btn btn-primary btn-lg">شروع کنید</a>
                         <a href="{% url "guide" %}" class="btn btn-outline-primary btn-lg">بیشتر بدانید</a>
                     </div>
                 </div>
