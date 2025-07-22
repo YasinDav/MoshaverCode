@@ -36,118 +36,7 @@
             min-height: 100vh;
         }
 
-        /* Toast Notifications */
-        .toast-notification {
-            position: fixed;
-            top: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            background: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-            border: 1px solid #e5e7eb;
-            padding: 1rem 1.5rem;
-            z-index: 1050;
-            min-width: 20rem;
-            max-width: 90vw;
-            opacity: 0;
-            transform: translateX(-50%) translateY(-20px);
-            transition: all 0.3s ease;
-        }
 
-        .toast-notification.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-
-        .toast-notification.success {
-            border-right: 4px solid #10b981;
-        }
-
-        .toast-notification.info {
-            border-right: 4px solid var(--sky-500);
-        }
-
-        .toast-notification.warning {
-            border-right: 4px solid #f59e0b;
-        }
-
-        .toast-notification.error {
-            border-right: 4px solid #ef4444;
-        }
-
-        .toast-notification.timer-paused {
-            background: #fffbeb !important;
-            border-right-color: #f59e0b !important;
-        }
-
-        .toast-notification.timer-paused::after {
-            content: 'توقف تایمر';
-            position: absolute;
-            top: 0.5rem;
-            left: 0.5rem;
-            background: #f59e0b;
-            color: white;
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.25rem;
-            font-size: 0.75rem;
-            font-weight: 500;
-            z-index: 10;
-        }
-
-        .toast-notification-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 0.5rem;
-        }
-
-        .toast-notification-title {
-            font-weight: 600;
-            color: #1f2937;
-        }
-
-        .toast-notification-message {
-            color: #6b7280;
-            font-size: 0.875rem;
-            line-height: 1.5;
-        }
-
-        .toast-notification-close {
-            background: none;
-            border: none;
-            color: #9ca3af;
-            cursor: pointer;
-            padding: 0;
-            margin-right: 0.5rem;
-        }
-
-        .toast-notification-close:hover {
-            color: #6b7280;
-        }
-
-        /* Timer Progress Bar for Toast */
-        .toast-notification-timer {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: #f3f4f6;
-            overflow: hidden;
-        }
-
-        .toast-notification-timer-progress {
-            height: 100%;
-            background: var(--sky-600);
-            transition: width 0.1s linear;
-            transform-origin: right;
-        }
-
-        .toast-notification-timer-progress.paused {
-            background: #f59e0b;
-            animation: pulse 1s infinite;
-        }
 
         @keyframes pulse {
             0%, 100% {
@@ -264,30 +153,6 @@
             border-color: var(--sky-600);
         }
 
-        .navbar-brand {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--sky-600) !important;
-        }
-
-        .navbar {
-            background: white !important;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        .nav-link {
-            color: #374151 !important;
-            font-weight: 500;
-        }
-
-        .nav-link:hover {
-            color: var(--sky-600) !important;
-        }
-
-        .nav-link.active {
-            color: var(--sky-600) !important;
-            font-weight: 600;
-        }
 
         @media (max-width: 768px) {
             .toast-notification {
@@ -379,7 +244,6 @@
                                     </h6>
 
 
-
                                     <p class="text-muted mb-0" style="font-size: 0.875rem;">
                                         {{ log.timestamp|naturaltime }}
                                     </p>
@@ -407,11 +271,10 @@
                                     شروع مشاوره جدید
                                 </button>
                             </form>
-                            <button class="btn btn-outline-primary"
-                                    onclick="showNotification('پیام جدید', 'پیام جدید دریافت شد', 'info')">
+                            <a class="btn btn-outline-primary" href="{% url 'consult' %}">
                                 <i data-lucide="message-square" width="16" height="16" class="me-2"></i>
-                                ارسال پیام
-                            </button>
+                                مشاوره ها
+                            </a>
                             <button class="btn btn-outline-secondary"
                                     onclick="showNotification('تنظیمات', 'تنظیمات به‌روزرسانی شد', 'warning')">
                                 <i data-lucide="settings" width="16" height="16" class="me-2"></i>
@@ -429,114 +292,6 @@
         // Initialize Lucide icons
         lucide.createIcons();
 
-        // Toast Notification System with Timer
-        class NotificationTimer {
-            constructor(element, duration = 5000) {
-                this.element = element;
-                this.duration = duration;
-                this.remaining = duration;
-                this.startTime = Date.now();
-                this.isPaused = false;
-                this.intervalId = null;
-                this.progressBar = element.querySelector('.toast-notification-timer-progress');
-
-                this.start();
-                this.setupHoverEvents();
-            }
-
-            start() {
-                this.startTime = Date.now();
-                this.intervalId = setInterval(() => {
-                    if (!this.isPaused) {
-                        const elapsed = Date.now() - this.startTime;
-                        this.remaining = Math.max(0, this.duration - elapsed);
-
-                        if (this.progressBar) {
-                            const progress = ((this.duration - this.remaining) / this.duration) * 100;
-                            this.progressBar.style.width = progress + '%';
-                        }
-
-                        if (this.remaining <= 0) {
-                            this.dismiss();
-                        }
-                    }
-                }, 100);
-            }
-
-            pause() {
-                if (!this.isPaused) {
-                    this.isPaused = true;
-                    this.element.classList.add('timer-paused');
-                    if (this.progressBar) {
-                        this.progressBar.classList.add('paused');
-                    }
-                }
-            }
-
-            resume() {
-                if (this.isPaused) {
-                    this.isPaused = false;
-                    this.startTime = Date.now() - (this.duration - this.remaining);
-                    this.element.classList.remove('timer-paused');
-                    if (this.progressBar) {
-                        this.progressBar.classList.remove('paused');
-                    }
-                }
-            }
-
-            dismiss() {
-                clearInterval(this.intervalId);
-                this.element.classList.remove('show');
-                setTimeout(() => {
-                    if (this.element.parentNode) {
-                        this.element.parentNode.removeChild(this.element);
-                    }
-                }, 300);
-            }
-
-            setupHoverEvents() {
-                this.element.addEventListener('mouseenter', () => this.pause());
-                this.element.addEventListener('mouseleave', () => this.resume());
-            }
-        }
-
-        function showNotification(title, message, type = 'info', duration = 5000) {
-            const notification = document.createElement('div');
-            notification.className = `toast-notification ${type}`;
-
-            notification.innerHTML = `
-                <div class="toast-notification-header">
-                    <div class="toast-notification-title">${title}</div>
-                    <button class="toast-notification-close" onclick="this.closest('.toast-notification').remove()">
-                        <i data-lucide="x" width="16" height="16"></i>
-                    </button>
-                </div>
-                <div class="toast-notification-message">${message}</div>
-                <div class="toast-notification-timer">
-                    <div class="toast-notification-timer-progress"></div>
-                </div>
-            `;
-
-            document.body.appendChild(notification);
-            lucide.createIcons();
-
-            // Show notification
-            setTimeout(() => {
-                notification.classList.add('show');
-            }, 100);
-
-            // Initialize timer
-            new NotificationTimer(notification, duration);
-        }
-
-        // Demo notifications on page load
-        setTimeout(() => {
-            showNotification('خوش آمدید!', 'به داشبورد مشاور v0 خوش آمدید', 'success', 6000);
-        }, 1000);
-
-        setTimeout(() => {
-            showNotification('یادآوری', 'شما 3 جلسه مشاوره در انتظار دارید', 'warning', 7000);
-        }, 3000);
     </script>
 
 {% endblock %}

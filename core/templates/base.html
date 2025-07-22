@@ -12,12 +12,62 @@
     <!-- Persian Font - using system fonts as fallback -->
     <link href="{% static "main.css" %}" rel="stylesheet">
 
+    <style>
+        /* محفظه پیام‌ها */
+        #popup-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 9999;
+        }
+
+        /* استایل پاپ‌آپ */
+        .popup {
+            background-color: blue;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            opacity: 0;
+            transform: translateX(-100%);
+            z-index: 9999;
+        }
+
+        /* نمایش پیام */
+        .popup.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* حذف پیام */
+        .popup.hide {
+            opacity: 0;
+            transform: translateX(-100%);
+        }
+    </style>
 
     {% block extra_head %}
     {% endblock %}
 </head>
 
 <body>
+
+<!-- Notification -->
+<!-- محفظه‌ای برای نمایش پاپ‌آپ‌ها -->
+<div id="popup-container"></div>
+
+<!-- این بخش پیام‌ها را ذخیره می‌کند اما نمایش داده نمی‌شود -->
+{% if messages %}
+    <div id="popup-messages" style="display: none;">
+        {% for message in messages %}
+            <popup-message>{{ message }}</popup-message>
+        {% endfor %}
+    </div>
+{% endif %}
 
 {% block navbar %}
     <!-- Navbar -->
@@ -143,6 +193,41 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        let popupElements = document.querySelectorAll("#popup-messages popup-message");
+
+        popupElements.forEach((element, index) => {
+            let message = element.textContent.trim();
+            setTimeout(() => {
+                showPopup(message);
+            }, index * 1000); // نمایش هر پیام با فاصله 1 ثانیه‌ای
+        });
+    });
+
+    function showPopup(message) {
+        let popupContainer = document.getElementById("popup-container");
+
+        let popup = document.createElement("div");
+        popup.classList.add("popup");
+        popup.innerText = message;
+
+        popupContainer.appendChild(popup);
+
+        // نمایش با انیمیشن
+        setTimeout(() => {
+            popup.classList.add("show");
+        }, 10);
+
+        // حذف بعد از 5 ثانیه
+        setTimeout(() => {
+            popup.classList.add("hide");
+            setTimeout(() => {
+                popup.remove();
+            }, 500);
+        }, 5000);
+    }
+
     // Set current year
     document.getElementById('currentYear').textContent = new Date().getFullYear();
 
@@ -160,29 +245,6 @@
         supportOpen = false;
     }
 
-
-    // Simple Toast System
-    function showToast(title, message, type = 'info') {
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
-
-        toast.innerHTML = `
-                <div class="toast-header">
-                    <div class="toast-title">${title}</div>
-                    <button class="toast-close" onclick="this.closest('.toast').remove()">×</button>
-                </div>
-                <div class="toast-message">${message}</div>
-            `;
-
-        document.body.appendChild(toast);
-
-        setTimeout(() => toast.classList.add('show'), 100);
-
-        setTimeout(() => {
-            toast.classList.remove('show');
-            setTimeout(() => toast.remove(), 300);
-        }, 5000);
-    }
 
     // Smooth scrolling
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -202,15 +264,6 @@
             closeSupportWidget();
         }
     });
-
-    // Demo notifications
-    {#setTimeout(() => {#}
-    {#    showToast('خوش آمدید!', 'به سیستم مشاوره تحصیلی کد خوش آمدید.', 'success');#}
-    {# }, 2000);#}
-    {##}
-    {#setTimeout(() => {#}
-    {#    showToast('نکته مهم', 'برای دریافت بهترین مشاوره، پروفایل خود را کامل کنید.', 'info');#}
-    {# }, 6000);#}
 
     // Add fade-in animation on scroll
     const observerOptions = {

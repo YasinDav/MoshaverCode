@@ -288,65 +288,6 @@ body {
     cursor: pointer;
 }
 
-/* Toast Notifications */
-.toast {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    padding: 1rem 1.5rem;
-    z-index: 1050;
-    min-width: 300px;
-    opacity: 0;
-    transform: translateX(-50%) translateY(-20px);
-    transition: all 0.3s ease;
-}
-
-.toast.show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-}
-
-.toast.success {
-    border-right: 4px solid #10b981;
-}
-
-.toast.info {
-    border-right: 4px solid var(--primary);
-}
-
-.toast.warning {
-    border-right: 4px solid #f59e0b;
-}
-
-.toast-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
-}
-
-.toast-title {
-    font-weight: bold;
-    color: var(--gray-800);
-}
-
-.toast-message {
-    color: var(--gray-600);
-    font-size: 0.9rem;
-}
-
-.toast-close {
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    cursor: pointer;
-    color: var(--gray-600);
-}
-
 /* Simple animations */
 @keyframes slideUp {
     from {
