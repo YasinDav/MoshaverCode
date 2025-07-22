@@ -1,10 +1,23 @@
-version: '4.3'
-
 services:
+  db:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_DB: MoshaverCode
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Yasin@1388
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - ai-net
+
   backend:
     build: .
     container_name: backend
-    command: python manage.py runserver 0.0.0.0:8000
+    command: >
+      sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./core:/app
     ports:
@@ -13,7 +26,14 @@ services:
       - SECRET_KEY=django-insecure-x0dn4*2one*^bljx52vjnnhjfb)z$w&e=c4uv62s-v)ob(9b_d
       - DEBUG=True
       - ALLOWED_HOSTS=.localhost, .herokuapp.com
+      #DataBace
+      - DB_ENGINE=django.db.backends.postgresql
+      - DB_NAME=MoshaverCode
+      - DB_USER=postgres
+      - DB_PASSWORD=Yasin@1388
+      - DB_HOST=db
     depends_on:
+      - db
       - ollama
     networks:
       - ai-net
@@ -31,6 +51,7 @@ services:
 
 volumes:
   ollama_data:
+  postgres_data:
 
 networks:
   ai-net:
