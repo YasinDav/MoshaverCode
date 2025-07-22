@@ -99,7 +99,7 @@
 
         <form method="post" action="{% url 'new_consult' %}" class="text-center">
             {% csrf_token %}
-            <button type="submit" class="btn btn-info text-white px-4">
+            <button type="submit" class="btn btn-info text-white px-4" style="--bs-btn-bg: #0369a1 !important;">
                 <i class="bi bi-plus-circle-dotted"></i> مشاوره جدید
             </button>
         </form>
