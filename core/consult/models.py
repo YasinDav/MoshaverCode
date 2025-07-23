@@ -20,6 +20,7 @@ class Consult(models.Model):
     # time
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
+    finished_at = models.DateTimeField(null=True, blank=True)
 
     # user
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
@@ -29,6 +30,15 @@ class Consult(models.Model):
 
     experience = models.IntegerField(null=True, blank=True,
                                      choices=[(5, 5), (4, 4), (3, 3), (2, 2), (1, 1)])
+
+    #  Result of consultation
+    extraversion = models.IntegerField(null=True, blank=True)  # برون‌گرایی
+    agreeableness = models.IntegerField(null=True, blank=True)  # توافق‌پذیری
+    conscientiousness = models.IntegerField(null=True, blank=True)  # وظیفه‌شناسی
+    neuroticism = models.IntegerField(null=True, blank=True)  # روان‌رنجوری
+    openness = models.IntegerField(null=True, blank=True)  # گشودگی به تجربه
+
+    content = models.TextField(null=True, blank=True)
 
     def __str__(self):
         user_extra = ""

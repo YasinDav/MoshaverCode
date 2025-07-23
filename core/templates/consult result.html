@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}>نتیجه مشاوره{% endblock %}
+
+{% block extra_head %}
+    <!-- Persian Font - using system fonts as fallback -->
+    <link href="{% static "main.css" %}" rel="stylesheet">
+
+    {#<link rel="stylesheet" href="style.css">#}
+    <style>
+
+        .results-section {
+            font-family: 'Vazirmatn', sans-serif;
+        {#background: #f3f6fd;#} color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+
+        .main-title {
+            text-align: center;
+            color: #4a3aff;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        .traits-grid {
+            display: grid;
+            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            margin-bottom: 2rem;
+        }
+
+        .trait-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .trait-card h2 {
+            margin-top: 0;
+            color: #3a37aa;
+        }
+
+        .progress-bar {
+            background: #eee;
+            border-radius: 10px;
+            height: 12px;
+            margin: 0.5rem 0 1rem;
+            overflow: hidden;
+        }
+
+        .progress {
+            background: linear-gradient(to left, #6a55ff, #00b4d8);
+            height: 100%;
+            border-radius: 10px;
+        }
+
+        .section-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-card h3 {
+            color: #3a37aa;
+        }
+
+        button {
+            margin-top: 2rem;
+            padding: 0.7rem 1.5rem;
+            border: none;
+            background: #4a3aff;
+            color: white;
+            font-size: 1rem;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+{% block body %}
+    <section class="results-section">
+        <div class="container">
+            <h1 class="main-title">نتیجه مشاوره شما</h1>
+
+            <div class="traits-grid">
+                <div class="trait-card">
+                    <h2>برون ‌گرایی</h2>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: {{ extraversion }}%"></div>
+                    </div>
+                    {#                    <p></p>#}
+                </div>
+                <div class="trait-card">
+                    <h2>توافق ‌پذیری</h2>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: {{ agreeableness }}%"></div>
+                    </div>
+                    {#                    <p></p>#}
+                </div>
+                <div class="trait-card">
+                    <h2>وظیفه ‌شناسی</h2>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: {{ conscientiousness }}%"></div>
+                    </div>
+                    {#                    <p></p>#}
+                </div>
+                <div class="trait-card">
+                    <h2>روان‌ رنجوری</h2>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: {{ neuroticism }}%"></div>
+                    </div>
+                    {#                    <p></p>#}
+                </div>
+                <div class="trait-card">
+                    <h2>گشودگی به تجربه</h2>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: {{ openness }}%"></div>
+                    </div>
+                    {#                    <p></p>#}
+                </div>
+            </div>
+
+            <canvas id="resultChart" width="400" height="200"></canvas>
+
+            <div class="section-cards">
+                {% for title, con in content.items %}
+                    <div class="info-card">
+                        <h3>{{ title }}</h3>
+                        <p>{{ con }}</p>
+                    </div>
+                {% endfor %}
+
+            </div>
+            <a class="btn btn-outline-secondary" href="{% url 'consult' %}">بازگشت به پنل</a>
+
+        </div>
+    </section>
+
+    <script>
+
+        const ctx = document.getElementById('resultChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['برون ‌گرایی', 'توافق ‌پذیری', 'وظیفه ‌شناسی', 'روان‌ رنجوری', 'گشودگی به تجربه'],
+                datasets: [{
+                    label: 'درصد',
+                    data: [{{ extraversion }}, {{ agreeableness }}, {{ conscientiousness }}, {{ neuroticism }}, {{ openness }}],
+                    backgroundColor: ['#4E79A7', '#F28E2B', '#E15759', '#76B7B2', '#59A14F']
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+
+    </script>
+{% endblock %}

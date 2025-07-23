@@ -189,3 +189,36 @@ def delete_consult_view(request, id):
         if request.user == consult.user:
             consult.delete()
     return redirect(reverse("consult"))
+
+
+@profile_complete_required
+@login_required(login_url=settings.LOGIN_REDIRECT_URL)
+def result_consult_view(request, id):
+    consult = get_object_or_404(Consult, id=id)
+    if consult.user == request.user:
+        if not consult.status:
+
+            split_list = consult.content.split("@")
+            print(len(split_list))
+            split_dict = {}
+
+            for line in split_list:
+                l = line.split("|")
+                split_dict[l[0]] = l[1]
+
+            context = {
+                "content": split_dict,
+                "extraversion": consult.extraversion,
+                "agreeableness": consult.agreeableness,
+                "neuroticism": consult.neuroticism,
+                "openness": consult.openness,
+                "conscientiousness": consult.conscientiousness
+            }
+            return render(request, "consult result.html", context)
+        else:
+            return render_error(request, 410, "مشاوره در جریان است",
+                            "مشاوره هنوز به پایان نرسیده. ابتدا به سوالات جواب دهید", find_secreted_url(consult, True), button_value='ادامه سوالات')
+
+    else:
+        return render_error(request, 404, "مشاوره یافت نشد.",
+                            "این مشاوره وجود ندارد یا ممکن است حذف شده باشد.", reverse("consult"))

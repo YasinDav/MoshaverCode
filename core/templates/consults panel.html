@@ -71,10 +71,17 @@
                             </p>
 
                             <div class="d-flex justify-content-between">
+                                {% if consult_model.status == True%}
                                 <a href="{% url 'question' consult_model.id secret_url %}"
                                    class="btn btn-sm btn-outline-success">
                                     <i class="bi bi-box-arrow-in-left"></i> ادامه مشاوره
                                 </a>
+                                {% else %}
+                                <a href="{% url 'result' consult_model.id  %}"
+                                   class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-box-arrow-in-left"></i> مشاهده نتیجه
+                                </a>
+                                {% endif %}
 
                                 <form method="post" action="{% url 'delete_consult' consult_model.id %}"
                                       onsubmit="return confirm('آیا از حذف این مشاوره مطمئن هستید؟')">
