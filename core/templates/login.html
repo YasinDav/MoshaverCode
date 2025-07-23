@@ -1,27 +1,249 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
 {% load static %}
-{#<!DOCTYPE html>#}
-{##}
-{#<html lang="en">#}
-{#<head>#}
-{#<meta charset="utf-8"/>#}
-{#<meta content="width=device-width, initial-scale=1.0" name="viewport"/>#}
-{#<title>Login - v0 Counselor</title>#}
-{#<!-- Bootstrap 5 CSS -->#}
-{#<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>#}
-{#<!-- Lucide Icons -->#}
-{#<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>#}
-{#<!-- SweetAlert2 -->#}
-{#<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>#}
-{#<!-- AOS Animation Library -->#}
-{#<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"/>#}
-{#<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>#}
-{##}
-{#<link href="assets/css/style.css" rel="stylesheet"/></head>#}
-{#<body>#}
-<!-- Background Pattern -->
-{% block header_nav%}{% endblock %}
-{% block body %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - v0 Counselor</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="{% static "bootstrap/bootstrap.min.css" %}" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <style>
+        :root {
+            --sky-50: #f0f9ff;
+            --sky-100: #e0f2fe;
+            --sky-600: #0284c7;
+            --sky-700: #0369a1;
+            --sky-800: #075985;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--sky-50) 0%, #ffffff 50%, var(--sky-100) 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Background Pattern */
+        .bg-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.05;
+            z-index: 0;
+        }
+
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--sky-600);
+        }
+
+        .bg-circle-1 { top: 40px; left: 40px; width: 80px; height: 80px; background: #7dd3fc; }
+        .bg-circle-2 { top: 128px; right: 80px; width: 64px; height: 64px; background: #38bdf8; }
+        .bg-circle-3 { bottom: 80px; left: 80px; width: 96px; height: 96px; background: #bae6fd; }
+        .bg-circle-4 { bottom: 128px; right: 40px; width: 48px; height: 48px; background: #7dd3fc; }
+        .bg-circle-5 { top: 50%; left: 25%; width: 32px; height: 32px; background: #38bdf8; }
+        .bg-circle-6 { top: 33%; right: 33%; width: 24px; height: 24px; background: #bae6fd; }
+
+        .login-container {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 28rem;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 1px solid #f3f4f6;
+            overflow: hidden;
+        }
+
+        .login-header {
+            background: linear-gradient(135deg, var(--sky-600) 0%, var(--sky-700) 100%);
+            padding: 2rem;
+            text-align: center;
+            color: white;
+        }
+
+        .login-header h1 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-header p {
+            color: var(--sky-100);
+            margin: 0;
+        }
+
+        .login-body {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            color: #374151;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            z-index: 3;
+        }
+
+        .form-control {
+            height: 3rem;
+            padding-left: 2.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            border-color: var(--sky-600);
+            box-shadow: 0 0 0 0.2rem rgba(2, 132, 199, 0.25);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            z-index: 3;
+        }
+
+        .password-toggle:hover {
+            color: #6b7280;
+        }
+
+        .btn-primary {
+            background: var(--sky-600);
+            border-color: var(--sky-600);
+            height: 3rem;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: var(--sky-700);
+            border-color: var(--sky-700);
+            transform: scale(1.02);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-bottom: 1.5rem;
+        }
+
+        .forgot-password a {
+            color: var(--sky-600);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .forgot-password a:hover {
+            color: var(--sky-700);
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+            color: #6b7280;
+        }
+
+        .signup-link a {
+            color: var(--sky-600);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .signup-link a:hover {
+            color: var(--sky-700);
+        }
+
+        .error-message {
+            color: #dc2626;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .loading-spinner {
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 2px solid white;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 576px) {
+            .login-header {
+                padding: 1.5rem;
+            }
+            
+            .login-body {
+                padding: 1.5rem;
+            }
+            
+            .login-header h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Pattern -->
     <div class="bg-pattern">
         <div class="bg-circle bg-circle-1"></div>
         <div class="bg-circle bg-circle-2"></div>
@@ -30,85 +252,210 @@
         <div class="bg-circle bg-circle-5"></div>
         <div class="bg-circle bg-circle-6"></div>
     </div>
+
     <!-- Login Container -->
     <div class="login-container">
         <div class="login-card" data-aos="fade-up" data-aos-duration="600" data-aos-easing="ease-out">
             <!-- Header -->
             <div class="login-header" data-aos="fade-down" data-aos-delay="200" data-aos-duration="500">
-                <h1>خوش آمدید</h1>
-                <p>به حساب کاربری خود در <strong>مشاور کد</strong> وارد شوید.</p>
+                <h1>Welcome Back</h1>
+                <p>Sign in to your v0 Counselor account</p>
             </div>
+
             <!-- Body -->
             <div class="login-body" data-aos="fade-up" data-aos-delay="300" data-aos-duration="500">
                 <form id="loginForm">
-                    {% csrf_token %}
-                    <!-- Username Field -->
+                    <!-- Email Field -->
                     <div class="form-group" data-aos="fade-right" data-aos-delay="400" data-aos-duration="500">
-                        <label class="form-label" for="id_username">نام کاربری</label>
-
+                        <label for="email" class="form-label">Email Address</label>
                         <div class="input-group">
-                            {#                            <i class="input-icon" data-lucide="mail"></i>#}
-                            <input class="form-control"
-                                   type="text"
-                                   name="username"
-                                   autofocus=""
-                                   autocapitalize="none"
-                                   autocomplete="username"
-                                   maxlength="150"
-                                   required=""
-                                   id="id_username"
-                                   placeholder="نام کاربری ">
-                            {#                            <input class="form-control" id="email" name="email" placeholder="Enter your email"#}
-                            {#                                   required="" type="email"/>#}
+                            <i data-lucide="mail" class="input-icon"></i>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
                         </div>
                         <div class="error-message" id="emailError"></div>
                     </div>
+
                     <!-- Password Field -->
                     <div class="form-group" data-aos="fade-right" data-aos-delay="500" data-aos-duration="500">
-                        <label class="form-label" for="id_password">رمز عبور</label>
-
+                        <label for="password" class="form-label">Password</label>
                         <div class="input-group">
-                            {#                            <i class="input-icon" data-lucide="lock"></i>#}
-                            <input class="form-control"
-                                   type="password"
-                                   name="password"
-                                   autocomplete="current-password"
-                                   required=""
-                                   id="id_password"
-                                   placeholder="رمز عبور">
-                            {#                            <input class="form-control" id="password" name="password" placeholder="Enter your password"#}
-                            {#                                   required="" type="password"/>#}
-                            {#                            <button class="password-toggle" id="passwordToggle" type="submit">#}
-                            {#                                <i data-lucide="eye" id="passwordIcon"></i>#}
-                            {#                            </button>#}
-
+                            <i data-lucide="lock" class="input-icon"></i>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                            <button type="button" class="password-toggle" id="passwordToggle">
+                                <i data-lucide="eye" id="passwordIcon"></i>
+                            </button>
                         </div>
-
                         <div class="error-message" id="passwordError"></div>
                     </div>
-                    <br>
-                    {{ form.captcha }}
-                    <br>
+
                     <!-- Forgot Password Link -->
-                    {#                    <div class="forgot-password" data-aos="fade-up" data-aos-delay="600" data-aos-duration="500">#}
-                    {#                        <a href="forgot-password.html">Forgot password?</a>#}
-                    {#                    </div>#}
+                    <div class="forgot-password" data-aos="fade-up" data-aos-delay="600" data-aos-duration="500">
+                        <a href="forgot-password.html">Forgot password?</a>
+                    </div>
 
                     <!-- Login Button -->
-                    <br>
                     <div class="form-group" data-aos="fade-up" data-aos-delay="700" data-aos-duration="500">
-                        <button class="btn btn-primary w-100" type="submit">
-                            <span id="loginBtnText">ورود</span>
-                            {#                            <div class="loading-spinner d-none" id="loginSpinner"></div>#}
+                        <button type="submit" class="btn btn-primary w-100" id="loginBtn">
+                            <span id="loginBtnText">Sign In</span>
+                            <div class="loading-spinner d-none" id="loginSpinner"></div>
                         </button>
                     </div>
                 </form>
+
                 <!-- Sign Up Link -->
-                <div class="signup-link" data-aos-delay="800" data-aos-duration="500">
-                    <p>هنوز حساب ندارید؟ <a href="signup.html">از اینجا ثبت نام کنید</a></p>
+                <div class="signup-link" data-aos="fade-up" data-aos-delay="800" data-aos-duration="500">
+                    <p>Don't have an account? <a href="signup.html">Sign up here</a></p>
                 </div>
             </div>
         </div>
     </div>
-{% endblock %}
-{#{% block footer %}{% endblock %}#}
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Initialize AOS
+        AOS.init();
+
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Form elements
+        const loginForm = document.getElementById('loginForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const passwordToggle = document.getElementById('passwordToggle');
+        const passwordIcon = document.getElementById('passwordIcon');
+        const loginBtn = document.getElementById('loginBtn');
+        const loginBtnText = document.getElementById('loginBtnText');
+        const loginSpinner = document.getElementById('loginSpinner');
+
+        // Error elements
+        const emailError = document.getElementById('emailError');
+        const passwordError = document.getElementById('passwordError');
+
+        // Password toggle functionality
+        passwordToggle.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            // Update icon
+            passwordIcon.setAttribute('data-lucide', type === 'password' ? 'eye' : 'eye-off');
+            lucide.createIcons();
+        });
+
+        // Form validation
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function validateForm() {
+            let isValid = true;
+
+            // Clear previous errors
+            emailError.textContent = '';
+            passwordError.textContent = '';
+            emailInput.classList.remove('is-invalid');
+            passwordInput.classList.remove('is-invalid');
+
+            // Validate email
+            if (!emailInput.value.trim()) {
+                emailError.textContent = 'Email is required';
+                emailInput.classList.add('is-invalid');
+                isValid = false;
+            } else if (!validateEmail(emailInput.value)) {
+                emailError.textContent = 'Please enter a valid email address';
+                emailInput.classList.add('is-invalid');
+                isValid = false;
+            }
+
+            // Validate password
+            if (!passwordInput.value.trim()) {
+                passwordError.textContent = 'Password is required';
+                passwordInput.classList.add('is-invalid');
+                isValid = false;
+            } else if (passwordInput.value.length < 6) {
+                passwordError.textContent = 'Password must be at least 6 characters';
+                passwordInput.classList.add('is-invalid');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        // Clear errors on input
+        emailInput.addEventListener('input', function() {
+            if (emailError.textContent) {
+                emailError.textContent = '';
+                emailInput.classList.remove('is-invalid');
+            }
+        });
+
+        passwordInput.addEventListener('input', function() {
+            if (passwordError.textContent) {
+                passwordError.textContent = '';
+                passwordInput.classList.remove('is-invalid');
+            }
+        });
+
+        // Form submission
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            if (!validateForm()) {
+                return;
+            }
+
+            // Show loading state
+            loginBtn.disabled = true;
+            loginBtnText.textContent = 'Signing in...';
+            loginSpinner.classList.remove('d-none');
+
+            try {
+                // Simulate API call
+                await new Promise(resolve => setTimeout(resolve, 2000));
+
+                // Simulate success/error randomly
+                const isSuccess = Math.random() > 0.3;
+
+                if (isSuccess) {
+                    await Swal.fire({
+                        icon: 'success',
+                        title: 'Login Successful!',
+                        text: 'Welcome back to v0 Counselor. Redirecting to your dashboard...',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                        position: 'top'
+                    });
+                    
+                    // Redirect to dashboard (placeholder)
+                    setTimeout(() => {
+                        window.location.href = '#dashboard';
+                    }, 1500);
+                } else {
+                    await Swal.fire({
+                        icon: 'error',
+                        title: 'Login Failed',
+                        text: 'Invalid email or password. Please check your credentials and try again.',
+                        confirmButtonColor: '#0284c7'
+                    });
+                }
+            } catch (error) {
+                await Swal.fire({
+                    icon: 'error',
+                    title: 'Connection Error',
+                    text: 'Unable to connect to the server. Please check your internet connection and try again.',
+                    confirmButtonColor: '#0284c7'
+                });
+            } finally {
+                // Reset loading state
+                loginBtn.disabled = false;
+                loginBtnText.textContent = 'Sign In';
+                loginSpinner.classList.add('d-none');
+            }
+        });
+    </script>
+</body>
+</html>
