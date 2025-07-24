@@ -6,7 +6,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
 
-from .simulator import simulate_ai_request
+from .simulator import ai_request, first_prompt
 
 # from django.utils.translation import gettext_lazy as _
 
@@ -91,12 +91,12 @@ type_mood_reverse = {
 def create_first_question(instance, created, **kwargs):
     # creating first question
     if created:
-        response = simulate_ai_request("q")
+        response = ai_request(t="q", prompt=first_prompt)
         Question.objects.create(
             consult=instance,
             type=type_mood_reverse[response["type"]],
             question=response["question"],
-            prompt="just a text for test"
+            prompt=first_prompt
         )
     else:
         # handel experience

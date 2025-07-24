@@ -138,12 +138,10 @@
             <canvas id="resultChart" width="400" height="200"></canvas>
 
             <div class="section-cards">
-                {% for title, con in content.items %}
-                    <div class="info-card">
-                        <h3>{{ title }}</h3>
-                        <p>{{ con }}</p>
-                    </div>
-                {% endfor %}
+                <div class="info-card">
+                    <h3>توضیحات</h3>
+                    <p>{% for i in content %}{{ i }}<br>{% endfor %}</p>
+                </div>
 
             </div>
             <a class="btn btn-outline-secondary" href="{% url 'consult' %}">بازگشت به پنل</a>
