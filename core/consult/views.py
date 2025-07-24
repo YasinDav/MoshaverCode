@@ -11,7 +11,7 @@ from index.views import profile_complete_required
 
 from .forms import ConsultFormRange, ConsultFormInput
 from .models import Consult, Question
-from .simulator import simulate_ai_request
+from .simulator import ai_request, ai_request_result, ai_request_percentage
 
 
 def find_secreted_url(consult: Consult, complete_url: bool = False):
@@ -53,6 +53,19 @@ def question_view(request, consult_id, question_model_id_hash):
 
     if request.method == 'POST':
 
+        if consult.question_set.count() >= 10:
+            consult.status = False
+            consult.content = ai_request_result()
+            consult.agreeableness = ai_request_percentage("agreeableness")
+            consult.extraversion = ai_request_percentage("extraversion")
+            consult.neuroticism = ai_request_percentage("neuroticism")
+            consult.conscientiousness = ai_request_percentage("conscientiousness")
+            consult.openness = ai_request_percentage("openness")
+
+            consult.save()
+
+            return reverse_lazy("result", kwargs={"id": consult.id})
+
         questions = questions_of_consult_model.filter(Q(answer__isnull=True) | Q(answer=""))
 
         question_model = None
@@ -78,7 +91,7 @@ def question_view(request, consult_id, question_model_id_hash):
         if form.is_valid():
             answer = form.cleaned_data["answer"]
             question_model.answer = answer
-            response = simulate_ai_request("a")
+            response = ai_request(t="a", question=question_model.question, user_input=answer)
             question_model.next_prompt = response
             question_model.save()
 
@@ -89,7 +102,7 @@ def question_view(request, consult_id, question_model_id_hash):
                 prompt = questions_of_consult_model.order_by("created_date").last()
                 prompt = prompt.next_prompt
 
-            response = simulate_ai_request("q")
+            response = ai_request(t="q", prompt=prompt)
             question_model = Question.objects.create(
                 type=type_mood[response["type"]],
                 question=response["question"],
@@ -198,16 +211,10 @@ def result_consult_view(request, id):
     if consult.user == request.user:
         if not consult.status:
 
-            split_list = consult.content.split("@")
-            print(len(split_list))
-            split_dict = {}
-
-            for line in split_list:
-                l = line.split("|")
-                split_dict[l[0]] = l[1]
+            content = consult.content.split("\n")
 
             context = {
-                "content": split_dict,
+                "content": content,
                 "extraversion": consult.extraversion,
                 "agreeableness": consult.agreeableness,
                 "neuroticism": consult.neuroticism,
@@ -217,7 +224,8 @@ def result_consult_view(request, id):
             return render(request, "consult result.html", context)
         else:
             return render_error(request, 410, "مشاوره در جریان است",
-                            "مشاوره هنوز به پایان نرسیده. ابتدا به سوالات جواب دهید", find_secreted_url(consult, True), button_value='ادامه سوالات')
+                                "مشاوره هنوز به پایان نرسیده. ابتدا به سوالات جواب دهید",
+                                find_secreted_url(consult, True), button_value='ادامه سوالات')
 
     else:
         return render_error(request, 404, "مشاوره یافت نشد.",
