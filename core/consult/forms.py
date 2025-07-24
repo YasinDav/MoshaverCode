@@ -13,7 +13,7 @@ class ConsultFormInput(forms.Form):
     answer = forms.CharField(widget=forms.Textarea(
         attrs={
             'class': 'form-control mb-2',
-            'placeholder': 'لطفا اینجا بمویسید...',
+            'placeholder': 'لطفا اینجا بنویسید ...',
             "rows": 4
         })
     )
