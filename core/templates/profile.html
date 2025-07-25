@@ -496,7 +496,9 @@
                                 <i data-lucide="calendar" style="color: #a855f7;" width="24" height="24"></i>
                             </div>
                             <div class="stat-value"
-                                 id="yearValue">{{ user_profile.graduation_year| change_number_to_graduation_year }}</div>
+
+                                 id="yearValue">{% if user_profile.graduation_year %}
+                                {{ user_profile.graduation_year| change_number_to_graduation_year }}{% endif %}</div>
                             <div class="stat-label">سال تحصیلی</div>
                         </div>
                     </div>
@@ -647,18 +649,18 @@
                     </p>
                 </div>
 
-{#                <!-- AI Personality Traits -->#}
-{#                <div class="info-section" data-aos="fade-left" data-aos-delay="400">#}
-{#                    <h3>#}
-{#                        <i data-lucide="brain" width="20" height="20" style="color: #a855f7;"></i>#}
-{#                        ویژگی‌های شخصیتی تشخیص داده شده توسط هوش مصنوعی#}
-{#                        <span class="badge"#}
-{#                              style="background: #e879f9; color: white; font-size: 0.7rem; margin-right: 0.5rem;">تولید شده با AI</span>#}
-{#                    </h3>#}
-{##}
-{##}
-{#                    <p class="text-muted mt-3 fst-italic small">{{ user_profile. }}</p>#}
-{#                </div>#}
+                {#                <!-- AI Personality Traits -->#}
+                {#                <div class="info-section" data-aos="fade-left" data-aos-delay="400">#}
+                {#                    <h3>#}
+                {#                        <i data-lucide="brain" width="20" height="20" style="color: #a855f7;"></i>#}
+                {#                        ویژگی‌های شخصیتی تشخیص داده شده توسط هوش مصنوعی#}
+                {#                        <span class="badge"#}
+                {#                              style="background: #e879f9; color: white; font-size: 0.7rem; margin-right: 0.5rem;">تولید شده با AI</span>#}
+                {#                    </h3>#}
+                {##}
+                {##}
+                {#                    <p class="text-muted mt-3 fst-italic small">{{ user_profile. }}</p>#}
+                {#                </div>#}
             </div>
         </div>
     </main>

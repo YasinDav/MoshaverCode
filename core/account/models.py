@@ -13,7 +13,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     profile_pic = models.ImageField(upload_to='profile_pics/', default='default_user_profile_photo.jpg', blank=True)
 
-    phone_number = models.CharField(max_length=11, unique=True, validators=[MinLengthValidator(11)])
+    phone_number = models.CharField(max_length=11, validators=[MinLengthValidator(11)])
 
     gender = models.CharField(max_length=10, choices=[('زن', 'زن'), ('مرد', 'مرد'), ('دیگر', 'دیگر')],
                               default='Other')

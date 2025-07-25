@@ -30,7 +30,6 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     "index",
     "account",
-    "blog",
     "captcha",
     "django_summernote",
     "taggit",

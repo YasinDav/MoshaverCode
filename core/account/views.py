@@ -10,22 +10,6 @@ from .forms import ProfileForm, AuthenticationFormCaptcha, UserCreationFormCaptc
 from .models import Profile
 from index.views import profile_complete_required
 
-# @login_required(login_url=settings.LOGIN_REDIRECT_URL)
-# def edit_profile_view(request):
-#     if request.method == 'POST':
-#         form = ProfileForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#         else:
-#             return HttpResponse('Something went wrong')
-#     if request.method == 'GET' or request.method == 'POST':
-#         user = request.user
-#         user_profile = Profile.objects.get(user=user)
-#         form = ProfileForm(instance=user_profile)
-#         return render(request, 'edit-profile.html', {'form': form})
-#     else:
-#         return HttpResponse('Something went wrong')
-
 @login_required(login_url=settings.LOGIN_REDIRECT_URL)
 def edit_profile_view(request):
     user = request.user
@@ -93,7 +77,7 @@ def login_view(request):
 
         return render(request, 'login.html', context_login)
     else:
-        return redirect(reverse('profile'))
+        return redirect(reverse('edit_profile'))
 
 
 def signup_view(request):
@@ -104,7 +88,7 @@ def signup_view(request):
                 user = form.save(commit=False)
                 user.is_active = True
                 user.save()
-                user = authenticate(request, username=user.uesrname, password=form.password2)
+                user = authenticate(request, username=form.cleaned_data.get("username"), password=form.cleaned_data.get("password2"))
                 if user is not None:
                     login(request, user)
                 else:
@@ -117,10 +101,10 @@ def signup_view(request):
                 if next_url := request.POST.get('next'):
                     return redirect(next_url)
                 else:
-                    return redirect(reverse('profile'))
+                    return redirect(reverse('edit_profile'))
 
             else:
-                messages.error(request, 'Invalid Username or Password')
+                messages.error(request, form.errors)
         else:
             form = UserCreationFormCaptcha()
 
@@ -128,9 +112,9 @@ def signup_view(request):
         if next_url := request.POST.get('next'):
             context_signup["next"] = next_url
 
-        return render(request, 'accounts/signup.html', context_signup)
+        return render(request, 'signup.html', context_signup)
     else:
-        return redirect(reverse('profile'))
+        return redirect(reverse('edit_profile'))
 
 
 @login_required(login_url=settings.LOGIN_REDIRECT_URL)
