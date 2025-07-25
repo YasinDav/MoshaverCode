@@ -23,7 +23,7 @@
                                 <label for="id_username" class="form-label">نام کامل</label>
                                 <input type="text" class="form-control" id="id_username" name="username" required
                                        maxlength="256"
-                                       {% if user %}value="{{ user.username }}" {% endif %}>
+                                       {% if user %}value="{{ user.get_full_name }}" {% endif %}>
                                 <div class="invalid-feedback">
                                     لطفا نام خود را وارد کنید
                                 </div>
